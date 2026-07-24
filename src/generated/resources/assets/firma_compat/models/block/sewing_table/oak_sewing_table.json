@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/sewing_table",
+  "textures": {
+    "0": "minecraft:block/oak_log",
+    "1": "minecraft:block/oak_planks"
+  }
+}

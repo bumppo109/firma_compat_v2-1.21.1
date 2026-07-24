@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/gear_box_face",
+  "textures": {
+    "all": "minecraft:block/spruce_planks",
+    "overlay": "tfc:block/axle_casing_round"
+  }
+}

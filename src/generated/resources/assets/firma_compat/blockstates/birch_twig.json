@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "firma_compat:block/birch_twig",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/birch_twig"
+      },
+      {
+        "model": "firma_compat:block/birch_twig",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/birch_twig",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/groundcover/twig",
+  "textures": {
+    "side": "minecraft:block/cherry_log",
+    "top": "minecraft:block/cherry_log_top"
+  }
+}

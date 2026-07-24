@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/loom",
+  "textures": {
+    "particle": "minecraft:block/crimson_planks",
+    "texture": "minecraft:block/crimson_planks"
+  }
+}

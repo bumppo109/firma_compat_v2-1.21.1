@@ -1,0 +1,6 @@
+{
+  "parent": "tfc:block/sluice_lower",
+  "textures": {
+    "texture": "minecraft:block/stripped_mangrove_log"
+  }
+}

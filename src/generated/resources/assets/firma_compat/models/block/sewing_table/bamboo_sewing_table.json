@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/sewing_table",
+  "textures": {
+    "0": "minecraft:block/bamboo_block",
+    "1": "minecraft:block/bamboo_planks"
+  }
+}

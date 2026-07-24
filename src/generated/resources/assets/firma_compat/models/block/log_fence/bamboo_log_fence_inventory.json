@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/wood/log_fence/inventory",
+  "textures": {
+    "log": "minecraft:block/bamboo_block",
+    "planks": "minecraft:block/bamboo_planks"
+  }
+}

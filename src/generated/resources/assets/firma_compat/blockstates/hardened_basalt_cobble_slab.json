@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "firma_compat:block/hardened_basalt_cobble_slab"
+    },
+    "type=double": {
+      "model": "firma_compat:block/hardened_basalt_cobble"
+    },
+    "type=top": {
+      "model": "firma_compat:block/hardened_basalt_cobble_slab_top"
+    }
+  }
+}

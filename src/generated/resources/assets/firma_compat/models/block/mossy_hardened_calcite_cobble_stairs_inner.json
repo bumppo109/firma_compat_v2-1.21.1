@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "firma_compat:block/mossy_calcite_cobble",
+    "side": "firma_compat:block/mossy_calcite_cobble",
+    "top": "firma_compat:block/mossy_calcite_cobble"
+  }
+}

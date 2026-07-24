@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "firma_compat:block/tfc_hardened_slate_cobble"
+    }
+  }
+}

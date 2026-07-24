@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "firma_compat:item/tuff_loose",
+    "layer1": "tfc:item/loose_rock/moss"
+  }
+}

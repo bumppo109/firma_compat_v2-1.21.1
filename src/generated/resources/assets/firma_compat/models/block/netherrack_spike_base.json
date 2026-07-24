@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/rock/spike_base",
+  "textures": {
+    "particle": "minecraft:block/netherrack",
+    "texture": "minecraft:block/netherrack"
+  }
+}

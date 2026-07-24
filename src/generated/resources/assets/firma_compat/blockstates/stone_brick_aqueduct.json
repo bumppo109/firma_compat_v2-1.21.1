@@ -1,0 +1,41 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "firma_compat:block/aqueduct/stone_brick_aqueduct/base"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/aqueduct/stone_brick_aqueduct/north"
+      },
+      "when": {
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/aqueduct/stone_brick_aqueduct/south"
+      },
+      "when": {
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/aqueduct/stone_brick_aqueduct/east"
+      },
+      "when": {
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/aqueduct/stone_brick_aqueduct/west"
+      },
+      "when": {
+        "west": "false"
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "tfc:block/scribing_table",
+  "textures": {
+    "leg": "minecraft:block/warped_stem",
+    "misc": "tfc:block/wood/scribing_table/scribing_paraphernalia",
+    "particle": "minecraft:block/warped_planks",
+    "side": "minecraft:block/warped_planks",
+    "top": "minecraft:block/stripped_warped_stem"
+  }
+}

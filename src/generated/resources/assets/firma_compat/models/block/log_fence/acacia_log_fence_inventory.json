@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/wood/log_fence/inventory",
+  "textures": {
+    "log": "minecraft:block/acacia_log",
+    "planks": "minecraft:block/acacia_planks"
+  }
+}

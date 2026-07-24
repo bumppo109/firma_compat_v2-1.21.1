@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/gear_box_port",
+  "textures": {
+    "all": "minecraft:block/cherry_planks",
+    "overlay": "tfc:block/axle_casing_front"
+  }
+}

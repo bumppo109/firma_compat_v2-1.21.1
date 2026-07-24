@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/wood/log_fence/inventory",
+  "textures": {
+    "log": "minecraft:block/crimson_stem",
+    "planks": "minecraft:block/crimson_planks"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/rock/spike_tip",
+  "textures": {
+    "particle": "minecraft:block/end_stone",
+    "texture": "minecraft:block/end_stone"
+  }
+}

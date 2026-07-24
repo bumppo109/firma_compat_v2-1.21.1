@@ -1,0 +1,44 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "firma_compat:block/support/cherry_vertical_support_vertical"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/support/cherry_connection",
+        "y": 270
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/support/cherry_connection"
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/support/cherry_connection",
+        "y": 90
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "firma_compat:block/support/cherry_connection",
+        "y": 180
+      },
+      "when": {
+        "west": "true"
+      }
+    }
+  ]
+}

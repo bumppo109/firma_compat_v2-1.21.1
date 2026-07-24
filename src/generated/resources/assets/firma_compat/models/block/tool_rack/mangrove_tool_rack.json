@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/tool_rack",
+  "textures": {
+    "particle": "minecraft:block/mangrove_planks",
+    "texture": "minecraft:block/mangrove_planks"
+  }
+}

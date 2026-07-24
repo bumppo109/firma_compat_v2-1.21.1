@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/scribing_table",
+  "textures": {
+    "planks": "minecraft:block/dark_oak_planks",
+    "sheet": "minecraft:block/stripped_dark_oak_log"
+  }
+}

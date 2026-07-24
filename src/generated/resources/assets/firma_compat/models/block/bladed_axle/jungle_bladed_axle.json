@@ -1,0 +1,6 @@
+{
+  "parent": "tfc:block/bladed_axle",
+  "textures": {
+    "wood": "minecraft:block/stripped_jungle_log"
+  }
+}
