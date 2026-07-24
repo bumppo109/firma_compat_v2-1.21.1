@@ -1,7 +1,6 @@
 package com.bumppo109.firma_compat.everycompat;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.block.CompatWood;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.dries007.tfc.common.TFCTags;
@@ -138,6 +137,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 .addTag(TFCTags.Blocks.SUPPORT_BEAMS, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
                 .addTag(Tags.Items.HIDDEN_FROM_RECIPE_VIEWERS, Registries.ITEM)
+                .noItem()
                 .setTab(tab)
                 .excludeBlockTypes("tfc:.*").excludeBlockTypes("afc:.*").excludeBlockTypes("domum_ornamentum:.*")
                 .build();
@@ -151,6 +151,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 .addTag(TFCTags.Blocks.SUPPORT_BEAMS, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
                 .addTag(Tags.Items.HIDDEN_FROM_RECIPE_VIEWERS, Registries.ITEM)
+                .noItem()
                 .setTab(tab)
                 .excludeBlockTypes("tfc:.*").excludeBlockTypes("afc:.*").excludeBlockTypes("domum_ornamentum:.*")
                 .build();
@@ -290,6 +291,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
                 .addTag(Tags.Items.HIDDEN_FROM_RECIPE_VIEWERS, Registries.ITEM)
                 .setRenderType(RenderLayer.CUTOUT)
+                .noItem()
                 .copyParentDrop()
                 .setTab(tab)
                 .excludeBlockTypes("tfc:.*").excludeBlockTypes("afc:.*").excludeBlockTypes("domum_ornamentum:.*")
@@ -474,55 +476,55 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 //TFC data
                 if(woodType.canBurn()){
                     if(!Objects.equals(woodType.getNamespace(), "minecraft")
-                        && !Objects.equals(woodType.getNamespace(), "tfc")
-                        && !Objects.equals(woodType.getNamespace(), "afc")){
+                            && !Objects.equals(woodType.getNamespace(), "tfc")
+                            && !Objects.equals(woodType.getNamespace(), "afc")){
                         fuelData(woodType, sink, manager);
                     }
                 }
             }
             //Create a single tag JSON with all placed feature references
-                JsonObject tagJson = new JsonObject();
+            JsonObject tagJson = new JsonObject();
 
-                JsonArray valuesArray = new JsonArray();
+            JsonArray valuesArray = new JsonArray();
 
-                for(WoodType wood: WoodTypeRegistry.INSTANCE){
-                    if(TWIG.blocks.get(wood) != null){
-                        String twigPath = Utils.getID(TWIG.blocks.get(wood)).getPath();
+            for(WoodType wood: WoodTypeRegistry.INSTANCE){
+                if(TWIG.blocks.get(wood) != null){
+                    String twigPath = Utils.getID(TWIG.blocks.get(wood)).getPath();
 
-                        String twigPatchFeature = "twig.json/" + twigPath + "_patch";
-                        String featurePath = FirmaCompat.MODID + ":" + twigPatchFeature;
-                        valuesArray.add(featurePath);
-                    }
+                    String twigPatchFeature = "twig.json/" + twigPath + "_patch";
+                    String featurePath = FirmaCompat.MODID + ":" + twigPatchFeature;
+                    valuesArray.add(featurePath);
                 }
+            }
 
-                tagJson.add("values", valuesArray);
+            tagJson.add("values", valuesArray);
 
-                // Write the tag file
-                ResourceLocation tagPath = ResourceLocation.fromNamespaceAndPath(
-                        FirmaCompat.MODID,
-                        "tags/worldgen/placed_feature/woodgood_twig_patches.json"  // or whatever name you prefer
-                );
+            // Write the tag file
+            ResourceLocation tagPath = ResourceLocation.fromNamespaceAndPath(
+                    FirmaCompat.MODID,
+                    "tags/worldgen/placed_feature/woodgood_twig_patches.json"  // or whatever name you prefer
+            );
 
-                sink.addJson(tagPath, tagJson, ResType.GENERIC);
-                FirmaCompat.LOGGER.info("Generated placed feature tag: {}", tagPath);
+            sink.addJson(tagPath, tagJson, ResType.GENERIC);
+            FirmaCompat.LOGGER.info("Generated placed feature tag: {}", tagPath);
 
             //Biome Modifier File
-                JsonObject biomeModifier = new JsonObject();
+            JsonObject biomeModifier = new JsonObject();
 
-                String twigFeatureTag = FirmaCompat.MODID + ":woodgood_twig_patches";
+            String twigFeatureTag = FirmaCompat.MODID + ":woodgood_twig_patches";
 
-                biomeModifier.addProperty("type", "neoforge:add_features");
-                biomeModifier.addProperty("biomes", "#c:is_overworld");
-                biomeModifier.addProperty("features", "#" + twigFeatureTag);
-                biomeModifier.addProperty("step", "vegetal_decoration");
+            biomeModifier.addProperty("type", "neoforge:add_features");
+            biomeModifier.addProperty("biomes", "#c:is_overworld");
+            biomeModifier.addProperty("features", "#" + twigFeatureTag);
+            biomeModifier.addProperty("step", "vegetal_decoration");
 
-                // Write individual placed feature
-                ResourceLocation biomeModifierPath = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,
-                        "neoforge/biome_modifier/add_woodgood_twig_patches.json"
-                );
+            // Write individual placed feature
+            ResourceLocation biomeModifierPath = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,
+                    "neoforge/biome_modifier/add_woodgood_twig_patches.json"
+            );
 
-                sink.addJson(biomeModifierPath, biomeModifier, ResType.GENERIC);
-                FirmaCompat.LOGGER.info("Generated biome modifier: {}", biomeModifierPath);
+            sink.addJson(biomeModifierPath, biomeModifier, ResType.GENERIC);
+            FirmaCompat.LOGGER.info("Generated biome modifier: {}", biomeModifierPath);
         });
     }
 

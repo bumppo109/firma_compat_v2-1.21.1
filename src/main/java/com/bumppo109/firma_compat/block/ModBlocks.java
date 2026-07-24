@@ -49,13 +49,13 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
     public static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
 
-    /*
 //Wood
     public static final Map<CompatWood, Map<CompatWood.BlockType, Id<Block>>> WOODS = Helpers.mapOf(CompatWood.class, (wood) ->
             Helpers.mapOf(CompatWood.BlockType.class, (type) ->
                     register(type.nameFor(wood), type.create(wood), type.createBlockItem(wood, new Item.Properties()))
             )
     );
+
 
     public static final Id<Block> COMPAT_CHEST = register(
             "compat_chest",
@@ -155,6 +155,7 @@ public class ModBlocks {
             () -> new AqueductBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_NETHER_BRICKS)));
     public static final Id<Block> QUARTZ_BRICK_AQUEDUCT = register("quartz_brick_aqueduct",
             () -> new AqueductBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS)));
+
 //Metal
 
     public static final Map<CompatMetal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOf(CompatMetal.class, metal ->
@@ -188,9 +189,6 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)));
     public static final Id<Block> KAOLIN_CLAY_PODZOL = register("kaolin_clay_podzol",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.PODZOL)));
-
-
-     */
 
     public static boolean skippedOre(Ore ore) {
         return switch (ore) {

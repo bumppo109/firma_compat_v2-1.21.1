@@ -100,6 +100,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                         stoneType -> new RockRopeAnchorBlock(ExtendedProperties.of(Utils.copyPropertySafe(stoneType.stone)), () -> (RockSpikeBlock) SPIKE.blocks.get(stoneType))
                 )
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
+                .noItem()
                 .dropSelf()
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)

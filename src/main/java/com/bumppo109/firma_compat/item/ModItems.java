@@ -28,7 +28,6 @@ import java.util.function.Supplier;
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, FirmaCompat.MODID);
 
-    /*
 //Wood
     public static final Map<CompatWood, ItemId> LUMBER = Helpers.mapOf(CompatWood.class, wood -> register(wood.name() + "_lumber"));
     public static final Map<CompatWood, ItemId> SUPPORTS = Helpers.mapOf(CompatWood.class, wood ->
@@ -63,10 +62,6 @@ public class ModItems {
 //Earthen
     public static final ItemId MUD_BRICK = register("mud_brick");
     public static final ItemId UNFIRED_POT = register("unfired_pot");
-
-
-
-     */
 
     public static boolean makesBrickItem(CompatRock rock) {
         return !rock.equals(CompatRock.NETHERRACK);

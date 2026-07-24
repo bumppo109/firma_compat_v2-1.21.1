@@ -69,7 +69,7 @@ public class FirmaCompat {
     public FirmaCompat(IEventBus modEventBus, ModContainer modContainer) {
         this.modIntegration();
 
-        //modEventBus.addListener(ModClientEvents::addToBlockEntities);
+        modEventBus.addListener(ModClientEvents::addToBlockEntities);
         modEventBus.addListener(ModClientEvents::addResourcePacks);
 
         ModDataComponents.COMPONENTS.register(modEventBus);
@@ -77,14 +77,14 @@ public class FirmaCompat {
         ModFluids.FLUID.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        //ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
+        ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
 
         ModClimateModels.TYPES.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
         if(isWoodGoodLoaded || isStoneZoneLoaded){
-            //EveryCompatHandler.registerModules();
+            EveryCompatHandler.registerModules();
         }
 
         NeoForge.EVENT_BUS.register(this);
@@ -94,7 +94,7 @@ public class FirmaCompat {
         FirmaCompatConfig.register(modContainer);
 
         if (FMLEnvironment.dist.isClient()) {
-            //RegHelper.registerDynamicResourceProvider(ModClientDynamicResources.INSTANCE);
+            RegHelper.registerDynamicResourceProvider(ModClientDynamicResources.INSTANCE);
         }
     }
 

@@ -25,6 +25,7 @@ public class BuiltinDeposits extends DataManagerProvider<Deposit>
     @Override
     protected void addData(HolderLookup.Provider provider)
     {
+
         add("%s".formatted("cassiterite_gravel_deposit"), new Deposit(
                 Ingredient.of(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT),
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "deposit/cassiterite_gravel_deposit")),
