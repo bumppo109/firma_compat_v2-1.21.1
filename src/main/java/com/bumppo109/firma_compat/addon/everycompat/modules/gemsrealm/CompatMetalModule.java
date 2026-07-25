@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.everycompat;
+package com.bumppo109.firma_compat.addon.everycompat.modules.gemsrealm;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import net.mehvahdjukaar.every_compat.api.ItemOnlyEntrySet;

@@ -3,9 +3,8 @@ package com.bumppo109.firma_compat;
 import com.bumppo109.firma_compat.block.BlockAssets;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.data.ModDataComponents;
-import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
 import com.bumppo109.firma_compat.event.ModClientEvents;
-import com.bumppo109.firma_compat.everycompat.EveryCompatHandler;
+import com.bumppo109.firma_compat.addon.ModCompatHandler;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModCreativeModeTab;
 import com.bumppo109.firma_compat.item.ModItemCapabilities;
@@ -13,7 +12,6 @@ import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.loot.ModLootFunctions;
 import com.bumppo109.firma_compat.loot.loot_modifiers.ModLootModifiers;
 import com.bumppo109.firma_compat.world.climate.ModClimateModels;
-import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
@@ -65,9 +63,7 @@ public class FirmaCompat {
 
         modEventBus.addListener(this::commonSetup);
 
-        if(isWoodGoodLoaded || isStoneZoneLoaded || isGemsRealmLoaded){
-            EveryCompatHandler.registerModules();
-        }
+        ModCompatHandler.registerModules();
 
         NeoForge.EVENT_BUS.register(this);
 

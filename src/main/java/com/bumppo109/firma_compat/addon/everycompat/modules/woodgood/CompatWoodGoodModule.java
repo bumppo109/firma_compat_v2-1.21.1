@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.everycompat;
+package com.bumppo109.firma_compat.addon.everycompat.modules.woodgood;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.google.gson.JsonArray;
