@@ -1,5 +1,6 @@
 package com.bumppo109.firma_compat.block;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -128,7 +129,6 @@ public enum CompatRock implements ModRegistryRock {
         SPIKE((rock, self) -> new RockSpikeBlock(properties(rock).lightLevel(ModBlocks.lavaLoggedBlockEmission()), rock.getBlock(self.anchor())), false),
         LOOSE((rock, self) -> new LooseRockBlock(properties(rock)), false),
         MOSSY_LOOSE((rock, self) -> new LooseRockBlock(properties(rock)), false),
-        AQUEDUCT((rock, self) -> new AqueductBlock(properties(rock).lightLevel(ModBlocks.lavaLoggedBlockEmission())), false),
         ROPE_ANCHOR((rock, self) -> new RockRopeAnchorBlock(ExtendedProperties.of(properties(rock)), rock.getBlock(self.spike())), false);
 
         public static final BlockType[] VALUES = values();

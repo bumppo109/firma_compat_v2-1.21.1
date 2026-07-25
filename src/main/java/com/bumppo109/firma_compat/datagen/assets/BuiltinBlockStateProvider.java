@@ -3,6 +3,7 @@ package com.bumppo109.firma_compat.datagen.assets;
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.block.*;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
 import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
@@ -18,6 +19,8 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+
+import java.util.Locale;
 
 public class BuiltinBlockStateProvider extends BlockStateProvider {
     public BuiltinBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -73,6 +76,8 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
 
         for (CompatRock rock : CompatRock.VALUES) {
             var rockMap = ModBlocks.ROCK_BLOCKS.get(rock);
+            var oreMap = ModBlocks.ORES.get(rock);
+            var gradedOreMap = ModBlocks.GRADED_ORES.get(rock);
 
             ResourceLocation rawTexture = rock.blockAsset().textures().get(BlockTextureSlot.SIDE);
             ResourceLocation cobbleTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/" + rock.getSerializedName() + "_cobble");
@@ -80,11 +85,12 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
 
             for (CompatRock.BlockType blockType : CompatRock.BlockType.VALUES) {
                 Block block = rockMap.get(blockType).get();
-                ResourceLocation looseRockTexture = blockType.name().startsWith("MOSSY") && blockType.name().endsWith("COBBLE") ? mossyCobbleTexture : rawTexture;
+                ResourceLocation cobbleMossyTexture = blockType.name().startsWith("MOSSY") && blockType.name().endsWith("COBBLE") ? mossyCobbleTexture : cobbleTexture;
 
                 switch (blockType) {
                     case HARDENED -> cubeAllWithItem(block, rawTexture);
-                    case LOOSE, MOSSY_LOOSE -> looseRockWithItem(block, looseRockTexture, rock.category());
+                    case LOOSE -> looseRockWithItem(block, rawTexture, rock.category());
+                    case MOSSY_LOOSE -> looseRockWithItem(block, mossyCobbleTexture, rock.category());
                     case COBBLE, HARDENED_COBBLE -> cubeAllWithItem(block, cobbleTexture);
                     case MOSSY_COBBLE, MOSSY_HARDENED_COBBLE -> cubeAllWithItem(block, mossyCobbleTexture);
                     case SPIKE -> spikeWithItem(block, rawTexture);
@@ -94,11 +100,35 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                  * assumes only COMPAT_HARDENED_COBBLE and MOSSY_HARDENED_COBBLE have variants
                  */
                 if(blockType.hasVariants()) {
-                    slabWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).slab().get(), block, looseRockTexture);
-                    stairsWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).stair().get(), looseRockTexture);
-                    wallWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).wall().get(), looseRockTexture);
+                    slabWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).slab().get(), block, cobbleMossyTexture);
+                    stairsWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).stair().get(), cobbleMossyTexture);
+                    wallWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).wall().get(), cobbleMossyTexture);
                 }
             }
+
+            oreMap.forEach((ore, blockId) -> {
+                ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(blockId.get());
+                ResourceLocation overlayTexture = ResourceLocation.fromNamespaceAndPath("tfc", "block/ore/" + ore.name().toLowerCase(Locale.ROOT));
+
+                simpleBlockWithItem(blockId.get(),
+                        models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc","block/ore"))
+                                .texture("all", rawTexture)
+                                .texture("overlay", overlayTexture)
+                );
+            });
+
+            gradedOreMap.forEach((ore, gradeIdMap) -> {
+                gradeIdMap.forEach((grade, blockId) -> {
+                    ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(blockId.get());
+                    ResourceLocation overlayTexture = ResourceLocation.fromNamespaceAndPath("tfc", "block/ore/" + grade.name().toLowerCase(Locale.ROOT) + "_" + ore.name().toLowerCase(Locale.ROOT));
+
+                    simpleBlockWithItem(blockId.get(),
+                            models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc","block/ore"))
+                                    .texture("all", rawTexture)
+                                    .texture("overlay", overlayTexture)
+                    );
+                });
+            });
         }
 
         ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
@@ -123,12 +153,81 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         aqueductWithItem(quartzBrickAqueduct, BlockAssets.get(Blocks.QUARTZ_BRICKS).textures().get(BlockTextureSlot.SIDE));
         Block redNetherBrickAqueduct = ModBlocks.RED_NETHER_BRICK_AQUEDUCT.get();
         aqueductWithItem(redNetherBrickAqueduct, BlockAssets.get(Blocks.RED_NETHER_BRICKS).textures().get(BlockTextureSlot.SIDE));
+
+    //Natural
+        ResourceLocation dirtTexture = ResourceLocation.withDefaultNamespace("block/dirt");
+        ResourceLocation farmlandTexture = ResourceLocation.withDefaultNamespace("block/farmland");
+        ResourceLocation mudTexture = ResourceLocation.withDefaultNamespace("block/mud");
+        ResourceLocation mudBricksTexture = ResourceLocation.withDefaultNamespace("block/mud_bricks");
+        ResourceLocation grassTopTexture = ResourceLocation.withDefaultNamespace("block/grass_block_top");
+        ResourceLocation grassBlockOverlayTexture = ResourceLocation.withDefaultNamespace("block/grass_block_side_overlay");
+        ResourceLocation podzolTopTexture = ResourceLocation.withDefaultNamespace("block/podzol_top");
+        ResourceLocation podzolBlockOverlayTexture = ResourceLocation.fromNamespaceAndPath("firma_compat","block/podzol_overlay");
+        ResourceLocation clayDirtTexture = ResourceLocation.fromNamespaceAndPath("firma_compat","block/clay_dirt");
+        ResourceLocation kaolinDirtTexture = ResourceLocation.fromNamespaceAndPath("firma_compat","block/kaolin_clay");
+
+        grassBlockWithItem(ModBlocks.CLAY_GRASS_BLOCK.get(), clayDirtTexture, clayDirtTexture, grassTopTexture, grassBlockOverlayTexture);
+        grassBlockWithItem(ModBlocks.CLAY_PODZOL.get(), clayDirtTexture, clayDirtTexture, podzolTopTexture, podzolBlockOverlayTexture);
+        grassBlockWithItem(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get(), kaolinDirtTexture, kaolinDirtTexture, grassTopTexture, grassBlockOverlayTexture);
+        grassBlockWithItem(ModBlocks.KAOLIN_CLAY_PODZOL.get(), kaolinDirtTexture, kaolinDirtTexture, podzolTopTexture, podzolBlockOverlayTexture);
+
+        cubeAllWithItem(ModBlocks.CLAY_DIRT.get(), clayDirtTexture);
+        cubeAllWithItem(ModBlocks.KAOLIN_CLAY_DIRT.get(), kaolinDirtTexture);
+
+        simpleBlockWithItem(ModBlocks.COMPAT_FARMLAND.get(),
+                models().withExistingParent("compat_farmland", mcLoc("template_farmland"))
+                        .texture("top", farmlandTexture)
+                        .texture("dirt", dirtTexture)
+        );
+
+        dryingMudBricksWithItem(ModBlocks.DRYING_MUD_BRICK.get(), mcLoc("block/mud"), mcLoc("block/packed_mud"));
+
+        simpleBlockWithItem(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get(),
+                models().withExistingParent("cassiterite_gravel_deposit", ResourceLocation.fromNamespaceAndPath("tfc","block/ore"))
+                        .texture("all", mcLoc("block/gravel"))
+                        .texture("overlay", ResourceLocation.fromNamespaceAndPath("tfc","block/deposit/cassiterite"))
+        );
+        simpleBlockWithItem(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get(),
+                models().withExistingParent("native_silver_gravel_deposit", ResourceLocation.fromNamespaceAndPath("tfc","block/ore"))
+                        .texture("all", mcLoc("block/gravel"))
+                        .texture("overlay", ResourceLocation.fromNamespaceAndPath("tfc","block/deposit/native_silver"))
+        );
+        simpleBlockWithItem(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get(),
+                models().withExistingParent("native_gold_gravel_deposit", ResourceLocation.fromNamespaceAndPath("tfc","block/ore"))
+                        .texture("all", mcLoc("block/gravel"))
+                        .texture("overlay", ResourceLocation.fromNamespaceAndPath("tfc","block/deposit/native_gold"))
+        );
+        simpleBlockWithItem(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get(),
+                models().withExistingParent("native_copper_gravel_deposit", ResourceLocation.fromNamespaceAndPath("tfc","block/ore"))
+                        .texture("all", mcLoc("block/gravel"))
+                        .texture("overlay", ResourceLocation.fromNamespaceAndPath("tfc","block/deposit/native_copper"))
+        );
+
     }
 
     private void cubeAllWithItem(Block block, ResourceLocation texture) {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
         simpleBlockWithItem(block, models().cubeAll(blockRes.getPath(), texture));
+    }
+
+    private void grassBlockWithItem(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ResourceLocation overlay) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        simpleBlockWithItem(block,
+                models().withExistingParent(blockRes.getPath(), mcLoc("grass_block"))
+                        .texture("bottom", bottom)
+                        .texture("top", top)
+                        .texture("side", side)
+                        .texture("overlay", overlay)
+                        .texture("particle", side)
+        );
+    }
+
+    private void cubeBottomTopWithItem(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        simpleBlockWithItem(block, models().cubeBottomTop(blockRes.getPath(), side, bottom, top));
     }
 
     private void slabWithItem(SlabBlock block, Block full, ResourceLocation texture) {
@@ -147,6 +246,48 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
 
         wallBlock(block, textureAll);
         simpleBlockItem(block, inventory);
+    }
+
+    private void dryingMudBricksWithItem(Block block, ResourceLocation wet, ResourceLocation dry) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile brickWet1Model = models().withExistingParent(blockRes.getPath() + "_wet_1", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/1"))
+                .texture("mud", wet);
+        ModelFile brickDry1Model = models().withExistingParent(blockRes.getPath() +"_dry_1", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/1"))
+                .texture("mud", dry);
+        ModelFile brickWet2Model = models().withExistingParent(blockRes.getPath() +"_wet_2", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/2"))
+                .texture("mud", wet);
+        ModelFile brickDry2Model = models().withExistingParent(blockRes.getPath() +"_dry_2", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/2"))
+                .texture("mud", dry);
+        ModelFile brickWet3Model = models().withExistingParent(blockRes.getPath() +"_wet_3", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/3"))
+                .texture("mud", wet);
+        ModelFile brickDry3Model = models().withExistingParent(blockRes.getPath() +"_dry_3", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/3"))
+                .texture("mud", dry);
+        ModelFile brickWet4Model = models().withExistingParent(blockRes.getPath() +"_wet_4", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/4"))
+                .texture("mud", wet);
+        ModelFile brickDry4Model = models().withExistingParent(blockRes.getPath() +"_dry_4", ResourceLocation.fromNamespaceAndPath("tfc", "block/mud_bricks/4"))
+                .texture("mud", dry);
+
+        getVariantBuilder(block)
+                .partialState().with(DryingBricksBlock.COUNT, 1).with(DryingBricksBlock.DRIED, false)
+                .modelForState().modelFile(brickWet1Model).addModel()
+                .partialState().with(DryingBricksBlock.COUNT, 1).with(DryingBricksBlock.DRIED, true)
+                .modelForState().modelFile(brickDry1Model).addModel()
+
+                .partialState().with(DryingBricksBlock.COUNT, 2).with(DryingBricksBlock.DRIED, false)
+                .modelForState().modelFile(brickWet2Model).addModel()
+                .partialState().with(DryingBricksBlock.COUNT, 2).with(DryingBricksBlock.DRIED, true)
+                .modelForState().modelFile(brickDry2Model).addModel()
+
+                .partialState().with(DryingBricksBlock.COUNT, 3).with(DryingBricksBlock.DRIED, false)
+                .modelForState().modelFile(brickWet3Model).addModel()
+                .partialState().with(DryingBricksBlock.COUNT, 3).with(DryingBricksBlock.DRIED, true)
+                .modelForState().modelFile(brickDry3Model).addModel()
+
+                .partialState().with(DryingBricksBlock.COUNT, 4).with(DryingBricksBlock.DRIED, false)
+                .modelForState().modelFile(brickWet4Model).addModel()
+                .partialState().with(DryingBricksBlock.COUNT, 4).with(DryingBricksBlock.DRIED, true)
+                .modelForState().modelFile(brickDry4Model).addModel();
     }
 
     private void aqueductWithItem(Block block, ResourceLocation texture) {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/wall_inventory",
   "textures": {
-    "wall": "minecraft:block/netherrack"
+    "wall": "firma_compat:block/netherrack_cobble"
   }
 }

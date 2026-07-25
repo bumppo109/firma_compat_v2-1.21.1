@@ -9,8 +9,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
-import java.util.Map;
-
 public interface ModCastingRecipe extends ModRecipes {
     default void castingRecipes()
     {
@@ -29,14 +27,14 @@ public interface ModCastingRecipe extends ModRecipes {
 
         add("poor_netherite_ingot", new CastingRecipe(
                 Ingredient.of(TFCItems.MOLDS.get(Metal.ItemType.INGOT)),
-                SizedFluidIngredient.of(fluidOf(CompatMetal.POOR_NETHERITE), 100),
-                ItemStackProvider.of(CompatMetal.POOR_NETHERITE.getMetalMaterial().ingot().get()),
+                SizedFluidIngredient.of(fluidOf(CompatMetal.SCRAP_NETHERITE), 100),
+                ItemStackProvider.of(CompatMetal.SCRAP_NETHERITE.getMetalMaterial().ingot().get()),
                 0.1f
         ));
         add("poor_netherite_fire_ingot", new CastingRecipe(
                 Ingredient.of(TFCItems.FIRE_INGOT_MOLD),
-                SizedFluidIngredient.of(fluidOf(CompatMetal.POOR_NETHERITE), 100),
-                ItemStackProvider.of(CompatMetal.POOR_NETHERITE.getMetalMaterial().ingot().get()),
+                SizedFluidIngredient.of(fluidOf(CompatMetal.SCRAP_NETHERITE), 100),
+                ItemStackProvider.of(CompatMetal.SCRAP_NETHERITE.getMetalMaterial().ingot().get()),
                 0.01f
         ));
     }

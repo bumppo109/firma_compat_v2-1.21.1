@@ -6,7 +6,6 @@ import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.google.common.collect.ImmutableMap;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -159,7 +158,7 @@ public interface ModAccessors
         {
             default -> 100;
             case DOUBLE_INGOT, SHEET, SWORD_BLADE, UNFINISHED_BOOTS -> 200;
-            case DOUBLE_SHEET, UNFINISHED_HELMET, UNFINISHED_CHESTPLATE, UNFINISHED_GREAVES -> 400;
+            case DOUBLE_SHEET, UNFINISHED_HELMET, UNFINISHED_CHESTPLATE, UNFINISHED_LEGGINGS -> 400;
         };
     }
 

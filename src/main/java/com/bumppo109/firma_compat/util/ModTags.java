@@ -96,4 +96,8 @@ public class ModTags {
         public static final TagKey<EntityType<?>> CAN_SURVIVE_SALT_WATER = createTag("can_survive_salt_water");
 
     }
+
+    private static TagKey<Item> commonTag(String name) {
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", name));
+    }
 }

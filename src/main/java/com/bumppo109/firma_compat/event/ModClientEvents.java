@@ -172,6 +172,13 @@ public class ModClientEvents {
                         }),
                 event
         );
+
+        modifyBlockEntityType(TFCBlockEntities.FARMLAND.get(), Stream.of(ModBlocks.COMPAT_FARMLAND.get()), event);
+        modifyBlockEntityType(TFCBlockEntities.TICK_COUNTER.get(), Stream.of(ModBlocks.DRYING_MUD_BRICK.get()), event);
+
+        modifyBlockEntityType(TFCBlockEntities.CHEST.get(), Stream.of(ModBlocks.COMPAT_CHEST.get()), event);
+        modifyBlockEntityType(TFCBlockEntities.TRAPPED_CHEST.get(), Stream.of(ModBlocks.COMPAT_TRAPPED_CHEST.get()), event);
+
     }
 
     private static void modifyWood(BlockEntityType<?> type, CompatWood.BlockType blockType, BlockEntityTypeAddBlocksEvent event)

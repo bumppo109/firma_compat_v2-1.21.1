@@ -2,6 +2,7 @@ package com.bumppo109.firma_compat.datagen.recipe;
 
 import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.util.ModTags;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
@@ -9,6 +10,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.AndIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidContentIngredient;
@@ -29,15 +31,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import static net.dries007.tfc.util.DataGenerationHelpers.Builder;
 
-public interface ModCraftingRecipes extends ModRecipes
-{
+public interface ModCraftingRecipes extends ModRecipes {
 
     default void craftingRecipes() {
         //Food
@@ -169,6 +173,11 @@ public interface ModCraftingRecipes extends ModRecipes
                     .input('A', blocks.get(CompatWood.BlockType.AXLE))
                     .pattern("LPL", "PAP", "LPL")
                     .shaped(blocks.get(CompatWood.BlockType.WATER_WHEEL));
+            recipe()
+                    .input('L', lumber)
+                    .input('S', Objects.requireNonNull(material.strippedLog()))
+                    .pattern("SLS", "L L", "SLS")
+                    .shaped(blocks.get(CompatWood.BlockType.CRATE));
 
             //Replace Vanilla
             recipe().to2x2(lumber, Objects.requireNonNull(material.planks()), 1);
@@ -464,7 +473,17 @@ public interface ModCraftingRecipes extends ModRecipes
                 .pattern(" L ", "LXL", " A ")
                 .shaped(Items.OXIDIZED_COPPER_BULB);
 
+        recipe()
+                .input('S', ingredientOf(CompatMetal.NETHERITE, CompatMetal.ItemType.SHEET))
+                .input('W', ItemTags.PLANKS)
+                .input('H', TFCTags.Items.TOOLS_HAMMER)
+                .pattern(" SH", "SWS", " S ")
+                .damageInputs()
+                .source(0, 2)
+                .shaped(Blocks.NETHERITE_BLOCK, 8);
+
         for (CompatMetal metal : CompatMetal.values()) {
+            if (metal.isDummy()) continue;
             CompatMetalMaterial material = metal.getMetalMaterial();
 
             if (material != null) {
@@ -492,6 +511,87 @@ public interface ModCraftingRecipes extends ModRecipes
                 }
             }
         }
+
+    //Earthen
+        recipe()
+                .input('S', Blocks.SAND)
+                .input('P', TFCTags.Items.GLASS_POTASH)
+                .input('L', TFCItems.POWDERS.get(Powder.LIME).get())
+                .pattern("PL ", "S  ")
+                .shaped(TFCItems.SILICA_GLASS_BATCH, 4);
+        recipe()
+                .input('S', Blocks.SAND)
+                .input('C', Items.CHARCOAL)
+                .input('P', TFCTags.Items.GLASS_POTASH)
+                .input('L', TFCItems.POWDERS.get(Powder.LIME).get())
+                .pattern("PL ", "SC ")
+                .shaped(TFCItems.OLIVINE_GLASS_BATCH, 4);
+        recipe()
+                .input('S', Blocks.RED_SAND)
+                .input('P', TFCTags.Items.GLASS_POTASH)
+                .input('L', TFCItems.POWDERS.get(Powder.LIME).get())
+                .pattern("PL ", "S  ")
+                .shaped(TFCItems.HEMATITIC_GLASS_BATCH, 4);
+        recipe()
+                .input('S', Blocks.RED_SAND)
+                .input('C', Items.CHARCOAL)
+                .input('P', TFCTags.Items.GLASS_POTASH)
+                .input('L', TFCItems.POWDERS.get(Powder.LIME).get())
+                .pattern("PL ", "SC ")
+                .shaped(TFCItems.VOLCANIC_GLASS_BATCH, 4);
+
+        recipe()
+                .input('L', Blocks.MUD)
+                .input('X', TFCItems.STRAW)
+                .pattern("LX ")
+                .shaped(ModBlocks.DRYING_MUD_BRICK, 4);
+        recipe()
+                .input('L', ModItems.MUD_BRICK)
+                .pattern("LL ", "LL ")
+                .shaped(Items.MUD_BRICKS);
+        recipe()
+                .input('L', Items.MUD)
+                .pattern("LL ", "LL ")
+                .shaped(Items.PACKED_MUD);
+
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.SANDSTONE, Items.SMOOTH_SANDSTONE);
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.SMOOTH_SANDSTONE, Items.CUT_SANDSTONE);
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.CUT_SANDSTONE, Items.CHISELED_SANDSTONE);
+
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.RED_SANDSTONE, Items.SMOOTH_RED_SANDSTONE);
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.SMOOTH_RED_SANDSTONE, Items.CUT_RED_SANDSTONE);
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.CUT_RED_SANDSTONE, Items.CHISELED_RED_SANDSTONE);
+
+        recipe()
+                .input('A', Blocks.SANDSTONE)
+                .pattern("A  ", "AA ", "AAA")
+                .shaped(Items.SANDSTONE_STAIRS, 4);
+        recipe()
+                .input('A', Blocks.SANDSTONE)
+                .pattern("AAA")
+                .shaped(Items.SANDSTONE_SLAB, 6);
+        recipe()
+                .input('A', Blocks.RED_SANDSTONE)
+                .pattern("A  ", "AA ", "AAA")
+                .shaped(Items.RED_SANDSTONE_STAIRS, 4);
+        recipe()
+                .input('A', Blocks.RED_SANDSTONE)
+                .pattern("AAA")
+                .shaped(Items.RED_SANDSTONE_SLAB, 6);
+
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.QUARTZ, ModItems.QUARTZ_BRICK);
+        recipe()
+                .input('L', Items.QUARTZ)
+                .input('X', TFCItems.MORTAR)
+                .pattern("LXL", "XLX", "LXL")
+                .shaped(Items.QUARTZ_BLOCK);
+        recipe()
+                .input('L', ModItems.QUARTZ_BRICK)
+                .input('X', TFCItems.MORTAR)
+                .pattern("LXL", "XLX", "LXL")
+                .shaped(Items.QUARTZ_BRICKS);
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.QUARTZ_BLOCK, Items.SMOOTH_QUARTZ);
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.SMOOTH_QUARTZ, Items.CHISELED_QUARTZ_BLOCK);
 
     //Devices
         recipe()
@@ -601,7 +701,13 @@ public interface ModCraftingRecipes extends ModRecipes
 
     private <T> TagKey<T> woodLogsTagOf(ResourceKey<Registry<T>> registry, CompatWood wood)
     {
-        return TagKey.create(registry, ResourceLocation.withDefaultNamespace(wood.getSerializedName() + "_logs"));
+        String suffix = switch (wood) {
+            case WARPED, CRIMSON -> "_stems";
+            case BAMBOO -> "_blocks";
+            default -> "_logs";
+        };
+
+        return TagKey.create(registry, ResourceLocation.withDefaultNamespace(wood.getSerializedName() + suffix));
     }
 
     private void makeTool(Item toolHead, Item tool) {
@@ -735,25 +841,6 @@ public interface ModCraftingRecipes extends ModRecipes
     private Ingredient notRotten(Ingredient food)
     {
         return AndIngredient.of(food, NotRottenIngredient.INSTANCE);
-    }
-
-    //Add copper crafting recipes
-    public record WeatheringCopperSet(
-            Block regular,
-            Block exposed,
-            Block weathered,
-            Block oxidized
-    ) {
-        // Optional helper: get variant by index (0=regular, 1=exposed, ...)
-        public Block get(int stage) {
-            return switch (stage) {
-                case 0 -> regular;
-                case 1 -> exposed;
-                case 2 -> weathered;
-                case 3 -> oxidized;
-                default -> regular;
-            };
-        }
     }
 }
 

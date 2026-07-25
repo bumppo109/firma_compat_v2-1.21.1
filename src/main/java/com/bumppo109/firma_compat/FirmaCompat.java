@@ -65,6 +65,7 @@ public class FirmaCompat {
 
     public static boolean isWoodGoodLoaded = false;
     public static boolean isStoneZoneLoaded = false;
+    public static boolean isGemsRealmLoaded = false;
 
     public FirmaCompat(IEventBus modEventBus, ModContainer modContainer) {
         this.modIntegration();
@@ -83,7 +84,7 @@ public class FirmaCompat {
 
         modEventBus.addListener(this::commonSetup);
 
-        if(isWoodGoodLoaded || isStoneZoneLoaded){
+        if(isWoodGoodLoaded || isStoneZoneLoaded || isGemsRealmLoaded){
             EveryCompatHandler.registerModules();
         }
 
@@ -94,7 +95,7 @@ public class FirmaCompat {
         FirmaCompatConfig.register(modContainer);
 
         if (FMLEnvironment.dist.isClient()) {
-            RegHelper.registerDynamicResourceProvider(ModClientDynamicResources.INSTANCE);
+            //RegHelper.registerDynamicResourceProvider(ModClientDynamicResources.INSTANCE);
         }
     }
 
@@ -106,6 +107,7 @@ public class FirmaCompat {
         isFirmalifeLoaded = ModList.get().isLoaded("firmalife");
         isRnRLoaded = ModList.get().isLoaded("rnr");
 
+        isGemsRealmLoaded = ModList.get().isLoaded("gemsrealm");
         isStoneZoneLoaded = ModList.get().isLoaded("stonezone");
         isWoodGoodLoaded = ModList.get().isLoaded("everycomp");
     }

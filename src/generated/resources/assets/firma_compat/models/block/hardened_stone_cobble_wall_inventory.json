@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/wall_inventory",
   "textures": {
-    "wall": "minecraft:block/stone"
+    "wall": "firma_compat:block/stone_cobble"
   }
 }

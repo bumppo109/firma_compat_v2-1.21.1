@@ -44,6 +44,23 @@ public enum CompatMetalMaterial {
             null,
              null
 
+    ),
+    IRON(
+            ModItems.POOR_NETHERITE_INGOT,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+
     );
 
     private final Supplier<Item> ingot;

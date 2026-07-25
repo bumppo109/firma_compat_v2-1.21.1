@@ -13,6 +13,7 @@ import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -30,23 +31,32 @@ public interface ModChiselRecipes extends ModRecipes
             }
 
             CompatRockSet rawSet = material.raw();
+            CompatRockSet smoothSet = material.smooth();
             CompatRockSet polishedSet = material.polished();
             CompatRockSet chiseledSet = material.chiseled();
             CompatRockSet brickSet = material.brick();
             CompatRockSet chiseledBrickSet = material.chiseledBrick();
 
-            if (rawSet != null) {
+            if (smoothSet != null) {
+                chiselSmooth(List.of(rawSet.base()), smoothSet.base());
+
                 if (polishedSet != null) {
-                    chiselSmooth(List.of(rawSet.base()), polishedSet.base());
+                    chiselSmooth(List.of(smoothSet.base()), polishedSet.base());
 
                     if (chiseledSet != null) {
                         chiselSmooth(List.of(polishedSet.base()), chiseledSet.base());
                     }
-                } else {
-                    if (chiseledSet != null) {
-                        chiselSmooth(List.of(rawSet.base()), chiseledSet.base());
-                    }
+                } else if (chiseledSet != null) {
+                    chiselSmooth(List.of(smoothSet.base()), chiseledSet.base());
                 }
+            } else if (polishedSet != null) {
+                chiselSmooth(List.of(rawSet.base()), polishedSet.base());
+
+                if (chiseledSet != null) {
+                    chiselSmooth(List.of(polishedSet.base()), chiseledSet.base());
+                }
+            } else if (chiseledSet != null) {
+                chiselSmooth(List.of(rawSet.base()), chiseledSet.base());
             }
 
             if (brickSet != null && chiseledBrickSet != null) {
@@ -64,9 +74,9 @@ public interface ModChiselRecipes extends ModRecipes
         }
 
         ModBlocks.ROCK_DECORATIONS.forEach((rock, decoMap) -> {
-            Supplier<Block> base = rock.rockMaterial().raw().base();
-
             decoMap.forEach((blockType, modDecorationBlockHolder) -> {
+                Supplier<Block> base = ModBlocks.ROCK_BLOCKS.get(rock).get(blockType);
+
                 chiselSlab(List.of(base), decoMap.get(blockType).slab());
                 chiselStair(List.of(base), decoMap.get(blockType).stair());
             });
@@ -81,6 +91,47 @@ public interface ModChiselRecipes extends ModRecipes
             chiselStair(List.of(rockMap.get(Rock.BlockType.MOSSY_COBBLE)), decorationMap.get(Rock.BlockType.MOSSY_COBBLE).stair());
             chiselSlab(List.of(rockMap.get(Rock.BlockType.MOSSY_COBBLE)), decorationMap.get(Rock.BlockType.MOSSY_COBBLE).slab());
         }
+
+    //Sandstone
+        chiselSmooth(List.of(() -> Blocks.SANDSTONE), () -> Blocks.SMOOTH_SANDSTONE);
+        chiselSmooth(List.of(() -> Blocks.SMOOTH_SANDSTONE), () -> Blocks.CUT_SANDSTONE);
+        chiselSmooth(List.of(() -> Blocks.CUT_SANDSTONE), () -> Blocks.CHISELED_SANDSTONE);
+        chiselSlab(List.of(() -> Blocks.SANDSTONE), () -> Blocks.SANDSTONE_SLAB);
+        chiselStair(List.of(() -> Blocks.SANDSTONE), () -> Blocks.SANDSTONE_STAIRS);
+        chiselSlab(List.of(() -> Blocks.SMOOTH_SANDSTONE), () -> Blocks.SMOOTH_SANDSTONE_SLAB);
+        chiselStair(List.of(() -> Blocks.SMOOTH_SANDSTONE), () -> Blocks.SMOOTH_SANDSTONE_STAIRS);
+        chiselSlab(List.of(() -> Blocks.CUT_SANDSTONE), () -> Blocks.CUT_SANDSTONE_SLAB);
+
+        chiselSmooth(List.of(() -> Blocks.RED_SANDSTONE), () -> Blocks.SMOOTH_RED_SANDSTONE);
+        chiselSmooth(List.of(() -> Blocks.SMOOTH_RED_SANDSTONE), () -> Blocks.CUT_RED_SANDSTONE);
+        chiselSmooth(List.of(() -> Blocks.CUT_RED_SANDSTONE), () -> Blocks.CHISELED_RED_SANDSTONE);
+        chiselSlab(List.of(() -> Blocks.RED_SANDSTONE), () -> Blocks.RED_SANDSTONE_SLAB);
+        chiselStair(List.of(() -> Blocks.RED_SANDSTONE), () -> Blocks.RED_SANDSTONE_STAIRS);
+        chiselSlab(List.of(() -> Blocks.SMOOTH_RED_SANDSTONE), () -> Blocks.SMOOTH_RED_SANDSTONE_SLAB);
+        chiselStair(List.of(() -> Blocks.SMOOTH_RED_SANDSTONE), () -> Blocks.SMOOTH_RED_SANDSTONE_STAIRS);
+        chiselSlab(List.of(() -> Blocks.CUT_RED_SANDSTONE), () -> Blocks.CUT_RED_SANDSTONE_SLAB);
+
+    //Misc
+        chiselStair(List.of(() -> Blocks.RED_NETHER_BRICKS), () -> Blocks.RED_NETHER_BRICK_SLAB);
+        chiselSlab(List.of(() -> Blocks.RED_NETHER_BRICKS), () -> Blocks.RED_NETHER_BRICK_STAIRS);
+        chiselSlab(List.of(() -> Blocks.BRICKS), () -> Blocks.BRICK_SLAB);
+        chiselStair(List.of(() -> Blocks.BRICKS), () -> Blocks.BRICK_STAIRS);
+        chiselSlab(List.of(() -> Blocks.PURPUR_BLOCK), () -> Blocks.PURPUR_SLAB);
+        chiselStair(List.of(() -> Blocks.PURPUR_BLOCK), () -> Blocks.PURPUR_STAIRS);
+        chiselSlab(List.of(() -> Blocks.MUD_BRICKS), () -> Blocks.MUD_BRICK_SLAB);
+        chiselStair(List.of(() -> Blocks.MUD_BRICKS), () -> Blocks.MUD_BRICK_STAIRS);
+
+        chiselSlab(List.of(() -> Blocks.PRISMARINE), () -> Blocks.PRISMARINE_SLAB);
+        chiselStair(List.of(() -> Blocks.PRISMARINE), () -> Blocks.PRISMARINE_STAIRS);
+        chiselSlab(List.of(() -> Blocks.PRISMARINE_BRICKS), () -> Blocks.PRISMARINE_BRICK_SLAB);
+        chiselStair(List.of(() -> Blocks.PRISMARINE_BRICKS), () -> Blocks.PRISMARINE_BRICK_STAIRS);
+        chiselSlab(List.of(() -> Blocks.DARK_PRISMARINE), () -> Blocks.DARK_PRISMARINE_SLAB);
+        chiselStair(List.of(() -> Blocks.DARK_PRISMARINE), () -> Blocks.DARK_PRISMARINE_STAIRS);
+
+        chiselSlab(List.of(() -> Blocks.QUARTZ_BLOCK), () -> Blocks.QUARTZ_SLAB);
+        chiselStair(List.of(() -> Blocks.QUARTZ_BLOCK), () -> Blocks.QUARTZ_STAIRS);
+        chiselSlab(List.of(() -> Blocks.SMOOTH_QUARTZ), () -> Blocks.SMOOTH_QUARTZ_SLAB);
+        chiselStair(List.of(() -> Blocks.SMOOTH_QUARTZ), () -> Blocks.SMOOTH_QUARTZ_STAIRS);
     }
 
     private void chiselSmooth(List<? extends Supplier<? extends Block>> input, Supplier<? extends Block> output)

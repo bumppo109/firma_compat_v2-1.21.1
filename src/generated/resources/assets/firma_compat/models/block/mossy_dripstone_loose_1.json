@@ -1,6 +1,6 @@
 {
   "parent": "tfc:block/rock/loose_sedimentary_1",
   "textures": {
-    "texture": "minecraft:block/dripstone_block"
+    "texture": "firma_compat:block/mossy_dripstone_cobble"
   }
 }

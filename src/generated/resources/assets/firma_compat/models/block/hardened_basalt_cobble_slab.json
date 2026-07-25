@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/slab",
   "textures": {
-    "bottom": "minecraft:block/basalt_side",
-    "side": "minecraft:block/basalt_side",
-    "top": "minecraft:block/basalt_side"
+    "bottom": "firma_compat:block/basalt_cobble",
+    "side": "firma_compat:block/basalt_cobble",
+    "top": "firma_compat:block/basalt_cobble"
   }
 }

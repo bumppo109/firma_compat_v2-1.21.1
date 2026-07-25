@@ -16,6 +16,7 @@ import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.network.IContainerFactory;
 
 public class BuiltinItemModelProvider extends ItemModelProvider {
     public BuiltinItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -44,6 +45,19 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
                     .texture("layer0", ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + rock.getSerializedName() + "_loose"))
                     .texture("layer1", ResourceLocation.fromNamespaceAndPath("tfc", "item/loose_rock/moss"));
         }
+
+        basicItem(ModItems.PRISMARINE_BRICK.get());
+        basicItem(ModItems.QUARTZ_BRICK.get());
+        basicItem(ModItems.MUD_BRICK.get());
+        basicItem(ModBlocks.DRYING_MUD_BRICK.get().asItem());
+
+        ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
+            if (!compatMetal.isDummy()) return;
+            itemTypeItemIdMap.forEach((itemType, itemId) -> {
+                basicItem(itemId.get());
+            });
+        });
+        basicItem(ModItems.POOR_NETHERITE_INGOT.get());
     }
 
     private String itemPathName(Item item) {

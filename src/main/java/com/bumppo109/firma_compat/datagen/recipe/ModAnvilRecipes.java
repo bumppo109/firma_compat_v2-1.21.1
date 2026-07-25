@@ -47,6 +47,7 @@ public interface ModAnvilRecipes extends ModRecipes
         final ForgeRule[] shieldRule = {BEND_THIRD_LAST, BEND_SECOND_LAST, UPSET_LAST};
 
         for (CompatMetal metal : CompatMetal.values()) {
+            if (metal.isDummy()) continue;
             CompatMetalMaterial material = metal.getMetalMaterial();
 
             if (material != null) {
@@ -74,14 +75,13 @@ public interface ModAnvilRecipes extends ModRecipes
 
                             case UNFINISHED_HELMET -> anvil(metal, CompatMetal.ItemType.DOUBLE_SHEET, CompatMetal.ItemType.UNFINISHED_HELMET, true, unfinishedHelmetRule);
                             case UNFINISHED_CHESTPLATE -> anvil(metal, CompatMetal.ItemType.DOUBLE_SHEET, CompatMetal.ItemType.UNFINISHED_CHESTPLATE, true, unfinishedChestplateRule);
-                            case UNFINISHED_GREAVES -> anvil(metal, CompatMetal.ItemType.DOUBLE_SHEET, CompatMetal.ItemType.UNFINISHED_GREAVES, true, unfinishedGreavesRule);
+                            case UNFINISHED_LEGGINGS -> anvil(metal, CompatMetal.ItemType.DOUBLE_SHEET, CompatMetal.ItemType.UNFINISHED_LEGGINGS, true, unfinishedGreavesRule);
                             case UNFINISHED_BOOTS -> anvil(metal, CompatMetal.ItemType.SHEET, CompatMetal.ItemType.UNFINISHED_BOOTS, true, unfinishedBootsRule);
                         }
                     }
                 }
             }
         }
-        anvil(Metal.COPPER, Metal.ItemType.SHEET, Items.COPPER_TRAPDOOR, 1, false, DRAW_THIRD_LAST, DRAW_SECOND_LAST, BEND_LAST);
         anvil(TFCItems.METAL_ITEMS.get(Metal.CAST_IRON).get(Metal.ItemType.INGOT).get(), Items.CHAIN, 16, 2, DRAW_NOT_LAST, HIT_ANY);
 
         anvil(Metal.CAST_IRON, Metal.ItemType.INGOT, ModItems.UNFINISHED_LANTERN.get(), 1, DRAW_THIRD_LAST, BEND_SECOND_LAST, BEND_LAST);

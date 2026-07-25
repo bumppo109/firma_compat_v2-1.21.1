@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/wall_inventory",
   "textures": {
-    "wall": "minecraft:block/dripstone_block"
+    "wall": "firma_compat:block/dripstone_cobble"
   }
 }

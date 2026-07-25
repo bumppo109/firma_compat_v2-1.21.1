@@ -491,7 +491,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 if(TWIG.blocks.get(wood) != null){
                     String twigPath = Utils.getID(TWIG.blocks.get(wood)).getPath();
 
-                    String twigPatchFeature = "twig.json/" + twigPath + "_patch";
+                    String twigPatchFeature = "twig/" + twigPath + "_patch";
                     String featurePath = FirmaCompat.MODID + ":" + twigPatchFeature;
                     valuesArray.add(featurePath);
                 }
@@ -2055,7 +2055,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
 
         // Reference to the configured patch feature
         ResourceLocation patchFeature = ResourceLocation.fromNamespaceAndPath(
-                twigNamespace, "twig.json/" + twigPath + "_patch"
+                twigNamespace, "twig/" + twigPath + "_patch"
         );
 
         JsonObject json = new JsonObject();
@@ -2126,9 +2126,9 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
 
         json.add("placement", placement);
 
-        // Path: placed_features/twig.json/acacia_patch.json
+        // Path: placed_features/twig/acacia_patch.json
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(twigNamespace,
-                "worldgen/placed_feature/twig.json/" + twigPath + "_patch.json");
+                "worldgen/placed_feature/twig/" + twigPath + "_patch.json");
 
         sink.addJson(id, json, ResType.GENERIC);
     }
@@ -2151,14 +2151,14 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
         config.addProperty("tries", tries);
         config.addProperty("xz_spread", xzSpread);
         config.addProperty("y_spread", ySpread);
-        config.addProperty("feature", twigNamespace + ":twig.json/" + twigPath);
+        config.addProperty("feature", twigNamespace + ":twig/" + twigPath);
 
         recipe.add("config", config);
 
         // Typical path: placed_features/twig_patch/acacia.json or similar
         //String patchPath = "placed_features/twig_patch/" + wood.getTypeName();
         ResourceLocation patchId = ResourceLocation.fromNamespaceAndPath(
-                twigNamespace, "twig.json/" + twigPath + "_patch"
+                twigNamespace, "twig/" + twigPath + "_patch"
         );
 
         sink.addJson(patchId, recipe, ResType.CONFIGURED_FEATURES);
@@ -2174,7 +2174,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
         // The actual block to place
 
         JsonObject json = new JsonObject();
-        json.addProperty("feature",twigNamespace + ":twig.json/" + twigPath);
+        json.addProperty("feature",twigNamespace + ":twig/" + twigPath);
 
         JsonArray placement = new JsonArray();
 
@@ -2208,10 +2208,10 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
 
         json.add("placement", placement);
 
-        // Path: configured_features/twig.json/acacia.json
-        //String path = "configured_features/twig.json/" + wood.getTypeName();
+        // Path: configured_features/twig/acacia.json
+        //String path = "configured_features/twig/" + wood.getTypeName();
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(twigNamespace,
-                "worldgen/placed_feature/twig.json/" + twigPath + ".json");
+                "worldgen/placed_feature/twig/" + twigPath + ".json");
 
         sink.addJson(id, json, ResType.GENERIC);
     }
@@ -2219,7 +2219,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
     //Configured Feature - single
     public void generateTwigConfiguredFeature(
             ResourceSink sink,
-            WoodType wood          // e.g. "twig.json/acacia" or just "acacia_twig"
+            WoodType wood          // e.g. "twig/acacia" or just "acacia_twig"
     ) {
         String twigNamespace = Utils.getID(TWIG.blocks.get(wood)).getNamespace();
         String twigPath = Utils.getID(TWIG.blocks.get(wood)).getPath();
@@ -2245,7 +2245,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
         recipe.add("config", config);
 
         ResourceLocation featureId = ResourceLocation.fromNamespaceAndPath(
-                twigNamespace, "twig.json/" + twigPath
+                twigNamespace, "twig/" + twigPath
         );
 
         sink.addJson(featureId, recipe, ResType.CONFIGURED_FEATURES);

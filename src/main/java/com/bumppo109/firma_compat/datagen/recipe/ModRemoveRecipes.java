@@ -59,14 +59,20 @@ public interface ModRemoveRecipes extends ModRecipes
                 "copper_ingot",
                 "copper_ingot_from_waxed_copper_block",
                 "lapis_block",
+                "lapis_lazuli",
                 "diamond_block",
                 "netherite_block",
                 "netherite_ingot_from_netherite_block",
                 "diamond",
+                "quartz_bricks_from_quartz_block_stonecutting",
                 "quartz_pillar",
                 "quartz_bricks",
+                "quartz_block",
+                "chiseled_quartz_block",
                 "nether_bricks",
+                "chiseled_nether_bricks",
                 "red_nether_bricks",
+                "purpur_pillar",
                 "stone_bricks",
                 "cobblestone",
                 "smooth_stone",
@@ -186,6 +192,11 @@ public interface ModRemoveRecipes extends ModRecipes
                 "cyan_dye_from_pitcher_plant",
 
                 "bamboo_mosaic",
+                "bamboo_door",
+                "bamboo_trapdoor",
+                "bamboo_fence_gate",
+                "bamboo_fence",
+                "bamboo_pressure_plate",
 
                 "acacia_planks",
                 "acacia_door",
@@ -284,7 +295,11 @@ public interface ModRemoveRecipes extends ModRecipes
                 "deepslate_tile_wall_from_cobbled_deepslate_stonecutting",
                 "chiseled_deepslate_from_cobbled_deepslate_stonecutting",
                 "end_stone_bricks_from_end_stone_stonecutting",
-                "polished_blackstone_bricks_from_polished_blackstone_stonecutting"
+                "polished_blackstone_bricks_from_polished_blackstone_stonecutting",
+                "sandstone_stairs",
+                "sandstone_slab",
+                "red_sandstone_stairs",
+                "red_sandstone_slab"
         );
 
         //Remove crafted Dye
@@ -373,7 +388,6 @@ public interface ModRemoveRecipes extends ModRecipes
             removeTFC("chisel/rock/mossy_cobble/" + rock.getSerializedName() + "_slab");
             removeTFC("chisel/rock/mossy_cobble/" + rock.getSerializedName() + "_stairs");
         }
-
         for(Wood wood : Wood.values()) {
             removeTFC("crafting/wood/workbench/" + wood.getSerializedName());
             removeTFC("crafting/wood/lectern/" + wood.getSerializedName());
@@ -383,6 +397,7 @@ public interface ModRemoveRecipes extends ModRecipes
             removeTFC("crafting/wood/workbench/" + wood.getSerializedName());
             removeTFC("crafting/wood/chest_minecart/" + wood.getSerializedName());
         }
+        removeTFC("crafting/metal/block/gold");
     }
 }
 

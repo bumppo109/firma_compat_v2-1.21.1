@@ -22,7 +22,7 @@ public class BuiltinFluidHeat extends DataManagerProvider<FluidHeat> implements 
     protected void addData(HolderLookup.Provider provider)
     {
         add(CompatMetal.NETHERITE, 0.35f, 1485);
-        add(CompatMetal.POOR_NETHERITE, 0.35f, 1450);
+        add(CompatMetal.SCRAP_NETHERITE, 0.35f, 1450);
     }
 
     private void add(CompatMetal metal, float baseHeatCapacity, float meltTemperature)

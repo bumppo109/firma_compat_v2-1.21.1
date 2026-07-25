@@ -114,7 +114,7 @@ public class ModBlocks {
             Helpers.mapOf(CompatRock.BlockType.class, CompatRock.BlockType::hasVariants, (type) ->
                     registerDecorations(createRockDecorationName(rock, type), () -> type.createSlab(rock), () -> type.createStairs(rock), () -> type.createWall(rock), rock.createItemProperties())));
 
-
+    //TODO - creation event, assets
     public static final Map<CompatRock, Id<Block>> ROCK_ANVILS = Helpers.mapOf(CompatRock.class, CompatRock::canMakeAnvil, (rock) ->
             register(rock.name() + "_anvil", () -> new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 10.0F).requiresCorrectToolForDrops().cloneItem((ItemLike)rock.base()).blockEntity(TFCBlockEntities.ANVIL)), (Function)((b) -> new BlockItem((Block) b, rock.createItemProperties()))));
 
@@ -158,6 +158,7 @@ public class ModBlocks {
 
 //Metal
 
+    //TODO - lang
     public static final Map<CompatMetal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOf(CompatMetal.class, metal ->
             registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(ModFluids.METALS.get(metal).source().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
     );

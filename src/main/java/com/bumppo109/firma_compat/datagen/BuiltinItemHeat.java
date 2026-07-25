@@ -14,7 +14,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.FluidHeat;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -22,8 +21,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.WeatheringCopper;
-import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -66,6 +63,8 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         add("gold_nugget", Ingredient.of(Items.GOLD_NUGGET), Metal.GOLD, 10);
 
         ModItems.METAL_ITEMS.forEach((metal, items) -> {
+            if (metal.isDummy()) return;
+
             add(metal, CompatMetal.ItemType.DOUBLE_INGOT);
             add(metal, CompatMetal.ItemType.SHEET);
             add(metal, CompatMetal.ItemType.DOUBLE_SHEET);
@@ -77,6 +76,7 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
                         .map(items::get)
                         .filter(Objects::nonNull)
                         .toArray(ItemLike[]::new);
+
                 if (parts.length > 0) {
                     add(metal, "parts_" + amount, Ingredient.of(parts), amount);
                 }
@@ -96,7 +96,7 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
             }
         }
 
-        addAndMelt(Items.NETHERITE_SCRAP, CompatMetal.POOR_NETHERITE, 25);
+        addAndMelt(Items.NETHERITE_SCRAP, CompatMetal.SCRAP_NETHERITE, 25);
     }
 
     private void addIfPresent(Supplier<Item> supplier, CompatMetal metal, int units) {

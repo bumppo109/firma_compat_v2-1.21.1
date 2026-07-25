@@ -1,10 +1,13 @@
 package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
+import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.util.ModTags;
 import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -37,8 +40,21 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.bumppo109.firma_compat.util.ModTags.Items.*;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_BLUE_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_BROWN_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_CYAN_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_GREEN_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_LIGHT_BLUE_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_LIME_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_MAGENTA_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_ORANGE_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_PINK_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_RED_DYE;
+import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_YELLOW_DYE;
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 import static net.dries007.tfc.common.TFCTags.Blocks.CAN_LANDSLIDE;
+import static net.dries007.tfc.common.TFCTags.Items.*;
 import static net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE;
 
 public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
@@ -57,6 +73,50 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+    //Util
+        tag(PREVENT_INTERACTION)
+                .add(Items.WHEAT_SEEDS)
+                .add(Items.CARROT)
+                .add(Items.POTATO)
+                .add(Items.BEETROOT)
+                .add(Items.SUGAR_CANE);
+
+    //Wood
+        tag(Tags.Items.CHESTS_WOODEN)
+                .add(ModBlocks.COMPAT_CHEST.get().asItem())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem());
+
+        tag(MINECARTS)
+                .add(ModItems.COMPAT_CHEST_MINECART);
+
+        tag(CARRIED_BY_HORSE)
+                .add(ModBlocks.COMPAT_CHEST.get().asItem())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem());
+
+        tag(TANNIN_LOGS)
+                .add(Blocks.BIRCH_LOG.asItem())
+                .add(Blocks.BIRCH_WOOD.asItem())
+                .add(Blocks.OAK_LOG.asItem())
+                .add(Blocks.OAK_WOOD.asItem())
+                .add(Blocks.DARK_OAK_LOG.asItem())
+                .add(Blocks.DARK_OAK_WOOD.asItem())
+        ;
+
+        addAllCompatWoods(CompatWood.BlockType.TOOL_RACK, TFCTags.Items.TOOL_RACKS);
+        addAllCompatWoods(CompatWood.BlockType.TWIG, TFCTags.Items.TWIGS);
+        addAllCompatWoods(CompatWood.BlockType.LOOM, TFCTags.Items.LOOMS);
+        addAllCompatWoods(CompatWood.BlockType.SLUICE, TFCTags.Items.SLUICES);
+        addAllCompatWoods(CompatWood.BlockType.BARREL, TFCTags.Items.BARRELS);
+        addAllCompatWoods(CompatWood.BlockType.SCRIBING_TABLE, TFCTags.Items.SCRIBING_TABLES);
+        addAllCompatWoods(CompatWood.BlockType.SEWING_TABLE, TFCTags.Items.SEWING_TABLES);
+        addAllCompatWoods(CompatWood.BlockType.AXLE, TFCTags.Items.AXLES);
+        addAllCompatWoods(CompatWood.BlockType.GEAR_BOX, TFCTags.Items.GEAR_BOXES);
+        addAllCompatWoods(CompatWood.BlockType.CLUTCH, TFCTags.Items.CLUTCHES);
+        addAllCompatWoods(CompatWood.BlockType.WATER_WHEEL, TFCTags.Items.WATER_WHEELS);
+        addAllCompatWoods(CompatWood.BlockType.LOG_FENCE, Tags.Items.FENCES_WOODEN);
+        ModItems.SUPPORTS.forEach((compatWood, itemId) -> tag(TFCTags.Items.SUPPORT_BEAMS).add(itemId.get()));
+        ModItems.LUMBER.forEach((compatWood, itemId) -> tag(TFCTags.Items.LUMBER).add(itemId.get()));
+
 
         for (CompatRock rock : CompatRock.VALUES) {
             for (CompatRock.BlockType blockType : CompatRock.BlockType.VALUES) {
@@ -75,7 +135,104 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
                 }
             }
         }
+
+    //Metal
+        for (CompatMetal metal : CompatMetal.values()) {
+            if (metal.isDummy()) continue;
+            metalTag(metal, CompatMetal.ItemType.DOUBLE_INGOT, TFCTags.Items.DOUBLE_INGOTS);
+            metalTag(metal, CompatMetal.ItemType.SHEET, TFCTags.Items.DOUBLE_INGOTS);
+            metalTag(metal, CompatMetal.ItemType.DOUBLE_SHEET, TFCTags.Items.DOUBLE_INGOTS);
+            metalTag(metal, CompatMetal.ItemType.ROD, Tags.Items.RODS);
+        }
+
+    //Earthen
+        tag(ORE_DEPOSITS)
+                .add(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get().asItem())
+                .add(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get().asItem())
+                .add(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get().asItem())
+                .add(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get().asItem())
+        ;
+
+    //Dye
+        tag(MAKES_WHITE_DYE)
+                .add(Items.LILY_OF_THE_VALLEY)
+                .add(Items.WHITE_TULIP)
+                .add(Items.BONE_MEAL);
+
+        tag(MAKES_BLACK_DYE)
+                .add(Items.WITHER_ROSE);
+
+        tag(MAKES_BROWN_DYE)
+                .add(Items.COCOA_BEANS);
+
+        tag(MAKES_RED_DYE)
+                .add(Items.ROSE_BUSH)
+                .add(Items.BEETROOT)
+                .add(Items.RED_TULIP)
+                .add(Items.POPPY);
+
+        tag(MAKES_ORANGE_DYE)
+                .add(Items.TORCHFLOWER)
+                .add(Items.ORANGE_TULIP);
+
+        tag(MAKES_YELLOW_DYE)
+                .add(Items.SUNFLOWER)
+                .add(Items.DANDELION);
+
+        tag(MAKES_LIME_DYE)
+                .add(Items.SEA_PICKLE);
+
+        tag(MAKES_GREEN_DYE)
+                .add(Items.CACTUS);
+
+        tag(MAKES_CYAN_DYE)
+                .add(Items.PITCHER_PLANT);
+
+        tag(MAKES_LIGHT_BLUE_DYE)
+                .add(Items.BLUE_ORCHID);
+
+        tag(MAKES_BLUE_DYE)
+                .add(Items.CORNFLOWER);
+
+        tag(MAKES_MAGENTA_DYE)
+                .add(Items.LILAC)
+                .add(Items.ALLIUM);
+
+        tag(MAKES_PINK_DYE)
+                .add(Items.PEONY)
+                .add(Items.PINK_PETALS)
+                .add(Items.PINK_TULIP);
+
+    //Compostables
+        tag(COMPOST_BROWNS_LOW)
+                .add(Items.MOSS_BLOCK)
+                .add(Items.MOSS_CARPET)
+                .add(Items.VINE);
+
+        tag(COMPOST_GREENS_HIGH)
+                .add(Items.PUMPKIN)
+                .add(Items.MELON);
+
+        tag(COMPOST_GREENS_LOW)
+                .addTag(ItemTags.FLOWERS)
+                .addTag(ItemTags.SAPLINGS)
+                .addTag(Tags.Items.MUSHROOMS)
+                .add(Items.SHORT_GRASS)
+                .add(Items.TALL_GRASS)
+                .add(Items.FERN)
+                .add(Items.LARGE_FERN)
+                .add(Items.BIG_DRIPLEAF)
+                .add(Items.SMALL_DRIPLEAF)
+                .add(Items.LILY_PAD);
     }
+
+    private void metalTag(CompatMetal metal, CompatMetal.ItemType type, TagKey<Item> baseTag)
+    {
+        final TagKey<Item> commonTag = commonTagOf(metal, type);
+        tag(commonTag).add(ModItems.METAL_ITEMS.get(metal).get(type));
+        tag(baseTag).addTag(commonTag);
+    }
+
 
     private void addAllCompatWoods(CompatWood.BlockType type, TagKey<Item> tagKey) {
         ModBlocks.WOODS.forEach((wood, map) -> {

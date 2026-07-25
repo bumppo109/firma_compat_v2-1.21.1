@@ -8,8 +8,6 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
-import java.util.Map;
-
 import static net.dries007.tfc.common.recipes.WeldingRecipe.Behavior.COPY_BEST;
 import static net.dries007.tfc.common.recipes.WeldingRecipe.Behavior.IGNORE;
 
@@ -33,7 +31,7 @@ public interface ModWeldingRecipes extends ModRecipes {
                             case DOUBLE_SHEET -> weld(metal, CompatMetal.ItemType.SHEET, CompatMetal.ItemType.SHEET, ModItems.METAL_ITEMS.get(metal).get(CompatMetal.ItemType.DOUBLE_SHEET), IGNORE);
                             case UNFINISHED_HELMET -> weld(metal, CompatMetal.ItemType.UNFINISHED_HELMET, CompatMetal.ItemType.SHEET, material.helmet().get(), COPY_BEST);
                             case UNFINISHED_CHESTPLATE -> weld(metal, CompatMetal.ItemType.UNFINISHED_CHESTPLATE, CompatMetal.ItemType.DOUBLE_SHEET, material.chestplate().get(), COPY_BEST);
-                            case UNFINISHED_GREAVES -> weld(metal, CompatMetal.ItemType.UNFINISHED_GREAVES, CompatMetal.ItemType.SHEET, material.leggings().get(), COPY_BEST);
+                            case UNFINISHED_LEGGINGS -> weld(metal, CompatMetal.ItemType.UNFINISHED_LEGGINGS, CompatMetal.ItemType.SHEET, material.leggings().get(), COPY_BEST);
                             case UNFINISHED_BOOTS -> weld(metal, CompatMetal.ItemType.UNFINISHED_BOOTS, CompatMetal.ItemType.SHEET, material.boots().get(), COPY_BEST);
 
                         }

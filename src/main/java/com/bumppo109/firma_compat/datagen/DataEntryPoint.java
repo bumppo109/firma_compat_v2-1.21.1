@@ -6,6 +6,7 @@ import com.bumppo109.firma_compat.datagen.assets.BuiltinItemModelProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinLang;
 import com.bumppo109.firma_compat.datagen.assets.StoneZoneLang;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinBlockTags;
+import com.bumppo109.firma_compat.datagen.tags.BuiltinFluidTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinItemTags;
 import com.bumppo109.firma_compat.datagen.worldgen.ModConfiguredFeatures;
 import com.bumppo109.firma_compat.datagen.worldgen.ModPlacedFeatures;
@@ -63,7 +64,7 @@ public final class DataEntryPoint {
 
         final var blockTags = add(event, new BuiltinBlockTags(event, lookup)).contentsGetter();
         add(event, new BuiltinItemTags(event, lookup, blockTags));
-        //add(event, new BuiltinFluidTags(event, lookup, drinkables));
+        add(event, new BuiltinFluidTags(event, lookup, drinkables));
         //add(event, new BuiltinPlacedFeatureTags(packOutput, vanillaLookup, existingFileHelper));
         //add(event, new BuiltinBiomeTags(packOutput, vanillaLookup, existingFileHelper));
 
@@ -80,8 +81,9 @@ public final class DataEntryPoint {
         generator.addProvider(event.includeServer(), new BuiltinItemModelProvider(packOutput, existingFileHelper));
         event.getGenerator().addProvider(true, new BuiltinLang(packOutput));
         event.getGenerator().addProvider(true, new StoneZoneLang(packOutput));
-        //event.getGenerator().addProvider(true, new BuiltinLootTableProvider(packOutput, vanillaLookup));
+        event.getGenerator().addProvider(true, new BuiltinLootTableProvider(packOutput, vanillaLookup));
         //event.getGenerator().addProvider(true, new BuiltinLootModifier(packOutput, vanillaLookup));
+
     }
 
     private static <T extends DataProvider> T add(GatherDataEvent event, T provider) {

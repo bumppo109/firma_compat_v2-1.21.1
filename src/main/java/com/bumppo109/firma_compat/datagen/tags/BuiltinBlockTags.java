@@ -5,6 +5,7 @@ import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
+import com.bumppo109.firma_compat.util.ModTags;
 import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
@@ -40,6 +41,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.bumppo109.firma_compat.util.ModTags.Blocks.PREVENT_INTERACTION;
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 import static net.minecraft.tags.BlockTags.*;
 
@@ -54,12 +56,56 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider)
-    {
+    protected void addTags(HolderLookup.Provider provider) {
+    //Util
+        tag(PREVENT_INTERACTION)
+                .add(Blocks.BLAST_FURNACE)
+                .add(Blocks.SMOKER)
+                .add(Blocks.COMPOSTER)
+                .add(Blocks.CAMPFIRE)
+                .add(Blocks.SOUL_CAMPFIRE)
+                .add(Blocks.FURNACE);
+
+        tag(CONSUMES_TOOL_DURABILITY)
+                .add(Blocks.TALL_GRASS)
+                .add(Blocks.SHORT_GRASS)
+                .add(Blocks.FERN)
+                .add(Blocks.LARGE_FERN)
+        ;
+
+        tag(HEAT_PASSABLE)
+                .add(Blocks.COPPER_GRATE)
+                .add(Blocks.EXPOSED_COPPER_GRATE)
+                .add(Blocks.WEATHERED_COPPER_GRATE)
+                .add(Blocks.OXIDIZED_COPPER_GRATE)
+                .add(Blocks.WAXED_COPPER_GRATE)
+                .add(Blocks.WAXED_EXPOSED_COPPER_GRATE)
+                .add(Blocks.WAXED_WEATHERED_COPPER_GRATE)
+                .add(Blocks.WAXED_OXIDIZED_COPPER_GRATE)
+        ;
+
+        tag(Tags.Blocks.CHESTS_WOODEN)
+                .add(ModBlocks.COMPAT_CHEST.get())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get());
+
+        tag(PET_SITS_ON)
+                .add(ModBlocks.COMPAT_CHEST.get())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get());
+    //Wood
+        tag(ModTags.Blocks.CHISELED_BOOKSHELVES).add(Blocks.CHISELED_BOOKSHELF);
+        for (Wood wood : Wood.VALUES) {
+            tag(ModTags.Blocks.CHISELED_BOOKSHELVES)
+                    .add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.BOOKSHELF).get());
+        }
+
+        ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
+            blockTypeIdMap.forEach((blockType, blockId) -> tag(MINEABLE_WITH_AXE).add(blockId.get()));
+        });
         addAllCompatWoods(CompatWood.BlockType.LOG_FENCE, FENCES);
         addAllCompatWoods(CompatWood.BlockType.HORIZONTAL_SUPPORT, SUPPORT_BEAMS);
         addAllCompatWoods(CompatWood.BlockType.VERTICAL_SUPPORT, SUPPORT_BEAMS);
 
+    //Rock
         for (CompatRock rock : CompatRock.VALUES) {
             for (CompatRock.BlockType blockType : CompatRock.BlockType.VALUES) {
                 Block block = ModBlocks.ROCK_BLOCKS.get(rock).get(blockType).get();
@@ -90,6 +136,97 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
                 tag(Tags.Blocks.COBBLESTONES_NORMAL).add(blockId.get());
             });
         });
+
+        ModBlocks.ORES.forEach((rock, oreMap) -> {
+            oreMap.forEach((ore, blockId) -> {
+                tag(BlockTags.MINEABLE_WITH_PICKAXE).add(blockId.get());
+                tag(Tags.Blocks.ORES).add(blockId.get());
+            });
+        });
+
+        // Graded ores
+        ModBlocks.GRADED_ORES.forEach((rock, oreMap) -> {
+            oreMap.forEach((ore, gradeMap) -> {
+                gradeMap.forEach((grade, blockId) -> {
+                    tag(BlockTags.MINEABLE_WITH_PICKAXE).add(blockId.get());
+                    tag(Tags.Blocks.ORES).add(blockId.get());
+                });
+            });
+        });
+
+        ModBlocks.AQUEDUCTS.forEach((compatRockSets, blockId) -> tag(MINEABLE_WITH_PICKAXE).add(blockId));
+
+        tag(MINEABLE_WITH_PICKAXE)
+                .add(ModBlocks.RED_NETHER_BRICK_AQUEDUCT)
+                .add(ModBlocks.PRISMARINE_BRICK_AQUEDUCT)
+                .add(ModBlocks.QUARTZ_BRICK_AQUEDUCT)
+                .add(ModBlocks.BRICK_AQUEDUCT)
+        ;
+
+        tag(STONES_RAW)
+                .add(Blocks.STONE)
+                .add(Blocks.DEEPSLATE)
+                .add(Blocks.ANDESITE)
+                .add(Blocks.DIORITE)
+                .add(Blocks.DRIPSTONE_BLOCK)
+                .add(Blocks.GRANITE)
+                .add(Blocks.TUFF)
+                .add(Blocks.CALCITE)
+                .add(Blocks.BLACKSTONE)
+                .add(Blocks.END_STONE)
+                .add(Blocks.NETHERRACK);
+
+    //Earthen
+        tag(CAN_LANDSLIDE)
+                .add(Blocks.GRASS_BLOCK)
+                .add(Blocks.DIRT_PATH)
+                .add(Blocks.COARSE_DIRT)
+                .add(Blocks.ROOTED_DIRT)
+                .add(Blocks.PODZOL)
+                .add(Blocks.MYCELIUM)
+                .add(Blocks.MUD)
+                .add(Blocks.PACKED_MUD)
+                .add(Blocks.RED_SAND)
+                .add(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.CLAY_DIRT.get())
+                .add(ModBlocks.CLAY_PODZOL.get())
+                .add(ModBlocks.CLAY_GRASS_BLOCK.get())
+                .add(ModBlocks.KAOLIN_CLAY_DIRT.get())
+                .add(ModBlocks.KAOLIN_CLAY_PODZOL.get())
+                .add(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get())
+                .add(ModBlocks.COMPAT_FARMLAND.get())
+                .add(Blocks.FARMLAND)
+        ;
+
+        tag(BlockTags.DIRT)
+                .add(ModBlocks.CLAY_DIRT.get())
+                .add(ModBlocks.CLAY_PODZOL.get())
+                .add(ModBlocks.CLAY_GRASS_BLOCK.get())
+                .add(ModBlocks.KAOLIN_CLAY_DIRT.get())
+                .add(ModBlocks.KAOLIN_CLAY_PODZOL.get())
+                .add(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get())
+                .add(ModBlocks.COMPAT_FARMLAND.get())
+                .add(TFCBlocks.PEAT.get())
+        ;
+
+        tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get())
+                .add(ModBlocks.CLAY_DIRT.get())
+                .add(ModBlocks.CLAY_GRASS_BLOCK.get())
+                .add(ModBlocks.KAOLIN_CLAY_DIRT.get())
+                .add(ModBlocks.KAOLIN_CLAY_PODZOL.get())
+                .add(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get())
+                .add(ModBlocks.COMPAT_FARMLAND.get())
+        ;
+
+        tag(FARMLANDS).add(ModBlocks.COMPAT_FARMLAND.get());
+        tag(NORMAL_FARMLAND).add(ModBlocks.COMPAT_FARMLAND.get());
     }
 
     private void addAllCompatWoods(CompatWood.BlockType type, TagKey<Block> tagKey) {

@@ -137,7 +137,28 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
             ));
         }
 
+    //Landslide Recipe
+        add(new LandslideRecipe(BlockIngredient.of(Blocks.RED_SAND), Blocks.RED_SAND.defaultBlockState()));
+        add(new LandslideRecipe(BlockIngredient.of(Blocks.PACKED_MUD), Blocks.PACKED_MUD.defaultBlockState()));
+        add("grass_block", new LandslideRecipe(BlockIngredient.of(Blocks.GRASS_BLOCK), Blocks.DIRT.defaultBlockState()));
+        add("podzol", new LandslideRecipe(BlockIngredient.of(Blocks.PODZOL), Blocks.DIRT.defaultBlockState()));
+        add("mycelium", new LandslideRecipe(BlockIngredient.of(Blocks.MYCELIUM), Blocks.DIRT.defaultBlockState()));
+        add("dirt_path", new LandslideRecipe(BlockIngredient.of(Blocks.DIRT_PATH), Blocks.DIRT.defaultBlockState()));
+        add("coarse_dirt", new LandslideRecipe(BlockIngredient.of(Blocks.COARSE_DIRT), Blocks.DIRT.defaultBlockState()));
+        add("farmland", new LandslideRecipe(BlockIngredient.of(Blocks.FARMLAND), Blocks.DIRT.defaultBlockState()));
+        add("rooted_dirt", new LandslideRecipe(BlockIngredient.of(Blocks.ROOTED_DIRT), Blocks.DIRT.defaultBlockState()));
 
+        add(new LandslideRecipe(BlockIngredient.of(ModBlocks.CLAY_DIRT.get()), ModBlocks.CLAY_DIRT.get().defaultBlockState()));
+        add("clay_grass_block", new LandslideRecipe(BlockIngredient.of(ModBlocks.CLAY_GRASS_BLOCK.get()), ModBlocks.CLAY_DIRT.get().defaultBlockState()));
+        add("clay_podzol", new LandslideRecipe(BlockIngredient.of(ModBlocks.CLAY_PODZOL.get()), ModBlocks.CLAY_DIRT.get().defaultBlockState()));
+        add(new LandslideRecipe(BlockIngredient.of(ModBlocks.KAOLIN_CLAY_DIRT.get()), ModBlocks.KAOLIN_CLAY_DIRT.get().defaultBlockState()));
+        add("kaolin_clay_grass_block", new LandslideRecipe(BlockIngredient.of(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get()), ModBlocks.KAOLIN_CLAY_DIRT.get().defaultBlockState()));
+        add("kaolin_clay_podzol", new LandslideRecipe(BlockIngredient.of(ModBlocks.KAOLIN_CLAY_PODZOL.get()), ModBlocks.KAOLIN_CLAY_DIRT.get().defaultBlockState()));
+
+        add(new LandslideRecipe(BlockIngredient.of(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get()), ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get().defaultBlockState()));
+        add(new LandslideRecipe(BlockIngredient.of(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get()), ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get().defaultBlockState()));
+        add(new LandslideRecipe(BlockIngredient.of(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get()), ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get().defaultBlockState()));
+        add(new LandslideRecipe(BlockIngredient.of(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get()), ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get().defaultBlockState()));
 
     }
 

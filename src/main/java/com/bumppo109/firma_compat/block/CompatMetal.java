@@ -1,74 +1,38 @@
 package com.bumppo109.firma_compat.block;
 
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
+
 import net.dries007.tfc.common.LevelTier;
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.TFCTags.Blocks;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.GrateBlock;
-import net.dries007.tfc.common.blocks.IWeatheringBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCChainBlock;
-import net.dries007.tfc.common.blocks.WeatheringBlock;
-import net.dries007.tfc.common.blocks.WeatheringGrateBlock;
-import net.dries007.tfc.common.blocks.WeatheringSlabBlock;
-import net.dries007.tfc.common.blocks.WeatheringStairBlock;
-import net.dries007.tfc.common.blocks.IWeatheringBlock.Age;
-import net.dries007.tfc.common.blocks.devices.AnvilBlock;
-import net.dries007.tfc.common.blocks.devices.LampBlock;
-import net.dries007.tfc.common.items.BarteringItem;
 import net.dries007.tfc.common.items.ChiselItem;
 import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.common.items.JavelinItem;
-import net.dries007.tfc.common.items.LampBlockItem;
 import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.ScytheItem;
-import net.dries007.tfc.common.items.TFCFishingRodItem;
-import net.dries007.tfc.common.items.TFCHoeItem;
 import net.dries007.tfc.common.items.TFCMaceItem;
-import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.items.ToolItem;
-import net.dries007.tfc.util.Metal;
 import net.minecraft.core.Holder;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.AnimalArmorItem.BodyType;
 import net.minecraft.world.item.ArmorItem.Type;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
 public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
     NETHERITE("#694117", MapColor.COLOR_BLACK, Rarity.RARE, PartType.ALL, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL),
-    POOR_NETHERITE("#211203", MapColor.COLOR_BROWN, Rarity.UNCOMMON, PartType.DEFAULT)
+    SCRAP_NETHERITE("#211203", MapColor.COLOR_BROWN, Rarity.UNCOMMON, PartType.DEFAULT),
+    IRON("#211203", MapColor.COLOR_BROWN, Rarity.UNCOMMON, PartType.ALL, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON)
     ;
 
     private final String serializedName;
@@ -103,6 +67,10 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
 
     public String getSerializedName() {
         return this.serializedName;
+    }
+
+    public boolean isDummy() {
+        return this.equals(IRON);
     }
 
     public CompatMetalMaterial getMetalMaterial() {
@@ -194,7 +162,7 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
         SCYTHE_BLADE(CompatMetal.PartType.ALL, true),
         UNFINISHED_HELMET(CompatMetal.PartType.ALL, false),
         UNFINISHED_CHESTPLATE(CompatMetal.PartType.ALL, false),
-        UNFINISHED_GREAVES(CompatMetal.PartType.ALL, false),
+        UNFINISHED_LEGGINGS(CompatMetal.PartType.ALL, false),
         UNFINISHED_BOOTS(CompatMetal.PartType.ALL, false),
         HORSE_ARMOR(CompatMetal.PartType.ALL, (CompatMetal) -> new AnimalArmorItem(CompatMetal.armorMaterial(), BodyType.EQUESTRIAN, false, base(CompatMetal).durability(CompatMetal.armorDurability(Type.BODY))))
         ;
@@ -255,7 +223,7 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
             case SWORD_BLADE, JAVELIN, JAVELIN_HEAD, MACE, MACE_HEAD -> material.sword() != null;
             case UNFINISHED_HELMET -> material.helmet() != null;
             case UNFINISHED_CHESTPLATE -> material.chestplate() != null;
-            case UNFINISHED_GREAVES -> material.leggings() != null;
+            case UNFINISHED_LEGGINGS -> material.leggings() != null;
             case UNFINISHED_BOOTS -> material.boots() != null;
             case HORSE_ARMOR -> material.horseArmor() != null;
             default -> true;

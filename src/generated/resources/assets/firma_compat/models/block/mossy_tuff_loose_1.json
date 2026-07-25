@@ -1,6 +1,6 @@
 {
   "parent": "tfc:block/rock/loose_igneous_extrusive_1",
   "textures": {
-    "texture": "minecraft:block/tuff"
+    "texture": "firma_compat:block/mossy_tuff_cobble"
   }
 }

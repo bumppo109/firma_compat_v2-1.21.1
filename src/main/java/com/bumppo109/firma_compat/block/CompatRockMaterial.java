@@ -3,10 +3,12 @@ package com.bumppo109.firma_compat.block;
 import com.bumppo109.firma_compat.item.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -158,11 +160,11 @@ public enum CompatRockMaterial implements Iterable<CompatRockSet> {
             null,
             null,
             null,
-            CompatRockSet.CHISELED_NETHER_BRICKS,
+            null,
             CompatRockSet.NETHER_BRICKS,
             null,
             CompatRockSet.CRACKED_NETHER_BRICKS,
-            null,
+            CompatRockSet.CHISELED_NETHER_BRICKS,
             null,
             null
     ),

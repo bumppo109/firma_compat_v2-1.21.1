@@ -31,14 +31,12 @@ import static com.bumppo109.firma_compat.block.CompatWood.BlockType.ENCASED_AXLE
 import static com.bumppo109.firma_compat.block.CompatWood.BlockType.GEAR_BOX;
 import static com.bumppo109.firma_compat.block.CompatWood.BlockType.SEWING_TABLE;
 import static com.bumppo109.firma_compat.block.CompatWood.BlockType.SHELF;
+import static com.bumppo109.firma_compat.block.ModBlocks.GRADED_ORES;
+import static com.bumppo109.firma_compat.block.ModBlocks.ORES;
 
-/*
 @Mod(value = FirmaCompat.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = FirmaCompat.MODID, value = Dist.CLIENT)
-
- */
 public class FirmaCompatClient {
-
 
     public FirmaCompatClient(ModContainer container) {
         // Allows NeoForge to create a config screen for this mod's configs.
@@ -68,6 +66,30 @@ public class FirmaCompatClient {
         });
 
         ModBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
+
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get(), cutout);
+
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CLAY_GRASS_BLOCK.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CLAY_PODZOL.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.KAOLIN_CLAY_PODZOL.get(), cutout);
+
+        ORES.forEach((rock, oreMap) ->
+                oreMap.forEach((ore, blockId) ->
+                        ItemBlockRenderTypes.setRenderLayer(blockId.get(), RenderType.cutout())
+                )
+        );
+
+        GRADED_ORES.forEach((rock, oreMap) ->
+                oreMap.forEach((ore, gradeMap) ->
+                        gradeMap.forEach((grade, blockId) ->
+                                ItemBlockRenderTypes.setRenderLayer(blockId.get(), RenderType.cutout())
+                        )
+                )
+        );
     }
 
     private static final ResourceLocation SEALED = Helpers.identifier("sealed");

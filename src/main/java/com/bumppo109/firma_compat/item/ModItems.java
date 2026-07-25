@@ -46,6 +46,7 @@ public class ModItems {
 
 
     //Metal
+    //TODO - lang, textures
     public static final ItemId POOR_NETHERITE_INGOT = register("poor_netherite_ingot");
     public static final ItemId UNFINISHED_LANTERN = register("unfinished_lantern");
 
