@@ -1,0 +1,207 @@
+{
+  "itemSpecific": {
+    "itemSpecific": {
+      "tfc:groundcover/driftwood": {
+        "kind": "BLOCK",
+        "armKind": "BLOCK",
+        "transforms": {
+          "right": {
+            "scale": 1.0,
+            "offX": 0.045888662,
+            "offY": -0.11687434,
+            "offZ": 0.0,
+            "rotX": 0.0,
+            "rotY": 0.0,
+            "rotZ": 25.513992,
+            "pivotX": 0.0,
+            "pivotY": 0.0,
+            "pivotZ": 0.0
+          },
+          "left": {
+            "scale": 1.0,
+            "offX": 0.0,
+            "offY": 0.0,
+            "offZ": 0.0,
+            "rotX": 0.0,
+            "rotY": 0.0,
+            "rotZ": 0.0,
+            "pivotX": 0.0,
+            "pivotY": 0.0,
+            "pivotZ": 0.0
+          }
+        },
+        "armTransforms": {
+          "right": {
+            "scale": 1.0,
+            "offX": 0.0,
+            "offY": 0.0,
+            "offZ": 0.0,
+            "rotX": 0.0,
+            "rotY": 0.0,
+            "rotZ": 0.0,
+            "pivotX": 0.0,
+            "pivotY": 0.0,
+            "pivotZ": 0.0
+          },
+          "left": {
+            "scale": 1.0,
+            "offX": 0.0,
+            "offY": 0.0,
+            "offZ": 0.0,
+            "rotX": 0.0,
+            "rotY": -0.0,
+            "rotZ": -0.0,
+            "pivotX": 0.0,
+            "pivotY": 0.0,
+            "pivotZ": 0.0
+          }
+        }
+      }
+    },
+    "tfc:jacks": {
+      "kind": "INGREDIENT",
+      "transforms": {
+        "right": {
+          "scale": 1.0,
+          "offX": 0.22000003,
+          "offY": -0.04,
+          "offZ": 0.06999999,
+          "rotX": 0.0,
+          "rotY": 90.0,
+          "rotZ": 0.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        },
+        "left": {
+          "scale": 1.0,
+          "offX": 0.21000002,
+          "offY": -0.04,
+          "offZ": 0.06999999,
+          "rotX": 0.0,
+          "rotY": 90.0,
+          "rotZ": 0.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        }
+      }
+    },
+    "tfc:gem_saw": {
+      "kind": "INGREDIENT",
+      "transforms": {
+        "right": {
+          "scale": 1.0,
+          "offX": -0.28,
+          "offY": -0.059999995,
+          "offZ": 0.049999997,
+          "rotX": 0.0,
+          "rotY": -90.0,
+          "rotZ": -45.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        },
+        "left": {
+          "scale": 1.0,
+          "offX": -0.28,
+          "offY": -0.049999997,
+          "offZ": 0.06999999,
+          "rotX": 0.0,
+          "rotY": -90.0,
+          "rotZ": -45.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        }
+      }
+    },
+    "tfc:spindle": {
+      "kind": "INGREDIENT",
+      "transforms": {
+        "right": {
+          "scale": 1.0,
+          "offX": 0.24000002,
+          "offY": -0.07999999,
+          "offZ": 0.0,
+          "rotX": 0.0,
+          "rotY": 0.0,
+          "rotZ": 45.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        },
+        "left": {
+          "scale": 1.0,
+          "offX": 0.21000001,
+          "offY": -0.06999999,
+          "offZ": 0.0,
+          "rotX": 0.0,
+          "rotY": 0.0,
+          "rotZ": 45.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        }
+      }
+    },
+    "tfc:bone_needle": {
+      "kind": "INGREDIENT",
+      "transforms": {
+        "right": {
+          "scale": 1.0,
+          "offX": -0.22000001,
+          "offY": -0.56999975,
+          "offZ": -1.4901161E-8,
+          "rotX": 0.0,
+          "rotY": 0.0,
+          "rotZ": 230.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        },
+        "left": {
+          "scale": 1.0,
+          "offX": -0.18,
+          "offY": -0.58999974,
+          "offZ": 0.0,
+          "rotX": 0.0,
+          "rotY": 0.0,
+          "rotZ": -180.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        }
+      }
+    },
+    "tfc:paddle": {
+      "kind": "INGREDIENT",
+      "transforms": {
+        "right": {
+          "scale": 1.0,
+          "offX": 0.25000003,
+          "offY": -0.06999999,
+          "offZ": 0.0,
+          "rotX": 0.0,
+          "rotY": 0.0,
+          "rotZ": 44.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        },
+        "left": {
+          "scale": 1.0,
+          "offX": 0.26000002,
+          "offY": 0.0,
+          "offZ": 0.0,
+          "rotX": 0.0,
+          "rotY": 0.0,
+          "rotZ": 45.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ package com.bumppo109.firma_compat.block;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.item.FirmaLampItem;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.google.common.base.Suppliers;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
@@ -9,6 +10,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
+import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -20,6 +22,7 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
@@ -57,37 +61,27 @@ public class ModBlocks {
     );
 
 
-    public static final Id<Block> COMPAT_CHEST = register(
-            "compat_chest",
-            () -> new TFCChestBlock(
-                    ExtendedProperties.of()
-                            .strength(2.5F)
-                            .flammableLikeLogs()
-                            .blockEntity(TFCBlockEntities.CHEST)
-                            .clientTicks(ChestBlockEntity::lidAnimateTick),
-                    "compat_chest"  // texture identifier (folder or key for entity textures)
+    public static final Id<Block> COMPAT_CHEST = register("compat_chest",
+            () -> new TFCChestBlock(ExtendedProperties.of().strength(2.5F).flammableLikeLogs()
+                    .blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick),
+                    "compat_chest"
             ),
             block -> new ChestBlockItem(
                     block,
                     new Item.Properties(),
-                    ResourceLocation.withDefaultNamespace("textures/entity/chest_boat/oak.png")  // required third param; dummy/custom path
+                    ResourceLocation.withDefaultNamespace("textures/entity/chest_boat/oak.png")
             )
     );
 
-    public static final Id<Block> COMPAT_TRAPPED_CHEST = register(
-            "compat_trapped_chest",
-            () -> new TFCTrappedChestBlock(
-                    ExtendedProperties.of()
-                            .strength(2.5F)
-                            .flammableLikeLogs()
-                            .blockEntity(TFCBlockEntities.TRAPPED_CHEST)
-                            .clientTicks(ChestBlockEntity::lidAnimateTick),
-                    "compat_trapped_chest"  // texture identifier
+    public static final Id<Block> COMPAT_TRAPPED_CHEST = register("compat_trapped_chest",
+            () -> new TFCTrappedChestBlock(ExtendedProperties.of().strength(2.5F).flammableLikeLogs()
+                            .blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick),
+                    "compat_trapped_chest"
             ),
             block -> new ChestBlockItem(
                     block,
                     new Item.Properties(),
-                    ResourceLocation.withDefaultNamespace("textures/entity/chest_boat/oak.png")  // or same as above
+                    ResourceLocation.withDefaultNamespace("textures/entity/chest_boat/oak.png")
             )
     );
 
@@ -190,6 +184,34 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)));
     public static final Id<Block> KAOLIN_CLAY_PODZOL = register("kaolin_clay_podzol",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.PODZOL)));
+
+    //Devices
+        public static final Id<LampBlock> LANTERN = register("lantern",
+                () -> new LampBlock(
+                        ExtendedProperties.of().mapColor(MapColor.COLOR_BLACK)
+                                .noOcclusion().sound(SoundType.LANTERN)
+                                .strength(4.0F, 10.0F)
+                                .randomTicks().pushReaction(PushReaction.DESTROY)
+                                .lightLevel((state) -> (Boolean)state.getValue(LampBlock.LIT) ? 15 : 0)
+                                .blockEntity(TFCBlockEntities.LAMP)),
+                block -> new FirmaLampItem(block, new Item.Properties().stacksTo(1))
+        );
+
+        public static final Map<Metal, Id<LampBlock>> COMPAT_LANTERNS = Helpers.mapOf(Metal.class, Metal::allParts,metal ->
+                    register(metal.getSerializedName() + "_lantern",
+                                () -> new LampBlock(
+                                        ExtendedProperties.of()
+                                                .mapColor(metal.mapColor())
+                                                .noOcclusion().sound(SoundType.LANTERN)
+                                                .strength(4.0F, 10.0F)
+                                                .randomTicks()
+                                                .pushReaction(PushReaction.DESTROY)
+                                                .lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0)
+                                                .blockEntity(TFCBlockEntities.LAMP)
+                                ),
+                                block -> new FirmaLampItem(block, new Item.Properties().stacksTo(1))
+                        )
+                );
 
     public static boolean skippedOre(Ore ore) {
         return switch (ore) {

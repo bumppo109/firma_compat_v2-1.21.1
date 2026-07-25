@@ -1,0 +1,43 @@
+{
+  "customGroups": [
+    {
+      "name": "tfc_javelin",
+      "items": [
+        "tfc:stone/javelin/igneous_intrusive",
+        "tfc:stone/javelin/igneous_extrusive",
+        "tfc:stone/javelin/sedimentary",
+        "tfc:stone/javelin/metamorphic",
+        "tfc:metal/javelin/copper",
+        "tfc:metal/javelin/bismuth_bronze",
+        "tfc:metal/javelin/black_bronze",
+        "tfc:metal/javelin/bronze",
+        "tfc:metal/javelin/wrought_iron",
+        "tfc:metal/javelin/steel",
+        "tfc:metal/javelin/black_steel",
+        "tfc:metal/javelin/blue_steel",
+        "tfc:metal/javelin/red_steel"
+      ]
+    }
+  ],
+  "item": {
+    "tfc_javelin": {
+      "kind": "TRIDENT",
+      "customAnimation": [
+        {
+          "type": "attack",
+          "var_1": "attack_3"
+        },
+        {
+          "type": "mining_v2",
+          "start": "new_mining_st_start",
+          "looping": "new_mining_st_loop",
+          "end": "new_mining_st_end"
+        },
+        {
+          "type": "useItem",
+          "var_1": "use_tfc_javelin"
+        }
+      ]
+    }
+  }
+}

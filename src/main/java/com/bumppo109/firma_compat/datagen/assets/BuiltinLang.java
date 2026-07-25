@@ -52,7 +52,7 @@ public class BuiltinLang extends LanguageProvider {
 
         //Wood Good Compat
         add("item_type.firma_compat.lumber", "%s Lumber");
-        add("block_type.firma_compat.twig.json", "%s Twig");
+        add("block_type.firma_compat.twig", "%s Twig");
         add("block_type.firma_compat.support", "%s Support");
         add("block_type.firma_compat.vertical_support", "%s Support");
         add("block_type.firma_compat.horizontal_support", "%s Support");
@@ -71,6 +71,7 @@ public class BuiltinLang extends LanguageProvider {
         add("block_type.firma_compat.gear_box", "%s Gear Box");
         add("block_type.firma_compat.windmill", "%s Windmill");
         add("block_type.firma_compat.water_wheel", "%s Water Wheel");
+        add("block_type.firma_compat.crate", "%s Crate");
 
         add("block_type.firma_compat.keg", "%s Keg");
         add("block_type.firma_compat.food_shelf", "%s Food Shelf");
@@ -146,6 +147,15 @@ public class BuiltinLang extends LanguageProvider {
                 )
         );
 
+    //Metal
+        add(ModItems.SCRAP_NETHERITE_INGOT.get(), getItemDisplayName(ModItems.SCRAP_NETHERITE_INGOT.get()));
+        ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
+            if (compatMetal.isDummy()) return;
+            itemTypeItemIdMap.forEach((itemType, itemId) -> {
+                add(itemId.get(), getItemDisplayName(itemId.get()));
+            });
+        });
+
     //Earthen
         add(ModBlocks.CLAY_DIRT.get(), getBlockDisplayName(ModBlocks.CLAY_DIRT.get()));
         add(ModBlocks.CLAY_GRASS_BLOCK.get(), getBlockDisplayName(ModBlocks.CLAY_GRASS_BLOCK.get()));
@@ -166,6 +176,8 @@ public class BuiltinLang extends LanguageProvider {
         add(ModItems.UNFIRED_POT.get(), getItemDisplayName(ModItems.UNFIRED_POT.get()));
 
         //Misc
+        add(ModBlocks.COMPAT_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_CHEST.get()));
+        add(ModBlocks.COMPAT_TRAPPED_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_TRAPPED_CHEST.get()));
         add(ModItems.COMPAT_CHEST_MINECART.get(), getItemDisplayName(ModItems.COMPAT_CHEST_MINECART.get()));
     }
 

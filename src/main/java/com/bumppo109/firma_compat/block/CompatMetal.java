@@ -30,9 +30,9 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
-    NETHERITE("#694117", MapColor.COLOR_BLACK, Rarity.RARE, PartType.ALL, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL),
-    SCRAP_NETHERITE("#211203", MapColor.COLOR_BROWN, Rarity.UNCOMMON, PartType.DEFAULT),
-    IRON("#211203", MapColor.COLOR_BROWN, Rarity.UNCOMMON, PartType.ALL, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON)
+    NETHERITE(2167299, MapColor.COLOR_BLACK, Rarity.COMMON, PartType.ALL, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL),
+    SCRAP_NETHERITE(6897943, MapColor.COLOR_BROWN, Rarity.COMMON, PartType.DEFAULT),
+    IRON(6897943, MapColor.COLOR_BROWN, Rarity.UNCOMMON, PartType.ALL, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON)
     ;
 
     private final String serializedName;
@@ -41,21 +41,21 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
     private final TFCArmorMaterials.@Nullable Id armorMaterial;
     private final MapColor mapColor;
     private final Rarity rarity;
-    private final String color;
+    private final int color;
 
-    private CompatMetal(String color, MapColor mapColor, Rarity rarity, PartType partType) {
+    private CompatMetal(int color, MapColor mapColor, Rarity rarity, PartType partType) {
         this(color, mapColor, rarity, partType, (LevelTier)null, (TFCArmorMaterials.Id)null);
     }
 
-    private CompatMetal(String color, MapColor mapColor, Rarity rarity, LevelTier toolTier, TFCArmorMaterials.Id armorTier) {
+    private CompatMetal(int color, MapColor mapColor, Rarity rarity, LevelTier toolTier, TFCArmorMaterials.Id armorTier) {
         this(color, mapColor, rarity, PartType.ALL, toolTier, armorTier);
     }
 
-    private CompatMetal(String color, MapColor mapColor, Rarity rarity) {
+    private CompatMetal(int color, MapColor mapColor, Rarity rarity) {
         this(color, mapColor, rarity, PartType.ALL, null, null);
     }
 
-    private CompatMetal(String color, MapColor mapColor, Rarity rarity, @Nullable PartType partType, LevelTier toolTier, TFCArmorMaterials.Id armorTier) {
+    private CompatMetal(int color, MapColor mapColor, Rarity rarity, @Nullable PartType partType, LevelTier toolTier, TFCArmorMaterials.Id armorTier) {
         this.serializedName = this.name().toLowerCase(Locale.ROOT);
         this.toolTier = toolTier;
         this.armorMaterial = armorTier;
@@ -77,7 +77,7 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
         return CompatMetalMaterial.valueOf(this.name());
     }
 
-    public String getColor() {
+    public int getColor() {
         return this.color;
     }
 

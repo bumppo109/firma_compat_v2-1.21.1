@@ -82,7 +82,7 @@ public final class DataEntryPoint {
         event.getGenerator().addProvider(true, new BuiltinLang(packOutput));
         event.getGenerator().addProvider(true, new StoneZoneLang(packOutput));
         event.getGenerator().addProvider(true, new BuiltinLootTableProvider(packOutput, vanillaLookup));
-        //event.getGenerator().addProvider(true, new BuiltinLootModifier(packOutput, vanillaLookup));
+        event.getGenerator().addProvider(true, new BuiltinLootModifier(packOutput, vanillaLookup));
 
     }
 

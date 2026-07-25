@@ -608,11 +608,6 @@ public interface ModCraftingRecipes extends ModRecipes {
                 .shapeless(ModItems.COMPAT_CHEST_MINECART.get());
 
         recipe()
-                .input('X', TFCTags.Items.LUMBER)
-                .input('L', ItemTags.PLANKS)
-                .pattern("XX ", "LL ")
-                .shaped(Items.CRAFTING_TABLE);
-        recipe()
                 .input('X', TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.SAW_BLADE).get().asItem())
                 .input('L', TFCTags.Items.LUMBER)
                 .input('B', ItemTags.STONE_BRICKS)
@@ -663,6 +658,28 @@ public interface ModCraftingRecipes extends ModRecipes {
                 .input('L', TFCItems.ORES.get(Ore.AMETHYST).get())
                 .pattern("LL ", "LL ")
                 .shaped(Items.AMETHYST_BLOCK);
+
+        recipe()
+                .input('L', Blocks.BAMBOO_PLANKS)
+                .pattern("L L", "LLL")
+                .shaped(Items.BAMBOO_RAFT);
+
+        recipe()
+                .input(ModItems.UNFINISHED_LANTERN.get())
+                .input(TFCItems.LAMP_GLASS.get())
+                .shapeless(ModBlocks.LANTERN.get().asItem());
+
+        for(Metal metal : Metal.values()){
+            if(metal.allParts()){
+                Item unfinishedItem = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.UNFINISHED_LAMP).get();
+                Item finishedLamp = ModBlocks.COMPAT_LANTERNS.get(metal).get().asItem();
+
+                recipe()
+                        .input(unfinishedItem)
+                        .input(TFCItems.LAMP_GLASS.get())
+                        .shapeless(finishedLamp);
+            }
+        }
     }
 
     /**

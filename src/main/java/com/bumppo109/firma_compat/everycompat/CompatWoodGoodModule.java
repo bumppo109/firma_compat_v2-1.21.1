@@ -40,7 +40,6 @@ import net.mehvahdjukaar.moonlight.api.util.Utils;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.BlockTags;
@@ -87,7 +86,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
     public final SimpleEntrySet<WoodType, Block> CRATE;
 
     public CompatWoodGoodModule(String modId) {
-        super(modId,"tfc");
+        super(modId, "tfc");
 
         Supplier<CreativeModeTab> tab = getModTab(FirmaCompat.MODID);
 
@@ -218,6 +217,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                                 .blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick))
                 )
                 .requiresChildren("planks")
+                .addTextureM(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "entity/chest/horse/oak_barrel"), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "template/entity/chest/barrel_mask"))
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
                 .addTag(TFCTags.Items.BARRELS, Registries.ITEM)
                 .setRenderType(RenderLayer.CUTOUT)
@@ -388,13 +388,10 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
         this.addEntry(CRATE);
     }
 
-    /*
     @Override
     public boolean isEntryAlreadyRegistered(String entrySetId, ResourceLocation blockId, BlockType blockType, Registry<?> registry) {
         return false;
     }
-
-     */
 
     @Override
     // RECIPES, TAGS

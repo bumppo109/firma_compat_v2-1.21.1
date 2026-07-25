@@ -2,11 +2,6 @@ package com.bumppo109.firma_compat.everycompat;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import net.mehvahdjukaar.every_compat.api.EveryCompatAPI;
-import net.mehvahdjukaar.moonlight.api.set.wood.WoodTypeRegistry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Blocks;
-import net.neoforged.fml.ModList;
-import net.xelbayria.gems_realm.api.set.metal.MetalTypeRegistry;
 
 import static com.bumppo109.firma_compat.FirmaCompat.*;
 
@@ -16,15 +11,15 @@ public class EveryCompatHandler {
 
     public static void registerModules() {
         if(isGemsRealmLoaded){
-            CompatMetalModule metalModule = new CompatMetalModule(FirmaCompat.MODID);
+            CompatMetalModule metalModule = new CompatMetalModule("firma_compat");
             EveryCompatAPI.registerModule(metalModule);
         }
         if(isStoneZoneLoaded){
-            CompatStoneZoneModule stoneModule = new CompatStoneZoneModule(FirmaCompat.MODID);
+            CompatStoneZoneModule stoneModule = new CompatStoneZoneModule("firma_compat");
             EveryCompatAPI.registerModule(stoneModule);
         }
         if(isWoodGoodLoaded){
-            CompatWoodGoodModule woodGoodModule = new CompatWoodGoodModule(FirmaCompat.MODID);
+            CompatWoodGoodModule woodGoodModule = new CompatWoodGoodModule("firma_compat");
             EveryCompatAPI.registerModule(woodGoodModule);
         }
     }

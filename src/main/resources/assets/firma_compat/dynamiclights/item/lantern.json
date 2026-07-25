@@ -1,0 +1,20 @@
+{
+  "match": {
+    "items": [
+      "firma_compat:lantern",
+      "firma_compat:copper_lantern",
+      "firma_compat:bronze_lantern",
+      "firma_compat:black_bronze_lantern",
+      "firma_compat:bismuth_bronze_lantern",
+      "firma_compat:wrought_iron_lantern",
+      "firma_compat:steel_lantern",
+      "firma_compat:black_steel_lantern",
+      "firma_compat:blue_steel_lantern",
+      "firma_compat:red_steel_lantern"
+    ],
+    "components": {
+      "firma_compat:lit": true
+    }
+  },
+  "luminance": 15
+}

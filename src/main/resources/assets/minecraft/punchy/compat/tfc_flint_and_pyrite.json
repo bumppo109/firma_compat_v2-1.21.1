@@ -1,0 +1,39 @@
+{
+  "itemSpecific": {
+    "tfc:flint_and_pyrite": {
+      "kind": "FLINT",
+      "customAnimation": [
+        {
+          "type": "useItem",
+          "name": "set_fire"
+        }
+      ],
+      "transforms": {
+        "right": {
+          "scale": 0.6000004,
+          "offX": 0.06999999,
+          "offY": -0.3,
+          "offZ": 0.010000015,
+          "rotX": 70.0,
+          "rotY": 10.0,
+          "rotZ": -64.0,
+          "pivotX": 0.0,
+          "pivotY": -0.039999984,
+          "pivotZ": 0.0
+        },
+        "left": {
+          "scale": 0.6600003,
+          "offX": 0.0,
+          "offY": -0.36999992,
+          "offZ": 0.109999985,
+          "rotX": -174.0,
+          "rotY": 191.0,
+          "rotZ": 0.0,
+          "pivotX": -0.01,
+          "pivotY": 0.0,
+          "pivotZ": -0.01
+        }
+      }
+    }
+  }
+}

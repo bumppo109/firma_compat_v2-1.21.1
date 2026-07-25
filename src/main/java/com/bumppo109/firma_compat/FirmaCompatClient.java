@@ -1,26 +1,44 @@
 package com.bumppo109.firma_compat;
 
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.data.ModDataComponents;
+import com.bumppo109.firma_compat.fluid.ModFluids;
+import net.dries007.tfc.client.ClientEventHandler;
+import net.dries007.tfc.client.extensions.FluidRendererExtension;
+import net.dries007.tfc.client.extensions.ItemRendererExtension;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
+import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -38,10 +56,9 @@ import static com.bumppo109.firma_compat.block.ModBlocks.ORES;
 @EventBusSubscriber(modid = FirmaCompat.MODID, value = Dist.CLIENT)
 public class FirmaCompatClient {
 
+    private static final ResourceLocation SEALED = Helpers.identifier("sealed");
+
     public FirmaCompatClient(ModContainer container) {
-        // Allows NeoForge to create a config screen for this mod's configs.
-        // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
-        // Do not forget to add translations for your config options to the en_us.json file.
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
@@ -54,15 +71,42 @@ public class FirmaCompatClient {
         final RenderType translucent = RenderType.translucent();
         final Predicate<RenderType> ghostBlock = rt -> rt == cutoutMipped || rt == Sheets.translucentCullBlockSheet();
 
-        //final Predicate<RenderType> leafPredicate = layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid;
         ModBlocks.WOODS.values().forEach(map -> {
             Stream.of(TWIG, BARREL, SCRIBING_TABLE, SEWING_TABLE, SHELF, ENCASED_AXLE, CLUTCH, GEAR_BOX).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
         });
 
         event.enqueueWork(() -> {
+
+            //EveryComp barrels
+            BuiltInRegistries.BLOCK.stream()
+                    .filter(block -> {
+                        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
+                        if (id == null) return false;
+                        String path = id.getPath();
+                        return (id.getNamespace().equals("everycomp"))
+                                && path.endsWith("_barrel")
+                                && !path.endsWith("_stomping_barrel")
+                                && !path.equals("compat_barrel");
+                    })
+                    .forEach(block -> {
+                        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
+                        String path = id.getPath(); //regions_unexplored/pine_barrel
+                        String[] parts = path.split("/", 3);
+
+                        String woodNamespace = parts[1];
+                        String barrelId = parts[2];
+
+                        HorseChestLayer.registerChest(block.asItem(),
+                                ResourceLocation.fromNamespaceAndPath("everycomp", "textures/entity/tfc/" + woodNamespace + "/chest/horse/" + barrelId + ".png")
+                        );
+                    });
+
             ModBlocks.WOODS.forEach((wood, map) -> {
                 HorseChestLayer.registerChest(map.get(BARREL).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_barrel.png"));
             });
+
+            HorseChestLayer.registerChest(ModBlocks.COMPAT_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
+            HorseChestLayer.registerChest(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
         });
 
         ModBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
@@ -90,12 +134,68 @@ public class FirmaCompatClient {
                         )
                 )
         );
+
+        registerLampLitProperty(ModBlocks.LANTERN.get());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LANTERN.get(), cutout);
+
+        for(Metal metal : Metal.values()){
+            if(metal.allParts()){
+                registerLampLitProperty(ModBlocks.COMPAT_LANTERNS.get(metal).get());
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.COMPAT_LANTERNS.get(metal).get(), cutout);
+            }
+        }
     }
 
-    private static final ResourceLocation SEALED = Helpers.identifier("sealed");
+    public static void registerExtensions(RegisterClientExtensionsEvent event) {
+        ModFluids.METALS.forEach((metal, holder) -> event.registerFluidType(
+                new FluidRendererExtension(TFCFluids.ALPHA_MASK | metal.getColor(), ClientEventHandler.MOLTEN_STILL, ClientEventHandler.MOLTEN_FLOW, null, null),
+                holder.getType()
+        ));
+        // Chest item renderers
+        registerCustomItemRenderer(event, ModBlocks.COMPAT_CHEST, ChestItemRenderer::new);
+        registerCustomItemRenderer(event, ModBlocks.COMPAT_TRAPPED_CHEST, ChestItemRenderer::new);
 
-    private static void registerSealedProperty(ItemLike item, Supplier<? extends DataComponentType<?>> type)
-    {
+    }
+
+    private static void registerSealedProperty(ItemLike item, Supplier<? extends DataComponentType<?>> type) {
         ItemProperties.register(item.asItem(), SEALED, (stack, level, entity, unused) -> stack.has(type) ? 1.0f : 0f);
+    }
+
+    private static void registerLampLitProperty(ItemLike item) {
+        ItemProperties.register(item.asItem(), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "lit"),
+                (stack, level, entity, seed) ->
+                        stack.getOrDefault(ModDataComponents.LIT, false) ? 1.0F : 0.0F
+        );
+    }
+
+    private static <T> void registerCustomItemRenderer(RegisterClientExtensionsEvent event, @Nullable Supplier<? extends ItemLike> item, Function<T, BlockEntityWithoutLevelRenderer> renderer) {
+        if (item != null) {
+            event.registerItem(ItemRendererExtension.cached(() -> (BlockEntityWithoutLevelRenderer)renderer.apply((T) item.get().asItem())), new Item[]{((ItemLike)item.get()).asItem()});
+        }
+
+    }
+
+    private static void registerChestItemRenderer(
+            RegisterClientExtensionsEvent event,
+            Supplier<? extends Block> blockSupplier
+    ) {
+        if (blockSupplier == null) return;
+
+        Block block = blockSupplier.get();
+        Item item = block.asItem();
+
+        // TFC expects the item to be ChestBlockItem for type safety, but we can cast or check
+        if (!(item instanceof ChestBlockItem chestItem)) {
+            FirmaCompat.LOGGER.warn("Attempted to register chest item renderer for non-ChestBlockItem: {}", item);
+            return;
+        }
+
+        event.registerItem(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                // Use TFC's exact renderer – it creates a dummy BE from your block and dispatches render
+                return new ChestItemRenderer(chestItem);
+            }
+        }, item);
     }
 }

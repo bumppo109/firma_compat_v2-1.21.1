@@ -7,6 +7,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public enum CompatMetalMaterial {
@@ -62,6 +65,7 @@ public enum CompatMetalMaterial {
             null
 
     );
+    private final EnumMap<MetalPart, Supplier<?>> parts = new EnumMap<>(MetalPart.class);
 
     private final Supplier<Item> ingot;
     private final @Nullable Supplier<Item> nugget;
@@ -108,6 +112,25 @@ public enum CompatMetalMaterial {
         this.boots = boots;
         this.shield = shield;
         this.horseArmor = horseArmor;
+
+        parts.put(MetalPart.INGOT, ingot);
+        parts.put(MetalPart.NUGGET, nugget);
+        parts.put(MetalPart.STORAGE_BLOCK, storageBlock);
+        parts.put(MetalPart.SWORD, sword);
+        parts.put(MetalPart.PICKAXE, pickaxe);
+        parts.put(MetalPart.SHOVEL, shovel);
+        parts.put(MetalPart.AXE, axe);
+        parts.put(MetalPart.HOE, hoe);
+        parts.put(MetalPart.HELMET, helmet);
+        parts.put(MetalPart.CHESTPLATE, chestplate);
+        parts.put(MetalPart.LEGGINGS, leggings);
+        parts.put(MetalPart.BOOTS, boots);
+        parts.put(MetalPart.SHIELD, shield);
+        parts.put(MetalPart.HORSE_ARMOR, horseArmor);
+    }
+
+    public EnumMap<MetalPart, Supplier<?>> parts() {
+        return parts;
     }
 
     public Supplier<Item> ingot() {
@@ -164,5 +187,22 @@ public enum CompatMetalMaterial {
 
     public Supplier<Item> horseArmor() {
         return horseArmor;
+    }
+
+    public enum MetalPart {
+        INGOT,
+        NUGGET,
+        STORAGE_BLOCK,
+        SWORD,
+        PICKAXE,
+        SHOVEL,
+        AXE,
+        HOE,
+        HELMET,
+        CHESTPLATE,
+        LEGGINGS,
+        BOOTS,
+        SHIELD,
+        HORSE_ARMOR
     }
 }

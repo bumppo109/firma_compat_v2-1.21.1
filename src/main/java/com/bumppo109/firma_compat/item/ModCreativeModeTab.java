@@ -65,10 +65,24 @@ public class ModCreativeModeTab {
         add(output, ModBlocks.COMPAT_TRAPPED_CHEST);
         add(output, ModItems.COMPAT_CHEST_MINECART);
 
-        add(output, ModItems.SCRAP_NETHERITE_INGOT);
+        for (CompatMetal metal : CompatMetal.values()) {
+            if (metal.isDummy()) continue;
+            if (metal.equals(CompatMetal.SCRAP_NETHERITE)) {
+                add(output, ModItems.SCRAP_NETHERITE_INGOT);
+            }
+            for (CompatMetal.ItemType itemType : CompatMetal.ItemType.values()) {
+                add(output, ModItems.METAL_ITEMS.get(metal).get(itemType));
+            }
+        }
 
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
-            if (compatMetal.isDummy()) return;
+            if (!compatMetal.equals(CompatMetal.NETHERITE)) return;
+            itemTypeItemIdMap.forEach((itemType, itemId) -> {
+                add(output, itemId);
+            });
+        });
+        ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
+            if (!compatMetal.equals(CompatMetal.SCRAP_NETHERITE)) return;
             itemTypeItemIdMap.forEach((itemType, itemId) -> {
                 add(output, itemId);
             });

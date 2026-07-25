@@ -11,6 +11,7 @@ import com.bumppo109.firma_compat.util.ModTags;
 import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -143,7 +144,36 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
             metalTag(metal, CompatMetal.ItemType.SHEET, TFCTags.Items.DOUBLE_INGOTS);
             metalTag(metal, CompatMetal.ItemType.DOUBLE_SHEET, TFCTags.Items.DOUBLE_INGOTS);
             metalTag(metal, CompatMetal.ItemType.ROD, Tags.Items.RODS);
+
+            if(metal.allParts()) {
+                metalTag(metal, CompatMetal.ItemType.JAVELIN, Tags.Items.TOOLS_SPEAR);
+                metalTag(metal, CompatMetal.ItemType.JAVELIN, Tags.Items.RANGED_WEAPON_TOOLS);
+                metalTag(metal, CompatMetal.ItemType.MACE, Tags.Items.TOOLS_MACE);
+                metalTag(metal, CompatMetal.ItemType.HAMMER, TFCTags.Items.TOOLS_HAMMER);
+                metalTag(metal, CompatMetal.ItemType.SAW, TFCTags.Items.TOOLS_SAW);
+                metalTag(metal, CompatMetal.ItemType.SCYTHE, TFCTags.Items.TOOLS_SCYTHE);
+                metalTag(metal, CompatMetal.ItemType.PROPICK, TFCTags.Items.TOOLS_PROPICK);
+                metalTag(metal, CompatMetal.ItemType.KNIFE, TFCTags.Items.TOOLS_KNIFE);
+                metalTag(metal, CompatMetal.ItemType.CHISEL, TFCTags.Items.TOOLS_CHISEL);
+            }
         }
+
+        tag(ModTags.Items.TOOLS_NETHERITE)
+                .add(Items.NETHERITE_PICKAXE)
+                .add(Items.NETHERITE_AXE)
+                .add(Items.NETHERITE_SHOVEL)
+                .add(Items.NETHERITE_HOE)
+                .add(Items.NETHERITE_SWORD)
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.TUYERE))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.PROPICK))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.CHISEL))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.HAMMER))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.SAW))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.JAVELIN))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.MACE))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.KNIFE))
+                .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.SCYTHE))
+        ;
 
     //Earthen
         tag(ORE_DEPOSITS)
@@ -152,6 +182,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
                 .add(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get().asItem())
                 .add(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get().asItem())
         ;
+
+        tag(MUD_BRICK_ITEMS).add(ModItems.MUD_BRICK);
 
     //Dye
         tag(MAKES_WHITE_DYE)
@@ -224,6 +256,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
                 .add(Items.BIG_DRIPLEAF)
                 .add(Items.SMALL_DRIPLEAF)
                 .add(Items.LILY_PAD);
+
+    //Misc
+        tag(Tags.Items.TOOLS_IGNITER).add(TFCItems.FLINT_AND_PYRITE);
     }
 
     private void metalTag(CompatMetal metal, CompatMetal.ItemType type, TagKey<Item> baseTag)

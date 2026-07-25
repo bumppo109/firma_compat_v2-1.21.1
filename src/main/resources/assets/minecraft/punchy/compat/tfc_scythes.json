@@ -1,0 +1,40 @@
+{
+  "customGroups": [
+    {
+      "name": "tfc_scythes",
+      "items": [
+        "tfc:metal/scythe/copper",
+        "tfc:metal/scythe/bronze",
+        "tfc:metal/scythe/black_bronze",
+        "tfc:metal/scythe/bismuth_bronze",
+        "tfc:metal/scythe/wrought_iron",
+        "tfc:metal/scythe/steel",
+        "tfc:metal/scythe/black_steel",
+        "tfc:metal/scythe/blue_steel",
+        "tfc:metal/scythe/red_steel"
+      ]
+    }
+  ],
+  "item": {
+    "tfc_scythes": {
+      "kind": "INGREDIENT",
+      "customAnimation": [
+        {
+          "type": "attack",
+          "var_1": "attack_1",
+          "var_2": "attack_2",
+          "critical_hit": "attack_critical"
+        },
+        {
+          "type": "mining",
+          "var_1": "attack_1",
+          "var_2": "attack_2"
+        },
+        {
+          "type": "inspect",
+          "name": "sword_inspect"
+        }
+      ]
+    }
+  }
+}

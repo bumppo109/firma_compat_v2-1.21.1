@@ -31,22 +31,24 @@ public class ModTags {
     public static class Items {
         public static final TagKey<Item> PREVENT_INTERACTION = createTag("prevent_interaction");
         //Dye
-        public static final TagKey<Item> MAKES_WHITE_DYE = createTag("makes_white");
-        public static final TagKey<Item> MAKES_LIGHT_GRAY_DYE = createTag("makes_light_gray_dye");
-        public static final TagKey<Item> MAKES_GRAY_DYE = createTag("makes_gray_dye");
-        public static final TagKey<Item> MAKES_BLACK_DYE = createTag("makes_black_dye");
-        public static final TagKey<Item> MAKES_BROWN_DYE = createTag("makes_brown_dye");
-        public static final TagKey<Item> MAKES_RED_DYE = createTag("makes_red_dye");
-        public static final TagKey<Item> MAKES_ORANGE_DYE = createTag("makes_orange_dye");
-        public static final TagKey<Item> MAKES_YELLOW_DYE = createTag("makes_yellow_dye");
-        public static final TagKey<Item> MAKES_LIME_DYE = createTag("makes_lime_dye");
-        public static final TagKey<Item> MAKES_GREEN_DYE = createTag("makes_green_dye");
-        public static final TagKey<Item> MAKES_CYAN_DYE = createTag("makes_cyan_dye");
-        public static final TagKey<Item> MAKES_LIGHT_BLUE_DYE = createTag("makes_light_blue_dye");
-        public static final TagKey<Item> MAKES_BLUE_DYE = createTag("makes_blue_dye");
-        public static final TagKey<Item> MAKES_PURPLE_DYE = createTag("makes_purple_dye");
-        public static final TagKey<Item> MAKES_MAGENTA_DYE = createTag("makes_magenta_dye");
-        public static final TagKey<Item> MAKES_PINK_DYE = createTag("makes_pink_dye");
+        public static final TagKey<Item> MAKES_WHITE_DYE = createTag("makes_dye/white");
+        public static final TagKey<Item> MAKES_LIGHT_GRAY_DYE = createTag("makes_dye/light_gray_dye");
+        public static final TagKey<Item> MAKES_GRAY_DYE = createTag("makes_dye/gray_dye");
+        public static final TagKey<Item> MAKES_BLACK_DYE = createTag("makes_dye/black_dye");
+        public static final TagKey<Item> MAKES_BROWN_DYE = createTag("makes_dye/brown_dye");
+        public static final TagKey<Item> MAKES_RED_DYE = createTag("makes_dye/red_dye");
+        public static final TagKey<Item> MAKES_ORANGE_DYE = createTag("makes_dye/orange_dye");
+        public static final TagKey<Item> MAKES_YELLOW_DYE = createTag("makes_dye/yellow_dye");
+        public static final TagKey<Item> MAKES_LIME_DYE = createTag("makes_dye/lime_dye");
+        public static final TagKey<Item> MAKES_GREEN_DYE = createTag("makes_dye/green_dye");
+        public static final TagKey<Item> MAKES_CYAN_DYE = createTag("makes_dye/cyan_dye");
+        public static final TagKey<Item> MAKES_LIGHT_BLUE_DYE = createTag("makes_dye/light_blue_dye");
+        public static final TagKey<Item> MAKES_BLUE_DYE = createTag("makes_dye/blue_dye");
+        public static final TagKey<Item> MAKES_PURPLE_DYE = createTag("makes_dye/purple_dye");
+        public static final TagKey<Item> MAKES_MAGENTA_DYE = createTag("makes_dye/magenta_dye");
+        public static final TagKey<Item> MAKES_PINK_DYE = createTag("makes_dye/pink_dye");
+
+        public static final TagKey<Item> TOOLS_NETHERITE = commonTag("tools/netherite");
 
         private static TagKey<Item> createTag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, name));

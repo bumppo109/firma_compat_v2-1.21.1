@@ -1,0 +1,39 @@
+{
+  "customGroups": [
+    {
+      "name": "tfc_knives",
+      "items": [
+        "tfc:metal/knife/copper",
+        "tfc:metal/knife/bronze",
+        "tfc:metal/knife/black_bronze",
+        "tfc:metal/knife/bismuth_bronze",
+        "tfc:metal/knife/wrought_iron",
+        "tfc:metal/knife/steel",
+        "tfc:metal/knife/black_steel",
+        "tfc:metal/knife/blue_steel",
+        "tfc:metal/knife/red_steel"
+      ]
+    }
+  ],
+  "item": {
+    "tfc_knives": {
+      "kind": "INGREDIENT",
+      "customAnimation": [
+        {
+          "type": "attack",
+          "var_1": "attack_1",
+          "var_2": "attack_2",
+          "critical_hit": "attack_critical"
+        },
+        {
+          "type": "mining",
+          "name": "attack_1"
+        },
+        {
+          "type": "inspect",
+          "name": "sword_inspect"
+        }
+      ]
+    }
+  }
+}

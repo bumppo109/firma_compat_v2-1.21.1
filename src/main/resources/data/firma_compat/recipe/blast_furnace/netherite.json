@@ -1,0 +1,14 @@
+{
+  "type": "tfc:blast_furnace",
+  "catalyst": {
+    "tag": "c:ingots/gold"
+  },
+  "fluid": {
+    "amount": 1,
+    "fluid": "firma_compat:metal/scrap_netherite"
+  },
+  "result": {
+    "amount": 1,
+    "id": "firma_compat:metal/netherite"
+  }
+}

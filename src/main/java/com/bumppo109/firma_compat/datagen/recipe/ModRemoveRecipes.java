@@ -2,6 +2,7 @@ package com.bumppo109.firma_compat.datagen.recipe;
 
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.util.Metal;
 import net.minecraft.world.item.DyeColor;
 
 import java.util.List;
@@ -47,6 +48,8 @@ public interface ModRemoveRecipes extends ModRecipes
                 "netherite_leggings_smithing",
                 "netherite_boots_smithing",
                 "netherite_upgrade_smithing_template",
+                "netherite_scrap",
+                "netherite_scrap_from_blasting",
                 "iron_block",
                 "iron_ingot_from_iron_block",
                 "iron_bars",
@@ -397,7 +400,12 @@ public interface ModRemoveRecipes extends ModRecipes
             removeTFC("crafting/wood/workbench/" + wood.getSerializedName());
             removeTFC("crafting/wood/chest_minecart/" + wood.getSerializedName());
         }
+        for(Metal metal : Metal.values()) {
+            removeTFC("crafting/metal/lamp/" + metal.getSerializedName());
+        }
         removeTFC("crafting/metal/block/gold");
+        removeTFC("crafting/metal/block/copper");
+        removeTFC("crafting/metal/grate/copper");
     }
 }
 

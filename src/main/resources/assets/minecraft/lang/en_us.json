@@ -1,0 +1,23 @@
+{
+  "block.minecraft.cobblestone": "Hardened Stone Cobble",
+  "block.minecraft.cobbled_deepslate": "Hardened Deepslate Cobble",
+  "block.minecraft.cobbled_deepslate_slab": "Hardened Deepslate Cobble Slab",
+  "block.minecraft.cobbled_deepslate_stairs": "Hardened Deepslate Cobble Stairs",
+  "block.minecraft.cobbled_deepslate_wall": "Hardened Deepslate Cobble Wall",
+
+  "block.minecraft.iron_ore": "Stone",
+  "block.minecraft.copper_ore": "Stone",
+  "block.minecraft.gold_ore": "Stone",
+  "block.minecraft.redstone_ore": "Stone",
+  "block.minecraft.diamond_ore": "Stone",
+  "block.minecraft.emerald_ore": "Stone",
+  "block.minecraft.lapis_ore": "Stone",
+
+  "block.minecraft.deepslate_iron_ore": "Deepslate",
+  "block.minecraft.deepslate_copper_ore": "Deepslate",
+  "block.minecraft.deepslate_gold_ore": "Deepslate",
+  "block.minecraft.deepslate_redstone_ore": "Deepslate",
+  "block.minecraft.deepslate_diamond_ore": "Deepslate",
+  "block.minecraft.deepslate_emerald_ore": "Deepslate",
+  "block.minecraft.deepslate_lapis_ore": "Deepslate"
+}

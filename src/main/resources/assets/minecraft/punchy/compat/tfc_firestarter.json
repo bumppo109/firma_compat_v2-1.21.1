@@ -1,0 +1,27 @@
+{
+  "itemSpecific": {
+    "tfc_firestarter": {
+      "kind": "INGREDIENT",
+      "customAnimation": [
+        {
+          "type": "useItem",
+          "name": "set_fire"
+        }
+      ],
+      "transforms": {
+        "right": {
+          "scale": 1.0,
+          "offX": -0.01,
+          "offY": -0.36999995,
+          "offZ": -0.079999976,
+          "rotX": 55.0,
+          "rotY": 0.0,
+          "rotZ": -8.0,
+          "pivotX": 0.0,
+          "pivotY": 0.0,
+          "pivotZ": 0.0
+        }
+      }
+    }
+  }
+}

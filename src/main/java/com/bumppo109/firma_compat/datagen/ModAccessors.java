@@ -156,9 +156,10 @@ public interface ModAccessors
     {
         return switch (type)
         {
+            case ROD -> 50;
+            case DOUBLE_INGOT, SHEET, SWORD_BLADE, MACE_HEAD, MACE, UNFINISHED_BOOTS -> 200;
+            case DOUBLE_SHEET, UNFINISHED_HELMET, UNFINISHED_CHESTPLATE, UNFINISHED_LEGGINGS, TUYERE -> 400;
             default -> 100;
-            case DOUBLE_INGOT, SHEET, SWORD_BLADE, UNFINISHED_BOOTS -> 200;
-            case DOUBLE_SHEET, UNFINISHED_HELMET, UNFINISHED_CHESTPLATE, UNFINISHED_LEGGINGS -> 400;
         };
     }
 

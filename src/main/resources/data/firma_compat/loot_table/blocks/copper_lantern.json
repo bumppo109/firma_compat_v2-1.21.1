@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "lamp_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "firma_compat:copper_lantern",
+          "functions": [
+            {
+              "function": "tfc:copy_fluid"
+            },
+            {
+              "function": "firma_compat:copy_lamp_state"
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}
