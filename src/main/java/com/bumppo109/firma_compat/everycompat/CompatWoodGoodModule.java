@@ -32,11 +32,13 @@ import net.mehvahdjukaar.moonlight.api.resources.RPUtils;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
+import net.mehvahdjukaar.moonlight.api.set.BlockType;
 import net.mehvahdjukaar.moonlight.api.set.wood.VanillaWoodTypes;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodType;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodTypeRegistry;
 import net.mehvahdjukaar.moonlight.api.util.Utils;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -357,7 +359,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                         w -> new WaterWheelBlock(ExtendedProperties.of().strength(9f).noOcclusion()
                                 .blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick),
                                 () -> (AxleBlock) AXLE.blocks.get(w),
-                                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "textures/entity/" + FirmaCompat.MODID + "/" + w.getNamespace()+ "/" + w.getTypeName() + "_water_wheel.png"))
+                                ResourceLocation.fromNamespaceAndPath("everycomp", "textures/entity/tfc/" + w.getNamespace()+ "/" + w.getTypeName() + "_water_wheel.png"))
                 )
                 .requiresFromMap(AXLE.blocks)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
@@ -376,7 +378,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                         w -> new CrateBlock(ExtendedProperties.of().sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS).strength(9.0F).noOcclusion()
                                 .blockEntity(TFCBlockEntities.CRATE))
                 )
-                .requiresFromMap(LUMBER.items)
+                .addTexture(modRes("block/oak_crate"), PaletteStrategies.MAIN_CHILD)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
                 .setRenderType(RenderLayer.CUTOUT)
                 .copyParentDrop()
@@ -385,6 +387,14 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 .build();
         this.addEntry(CRATE);
     }
+
+    /*
+    @Override
+    public boolean isEntryAlreadyRegistered(String entrySetId, ResourceLocation blockId, BlockType blockType, Registry<?> registry) {
+        return false;
+    }
+
+     */
 
     @Override
     // RECIPES, TAGS

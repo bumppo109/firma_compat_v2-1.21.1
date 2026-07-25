@@ -47,7 +47,7 @@ public class ModItems {
 
     //Metal
     //TODO - lang, textures
-    public static final ItemId POOR_NETHERITE_INGOT = register("poor_netherite_ingot");
+    public static final ItemId SCRAP_NETHERITE_INGOT = register("scrap_netherite_ingot");
     public static final ItemId UNFINISHED_LANTERN = register("unfinished_lantern");
 
     public static final Map<CompatMetal, Map<CompatMetal.ItemType, ItemId>> METAL_ITEMS = Helpers.mapOf(CompatMetal.class, metal ->

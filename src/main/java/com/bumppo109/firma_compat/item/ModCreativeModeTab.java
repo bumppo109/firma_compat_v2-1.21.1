@@ -65,7 +65,7 @@ public class ModCreativeModeTab {
         add(output, ModBlocks.COMPAT_TRAPPED_CHEST);
         add(output, ModItems.COMPAT_CHEST_MINECART);
 
-        add(output, ModItems.POOR_NETHERITE_INGOT);
+        add(output, ModItems.SCRAP_NETHERITE_INGOT);
 
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
             if (compatMetal.isDummy()) return;

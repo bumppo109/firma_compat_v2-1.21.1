@@ -164,7 +164,6 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
         UNFINISHED_CHESTPLATE(CompatMetal.PartType.ALL, false),
         UNFINISHED_LEGGINGS(CompatMetal.PartType.ALL, false),
         UNFINISHED_BOOTS(CompatMetal.PartType.ALL, false),
-        HORSE_ARMOR(CompatMetal.PartType.ALL, (CompatMetal) -> new AnimalArmorItem(CompatMetal.armorMaterial(), BodyType.EQUESTRIAN, false, base(CompatMetal).durability(CompatMetal.armorDurability(Type.BODY))))
         ;
 
         private final Function<ModRegistryMetal, Item> itemFactory;
@@ -225,7 +224,6 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
             case UNFINISHED_CHESTPLATE -> material.chestplate() != null;
             case UNFINISHED_LEGGINGS -> material.leggings() != null;
             case UNFINISHED_BOOTS -> material.boots() != null;
-            case HORSE_ARMOR -> material.horseArmor() != null;
             default -> true;
         };
     }

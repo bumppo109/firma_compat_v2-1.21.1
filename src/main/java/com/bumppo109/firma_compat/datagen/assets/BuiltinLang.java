@@ -32,6 +32,54 @@ public class BuiltinLang extends LanguageProvider {
 
         add("firma_compat.creative_tab.firma_compat", "Firma Compat");
 
+        add("fluid.firma_compat.metal.netherite", "Molten Netherite");
+        add("fluid.firma_compat.metal.poor_netherite", "Molten Poor Netherite");
+
+        //Gems Realm Compat
+        add("item_type.firma_compat.rod", "%s Rod");
+        add("item_type.firma_compat.double_ingot", "%s Double Ingot");
+        add("item_type.firma_compat.sheet", "%s Sheet");
+        add("item_type.firma_compat.double_sheet", "%s Double Sheet");
+        add("item_type.firma_compat.pickaxe_head", "%s Pickaxe Head");
+        add("item_type.firma_compat.axe_head", "%s Axe Head");
+        add("item_type.firma_compat.shovel_head", "%s Shovel Head");
+        add("item_type.firma_compat.hoe_head", "%s Hoe Head");
+        add("item_type.firma_compat.sword_blade", "%s Sword Blade");
+        add("item_type.firma_compat.unfinished_helmet", "%s Unfinished Helmet");
+        add("item_type.firma_compat.unfinished_chestplate", "%s Unfinished Chestplate");
+        add("item_type.firma_compat.unfinished_leggings", "%s Unfinished Leggings");
+        add("item_type.firma_compat.unfinished_boots", "%s Unfinished Boots");
+
+        //Wood Good Compat
+        add("item_type.firma_compat.lumber", "%s Lumber");
+        add("block_type.firma_compat.twig.json", "%s Twig");
+        add("block_type.firma_compat.support", "%s Support");
+        add("block_type.firma_compat.vertical_support", "%s Support");
+        add("block_type.firma_compat.horizontal_support", "%s Support");
+        add("block_type.firma_compat.log_fence", "%s Log Fence");
+        add("block_type.firma_compat.tool_rack", "%s Tool Rack");
+        add("block_type.firma_compat.loom", "%s Loom");
+        add("block_type.firma_compat.sluice", "%s Sluice");
+        add("block_type.firma_compat.barrel", "%s Barrel");
+        add("block_type.firma_compat.scribing_table", "%s Scribing Table");
+        add("block_type.firma_compat.sewing_table", "%s Sewing Table");
+        add("block_type.firma_compat.shelf", "%s Shelf");
+        add("block_type.firma_compat.axle", "%s Axle");
+        add("block_type.firma_compat.bladed_axle", "%s Bladed Axle");
+        add("block_type.firma_compat.encased_axle", "%s Encased Axle");
+        add("block_type.firma_compat.clutch", "%s Clutch");
+        add("block_type.firma_compat.gear_box", "%s Gear Box");
+        add("block_type.firma_compat.windmill", "%s Windmill");
+        add("block_type.firma_compat.water_wheel", "%s Water Wheel");
+
+        add("block_type.firma_compat.keg", "%s Keg");
+        add("block_type.firma_compat.food_shelf", "%s Food Shelf");
+        add("block_type.firma_compat.wine_shelf", "%s Wine Shelf");
+        add("block_type.firma_compat.hanger", "%s Hanger");
+        add("block_type.firma_compat.jarbnet", "%s Jarbnet");
+        add("block_type.firma_compat.stomping_barrel", "%s Stomping Barrel");
+        add("block_type.firma_compat.barrel_press", "%s Barrel Press");
+
     //Wood
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {

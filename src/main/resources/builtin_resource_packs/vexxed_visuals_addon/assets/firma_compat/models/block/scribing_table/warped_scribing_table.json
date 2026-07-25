@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/scribing_table",
+  "textures": {
+    "planks": "minecraft:block/warped_planks",
+    "sheet": "minecraft:block/stripped_warped_stem"
+  }
+}

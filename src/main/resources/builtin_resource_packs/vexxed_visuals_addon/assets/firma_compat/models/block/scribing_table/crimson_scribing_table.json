@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/scribing_table",
+  "textures": {
+    "planks": "minecraft:block/crimson_planks",
+    "sheet": "minecraft:block/stripped_crimson_stem"
+  }
+}

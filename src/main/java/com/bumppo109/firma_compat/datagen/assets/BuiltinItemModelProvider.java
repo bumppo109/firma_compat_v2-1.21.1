@@ -52,12 +52,12 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
         basicItem(ModBlocks.DRYING_MUD_BRICK.get().asItem());
 
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
-            if (!compatMetal.isDummy()) return;
+            if (compatMetal.isDummy()) return;
             itemTypeItemIdMap.forEach((itemType, itemId) -> {
                 basicItem(itemId.get());
             });
         });
-        basicItem(ModItems.POOR_NETHERITE_INGOT.get());
+        basicItem(ModItems.SCRAP_NETHERITE_INGOT.get());
     }
 
     private String itemPathName(Item item) {

@@ -19,27 +19,32 @@ public class StoneZoneLang extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        add("block_type.tfc.loose", "%s Loose");
-        add("block_type.tfc.mossy_loose", "Mossy %s Loose");
-        add("item_type.tfc.brick", "%s Brick");
-        add("block_type.tfc.hardened", "%s Hardened");
-        add("block_type.tfc.spike", "%s Spike");
-        add("block_type.tfc.rock_anchor", "Rope Anchor");
-        add("block_type.tfc.cobble", "%s Cobble");
-        add("block_type.tfc.mossy_cobble", "Mossy %s Cobble");
-        add("block_type.tfc.hardened_cobble", "Hardened %s Cobble");
-        add("block_type.tfc.mossy_hardened_cobble", "Mossy Hardened %s Cobble");
+        add("block_type.firma_compat.loose", "%s Loose");
+        add("block_type.firma_compat.mossy_loose", "Mossy %s Loose");
+        add("block_type.firma_compat.hardened", "%s Hardened");
+        add("block_type.firma_compat.brick_aqueduct", "%s Brick Aqueduct");
+        add("item_type.firma_compat.brick", "%s Brick");
 
-        add("block_type.tfc.flagstones", "%s Flagstones");
-        add("block_type.tfc.flagstone_stairs", "%s Flagstone Stairs");
-        add("block_type.tfc.flagstone_slab", "%s Flagstone Slab");
-        add("block_type.tfc.cobbled_road", "%s Cobbled Road");
-        add("block_type.tfc.cobbled_road_stairs", "%s Cobbled Road Stairs");
-        add("block_type.tfc.cobbled_road_slab", "%s Cobbled Road Slab");
-        add("block_type.tfc.sett_road", "%s Sett Road");
-        add("block_type.tfc.sett_road_stairs", "%s Sett Road Stairs");
-        add("block_type.tfc.sett_road_slab", "%s Sett Road Slab");
-        add("item_type.tfc.flagstone", "%s Flagstone");
+        add("block_type.firma_compat.cobble", "%s Cobble");
+        add("block_type.firma_compat.hardened_cobble", "Hardened %s Cobble");
+        add("block_type.firma_compat.mossy_cobble", "Mossy %s Cobble");
+        add("block_type.firma_compat.mossy_hardened_cobble", "Mossy Hardened %s Cobble");
+
+        add("block_type.firma_compat.flagstones", "%s Flagstones");
+        add("block_type.firma_compat.flagstone_stairs", "%s Flagstone Stairs");
+        add("block_type.firma_compat.flagstone_slab", "%s Flagstone Slab");
+        add("block_type.firma_compat.cobbled_road", "%s Cobbled Road");
+        add("block_type.firma_compat.cobbled_road_stairs", "%s Cobbled Road Stairs");
+        add("block_type.firma_compat.cobbled_road_slab", "%s Cobbled Road Slab");
+        add("block_type.firma_compat.sett_road", "%s Sett Road");
+        add("block_type.firma_compat.sett_road_stairs", "%s Sett Road Stairs");
+        add("block_type.firma_compat.sett_road_slab", "%s Sett Road Slab");
+        add("item_type.firma_compat.flagstone", "%s Flagstone");
+
+        add("item_type.firma_compat.shingle", "%s Shingle");
+        add("item_type.firma_compat.shingles", "%s Shingle");
+        add("item_type.firma_compat.shingle_stair", "%s Shingle Stairs");
+        add("item_type.firma_compat.shingle_slab", "%s Shingle Slab");
 
         //TODO - ore names not going through correctly
         ModBlocks.GRADED_ORES.forEach((rock, oreMapMap) -> {

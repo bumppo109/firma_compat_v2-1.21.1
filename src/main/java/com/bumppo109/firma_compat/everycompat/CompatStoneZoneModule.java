@@ -292,10 +292,13 @@ public class CompatStoneZoneModule extends StoneZoneModule {
         }
     }
 
+    /*
     @Override
     public boolean isEntryAlreadyRegistered(String entrySetId, ResourceLocation blockId, BlockType blockType, Registry<?> registry) {
         return false;
     }
+
+     */
 
     @Override
     public void addDynamicClientResources(Consumer<ResourceGenTask> executor) {

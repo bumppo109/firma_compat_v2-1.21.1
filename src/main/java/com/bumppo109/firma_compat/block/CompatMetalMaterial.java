@@ -28,8 +28,8 @@ public enum CompatMetalMaterial {
              null
     ),
 
-    POOR_NETHERITE(
-            ModItems.POOR_NETHERITE_INGOT,
+    SCRAP_NETHERITE(
+            ModItems.SCRAP_NETHERITE_INGOT,
             null,
             null,
             null,
@@ -46,7 +46,7 @@ public enum CompatMetalMaterial {
 
     ),
     IRON(
-            ModItems.POOR_NETHERITE_INGOT,
+            () -> Items.IRON_INGOT,
             null,
             null,
             null,

@@ -172,11 +172,13 @@ dependencies {
     //PuzzlesLib
     implementation "curse.maven:puzzles-lib-495476:8251525"
 
-    //TODO remove testing
-    //Natures Spirit
-    //implementation "curse.maven:natures-spirit-1044992:6962784"
-    //Terrablender
-    //implementation "curse.maven:terrablender-neoforge-940057:6054947"
+    //Lithostitched 1.7.13
+    implementation "curse.maven:lithostitched-936015:8378498"
+
+    //TODO testing
+    //Regions Unexplored
+    implementation "curse.maven:regions-unexplored-659110:8419667"
+
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
