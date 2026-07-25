@@ -12,6 +12,7 @@ import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -56,6 +57,7 @@ import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_YELLOW_DYE;
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 import static net.dries007.tfc.common.TFCTags.Blocks.CAN_LANDSLIDE;
 import static net.dries007.tfc.common.TFCTags.Items.*;
+import static net.dries007.tfc.common.TFCTags.Items.LAMPS;
 import static net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE;
 
 public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
@@ -174,6 +176,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
                 .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.KNIFE))
                 .add(ModItems.METAL_ITEMS.get(CompatMetal.NETHERITE).get(CompatMetal.ItemType.SCYTHE))
         ;
+
+        tag(LAMPS).add(ModBlocks.LANTERN.get().asItem());
+
+        for(Metal metal : Metal.values()) {
+            if(metal.allParts()){
+                tag(LAMPS).add(ModBlocks.COMPAT_LANTERNS.get(metal).get().asItem());
+            }
+        }
 
     //Earthen
         tag(ORE_DEPOSITS)

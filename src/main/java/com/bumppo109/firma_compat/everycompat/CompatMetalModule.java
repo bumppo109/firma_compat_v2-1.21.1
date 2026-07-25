@@ -2,6 +2,7 @@ package com.bumppo109.firma_compat.everycompat;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import net.mehvahdjukaar.every_compat.api.ItemOnlyEntrySet;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.xelbayria.gems_realm.api.GemsRealmModule;
@@ -26,7 +27,7 @@ public class CompatMetalModule extends GemsRealmModule {
     public CompatMetalModule(String modId) {
         super(modId, FirmaCompat.MODID);
 
-        Supplier<CreativeModeTab> tab = getModTab(FirmaCompat.MODID);
+        Supplier<CreativeModeTab> tab = getTab(ResourceLocation.withDefaultNamespace("building_blocks"));
 
         ROD = ItemOnlyEntrySet.builder(MetalType.class, "rod",
                         getModItem("iron_rod"), () -> VanillaMetalTypes.IRON,

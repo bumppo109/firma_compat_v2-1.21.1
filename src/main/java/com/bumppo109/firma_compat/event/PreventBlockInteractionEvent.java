@@ -1,6 +1,5 @@
 package com.bumppo109.firma_compat.event;
 
-import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -18,7 +17,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
-@EventBusSubscriber(modid = FirmaCompat.MODID)
+@EventBusSubscriber
 public class PreventBlockInteractionEvent {
 
     @SubscribeEvent
@@ -36,32 +35,70 @@ public class PreventBlockInteractionEvent {
         // Prevent interaction with tagged blocks.
         if (state.is(ModTags.Blocks.PREVENT_INTERACTION)) {
 
-            // Allow exactly one interaction:
-            // Lighting an unlit campfire with an igniter.
-            if (state.getBlock() instanceof CampfireBlock
-                    && player.getItemInHand(hand).is(Tags.Items.TOOLS_IGNITER)
-                    && !state.getValue(CampfireBlock.LIT)) {
+            // Allow exactly two interactions:
+            // 1. Lighting an unlit campfire with an igniter.
+            // 2. Extinguishing a lit campfire with an empty hand.
+            if (state.getBlock() instanceof CampfireBlock) {
 
-                if (!level.isClientSide) {
-                    level.setBlock(
-                            pos,
-                            state.setValue(CampfireBlock.LIT, true),
-                            3
-                    );
+                // Light campfire
+                if (player.getItemInHand(hand).is(Tags.Items.TOOLS_IGNITER)
+                        && !state.getValue(CampfireBlock.LIT)) {
 
-                    level.playSound(
-                            null,
-                            pos,
-                            SoundEvents.FLINTANDSTEEL_USE,
-                            SoundSource.BLOCKS,
-                            1.0F,
-                            level.random.nextFloat() * 0.4F + 0.8F
-                    );
+                    if (!level.isClientSide) {
+                        level.setBlock(
+                                pos,
+                                state.setValue(CampfireBlock.LIT, true),
+                                3
+                        );
+
+                        level.playSound(
+                                null,
+                                pos,
+                                SoundEvents.FLINTANDSTEEL_USE,
+                                SoundSource.BLOCKS,
+                                1.0F,
+                                level.random.nextFloat() * 0.4F + 0.8F
+                        );
+
+                        player.getItemInHand(hand).hurtAndBreak(
+                                1,
+                                player,
+                                hand == InteractionHand.MAIN_HAND
+                                        ? net.minecraft.world.entity.EquipmentSlot.MAINHAND
+                                        : net.minecraft.world.entity.EquipmentSlot.OFFHAND
+                        );
+                    }
+
+                    event.setCanceled(true);
+                    event.setCancellationResult(InteractionResult.SUCCESS);
+                    return;
                 }
 
-                event.setCanceled(true);
-                event.setCancellationResult(InteractionResult.SUCCESS);
-                return;
+                // Extinguish campfire with an empty hand
+                if (player.getItemInHand(hand).isEmpty()
+                        && state.getValue(CampfireBlock.LIT)) {
+
+                    if (!level.isClientSide) {
+                        level.setBlock(
+                                pos,
+                                state.setValue(CampfireBlock.LIT, false),
+                                3
+                        );
+
+                        level.playSound(
+                                null,
+                                pos,
+                                SoundEvents.GENERIC_EXTINGUISH_FIRE,
+                                SoundSource.BLOCKS,
+                                1.0F,
+                                1.0F
+                        );
+                    }
+
+                    event.setCanceled(true);
+                    event.setCancellationResult(InteractionResult.SUCCESS);
+                    return;
+                }
             }
 
             // Block every other interaction (including placing food on campfires).

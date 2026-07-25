@@ -4,6 +4,8 @@ import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.FirmaCompatHelpers;
 import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.item.ModItems;
+import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent;
 import net.mehvahdjukaar.moonlight.api.misc.IProgressTracker;
 import net.mehvahdjukaar.moonlight.api.resources.RPUtils;
@@ -13,10 +15,7 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicClientResourceProvi
 import net.mehvahdjukaar.moonlight.api.resources.pack.PackGenerationStrategy;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
-import net.mehvahdjukaar.moonlight.api.resources.textures.Palette;
-import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter;
-import net.mehvahdjukaar.moonlight.api.resources.textures.SpriteUtils;
-import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage;
+import net.mehvahdjukaar.moonlight.api.resources.textures.*;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodType;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodTypeRegistry;
 import net.mehvahdjukaar.moonlight.api.util.Utils;
@@ -31,6 +30,7 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -57,6 +57,9 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
 
     @Override
     protected void regenerateDynamicAssets(Consumer<ResourceGenTask> executor) {
+        //executor.accept(this::generateSuspiciousGravel);
+        //executor.accept(this::generateSuspiciousSand);
+        /*
         executor.accept(this::generateLumber);
         executor.accept(this::generateWaterWheel);
         executor.accept(this::generateTwig);
@@ -66,6 +69,8 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
         executor.accept(this::generateSedimentaryLoose);
         executor.accept(this::generateBrick);
         executor.accept(this::generateCrate);
+
+         */
     }
 
     @Override
@@ -75,6 +80,160 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
     @Override
     public void reload(ResourceManager manager, IProgressTracker reporter) {
         super.reload(manager, reporter);
+    }
+
+    private void generateSuspiciousGravel(ResourceManager manager, ResourceSink sink) {
+
+        for (Rock rock : Rock.VALUES) {
+
+            ResourceLocation gravelTexture = ResourceLocation.fromNamespaceAndPath(
+                    "tfc",
+                    "block/rock/gravel/" + rock.getSerializedName()
+            );
+
+            try (TextureImage gravel = TextureImage.open(manager, gravelTexture)) {
+
+                Palette palette = SpriteUtils.extrapolateWoodItemPalette(gravel);
+
+                for (int stage = 0; stage < 4; stage++) {
+
+                    int currentStage = stage;
+
+                    ResourceLocation output = FirmaCompatHelpers.modIdentifier(
+                            "block/suspicious_gravel/"
+                                    + rock.getSerializedName()
+                                    + "_"
+                                    + currentStage
+                    );
+
+                    sink.addTextureUnlessPresent(manager, output, () -> {
+
+                        ResourceLocation overlayTexture =
+                                FirmaCompatHelpers.modIdentifier(
+                                        "template/block/suspicious_"
+                                                + currentStage
+                                                + "_overlay"
+                                );
+
+                        try (
+                                TextureImage overlay = TextureImage.open(
+                                        manager,
+                                        overlayTexture
+                                )
+                        ) {
+
+                            TextureImage recoloredOverlay =
+                                    Respriter.of(overlay)
+                                            .recolor(palette);
+
+                            TextureImage result = gravel.makeCopy();
+
+                            TextureOps.applyOverlayOnExisting(
+                                    result,
+                                    recoloredOverlay
+                            );
+
+                            recoloredOverlay.close();
+
+                            return result;
+
+                        } catch (Exception e) {
+                            throw new RuntimeException(
+                                    "Failed generating suspicious gravel texture for "
+                                            + rock.getSerializedName()
+                                            + " stage "
+                                            + currentStage,
+                                    e
+                            );
+                        }
+                    });
+                }
+
+            } catch (Exception e) {
+                FirmaCompat.LOGGER.error(
+                        "Failed generating suspicious gravel textures for "
+                                + rock.getSerializedName(),
+                        e
+                );
+            }
+        }
+    }
+
+    private void generateSuspiciousSand(ResourceManager manager, ResourceSink sink) {
+
+        for (SandBlockType sand : SandBlockType.values()) {
+
+            ResourceLocation sandTexture = ResourceLocation.fromNamespaceAndPath(
+                    "tfc",
+                    "block/sand/" + sand.name().toLowerCase(Locale.ROOT)
+            );
+
+            try (TextureImage sandImage = TextureImage.open(manager, sandTexture)) {
+
+                Palette palette = SpriteUtils.extrapolateWoodItemPalette(sandImage);
+
+                for (int stage = 0; stage < 4; stage++) {
+
+                    int currentStage = stage;
+
+                    ResourceLocation output = FirmaCompatHelpers.modIdentifier(
+                            "block/suspicious_sand/"
+                                    + sand.name().toLowerCase(Locale.ROOT)
+                                    + "_"
+                                    + currentStage
+                    );
+
+                    sink.addTextureUnlessPresent(manager, output, () -> {
+
+                        ResourceLocation overlayTexture =
+                                FirmaCompatHelpers.modIdentifier(
+                                        "template/block/suspicious_"
+                                                + currentStage
+                                                + "_overlay"
+                                );
+
+                        try (
+                                TextureImage overlay = TextureImage.open(
+                                        manager,
+                                        overlayTexture
+                                )
+                        ) {
+
+                            TextureImage recoloredOverlay =
+                                    Respriter.of(overlay)
+                                            .recolor(palette);
+
+                            TextureImage result = sandImage.makeCopy();
+
+                            TextureOps.applyOverlayOnExisting(
+                                    result,
+                                    recoloredOverlay
+                            );
+
+                            recoloredOverlay.close();
+
+                            return result;
+
+                        } catch (Exception e) {
+                            throw new RuntimeException(
+                                    "Failed generating suspicious gravel texture for "
+                                            + sand.name()
+                                            + " stage "
+                                            + currentStage,
+                                    e
+                            );
+                        }
+                    });
+                }
+
+            } catch (Exception e) {
+                FirmaCompat.LOGGER.error(
+                        "Failed generating suspicious gravel textures for "
+                                + sand.name(),
+                        e
+                );
+            }
+        }
     }
 
     private void generateLumber(ResourceManager manager, ResourceSink sink) {

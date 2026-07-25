@@ -147,6 +147,10 @@ public class BuiltinLang extends LanguageProvider {
                 )
         );
 
+        ModBlocks.ROCK_ANVILS.forEach((rock, blockId) -> {
+            add(blockId.get(), getBlockDisplayName(blockId.get()));
+        });
+
     //Metal
         add(ModItems.SCRAP_NETHERITE_INGOT.get(), getItemDisplayName(ModItems.SCRAP_NETHERITE_INGOT.get()));
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
@@ -155,6 +159,11 @@ public class BuiltinLang extends LanguageProvider {
                 add(itemId.get(), getItemDisplayName(itemId.get()));
             });
         });
+
+        ModBlocks.COMPAT_LANTERNS.forEach((metal, lampBlockId) -> {
+            add(lampBlockId.get(), getBlockDisplayName(lampBlockId.get()));
+        });
+        add(ModBlocks.LANTERN.get(), getBlockDisplayName(ModBlocks.LANTERN.get()));
 
     //Earthen
         add(ModBlocks.CLAY_DIRT.get(), getBlockDisplayName(ModBlocks.CLAY_DIRT.get()));
@@ -175,10 +184,38 @@ public class BuiltinLang extends LanguageProvider {
 
         add(ModItems.UNFIRED_POT.get(), getItemDisplayName(ModItems.UNFIRED_POT.get()));
 
+        ModBlocks.TFC_SUSPICIOUS_GRAVEL.forEach((rock, brushableBlockId) -> {
+            add(brushableBlockId.get(), getTFCname(brushableBlockId.get()));
+        });
+        ModBlocks.TFC_SUSPICIOUS_SAND.forEach((sand, brushableBlockId) -> {
+            add(brushableBlockId.get(), getTFCname(brushableBlockId.get()));
+        });
+        add(ModBlocks.SUSPICIOUS_RED_SAND.get(), getBlockDisplayName(ModBlocks.SUSPICIOUS_RED_SAND.get()));
+
         //Misc
         add(ModBlocks.COMPAT_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_CHEST.get()));
         add(ModBlocks.COMPAT_TRAPPED_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_TRAPPED_CHEST.get()));
         add(ModItems.COMPAT_CHEST_MINECART.get(), getItemDisplayName(ModItems.COMPAT_CHEST_MINECART.get()));
+    }
+
+    //for "tfc_" compat blocks
+    private String getTFCname(Block block) {
+        if (block == null) {
+            return "Unknown Block";
+        }
+
+        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
+        if (id == null || id.equals(BuiltInRegistries.BLOCK.getDefaultKey())) {
+            return "Air";
+        }
+
+        String path = id.getPath();
+
+        if (path.startsWith("tfc_")) {
+            path = path.substring(4);
+        }
+
+        return processIdString(path);
     }
 
     private String getBlockDisplayName(Block block) {

@@ -76,7 +76,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
     public CompatStoneZoneModule(String modId) {
         super(modId, "tfc");
 
-        Supplier<CreativeModeTab> tab = getModTab(FirmaCompat.MODID);
+        Supplier<CreativeModeTab> tab = getTab(ResourceLocation.withDefaultNamespace("building_blocks"));
 
         HARDENED = StoneZoneEntrySet.of(StoneType.class,"","hardened",
                         getModBlock("hardened_stone", Block.class), () -> VanillaStoneTypes.STONE,

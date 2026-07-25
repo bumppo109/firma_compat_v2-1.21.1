@@ -1,9 +1,13 @@
 package com.bumppo109.firma_compat.event;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.util.Metal;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -173,11 +177,31 @@ public class ModClientEvents {
                 event
         );
 
+        for (Rock rock : Rock.values()) {
+            event.modify(BlockEntityType.BRUSHABLE_BLOCK, ModBlocks.TFC_SUSPICIOUS_GRAVEL.get(rock).get());
+        }
+        for (SandBlockType sand : SandBlockType.values()) {
+            event.modify(BlockEntityType.BRUSHABLE_BLOCK, ModBlocks.TFC_SUSPICIOUS_SAND.get(sand).get());
+        }
+        event.modify(BlockEntityType.BRUSHABLE_BLOCK, ModBlocks.SUSPICIOUS_RED_SAND.get());
+
         modifyBlockEntityType(TFCBlockEntities.FARMLAND.get(), Stream.of(ModBlocks.COMPAT_FARMLAND.get()), event);
         modifyBlockEntityType(TFCBlockEntities.TICK_COUNTER.get(), Stream.of(ModBlocks.DRYING_MUD_BRICK.get()), event);
 
         modifyBlockEntityType(TFCBlockEntities.CHEST.get(), Stream.of(ModBlocks.COMPAT_CHEST.get()), event);
         modifyBlockEntityType(TFCBlockEntities.TRAPPED_CHEST.get(), Stream.of(ModBlocks.COMPAT_TRAPPED_CHEST.get()), event);
+
+        for (CompatRock rock : CompatRock.VALUES) {
+            modifyBlockEntityType(TFCBlockEntities.ANVIL.get(), Stream.of(ModBlocks.ROCK_ANVILS.get(rock).get()), event);
+        }
+
+        modifyBlockEntityType(TFCBlockEntities.LAMP.get(), Stream.of(ModBlocks.LANTERN.get()), event);
+
+        for(Metal metal : Metal.values()){
+            if(metal.allParts()){
+                modifyBlockEntityType(TFCBlockEntities.LAMP.get(), Stream.of(ModBlocks.COMPAT_LANTERNS.get(metal).get()), event);
+            }
+        }
 
     }
 

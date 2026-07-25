@@ -19,7 +19,7 @@ public class ModTags {
     public static class Blocks {
         public static final TagKey<Block> PREVENT_INTERACTION = createTag("prevent_interaction");
         public static final TagKey<Block> TWIGS = createTag("twigs");
-        public static final TagKey<Block> UNLIT_BLOCKS = createTag("unlit_blocks");
+        public static final TagKey<Block> MAKES_ROCK_ANVIL = createTag("makes_rock_anvil");
 
         public static final TagKey<Block> CHISELED_BOOKSHELVES = createTag("chiseled_bookshelves");
 

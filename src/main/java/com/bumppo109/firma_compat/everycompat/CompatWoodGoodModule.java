@@ -88,7 +88,7 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
     public CompatWoodGoodModule(String modId) {
         super(modId, "tfc");
 
-        Supplier<CreativeModeTab> tab = getModTab(FirmaCompat.MODID);
+        Supplier<CreativeModeTab> tab = getTab(ResourceLocation.withDefaultNamespace("building_blocks"));
 
         LUMBER = ItemOnlyEntrySet.builder(WoodType.class, "lumber",
                         getModItem("oak_lumber"), () -> VanillaWoodTypes.OAK,

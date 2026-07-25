@@ -115,7 +115,7 @@ public enum CompatRock implements ModRegistryRock {
 
     public boolean canMakeAnvil() {
         return switch (this) {
-            case CALCITE, DRIPSTONE, BASALT -> false;
+            case CALCITE, DRIPSTONE, BASALT, END_STONE, NETHERRACK, TUFF -> false;
             default -> true;
         };
     }

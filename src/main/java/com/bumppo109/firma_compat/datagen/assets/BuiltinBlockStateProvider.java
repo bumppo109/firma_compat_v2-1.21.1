@@ -8,7 +8,6 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
 import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
-import net.dries007.tfc.common.blocks.wood.Wood;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -28,7 +27,6 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
 
         BlockAssets.bootstrap();
     }
-
 
     @Override
     protected void registerStatesAndModels() {
@@ -129,6 +127,8 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                     );
                 });
             });
+
+            rockAnvilWithItem(ModBlocks.ROCK_ANVILS.get(rock).get(), rawTexture);
         }
 
         ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
@@ -153,6 +153,8 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         aqueductWithItem(quartzBrickAqueduct, BlockAssets.get(Blocks.QUARTZ_BRICKS).textures().get(BlockTextureSlot.SIDE));
         Block redNetherBrickAqueduct = ModBlocks.RED_NETHER_BRICK_AQUEDUCT.get();
         aqueductWithItem(redNetherBrickAqueduct, BlockAssets.get(Blocks.RED_NETHER_BRICKS).textures().get(BlockTextureSlot.SIDE));
+
+
 
     //Natural
         ResourceLocation dirtTexture = ResourceLocation.withDefaultNamespace("block/dirt");
@@ -203,12 +205,61 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                         .texture("overlay", ResourceLocation.fromNamespaceAndPath("tfc","block/deposit/native_copper"))
         );
 
+        ModBlocks.TFC_SUSPICIOUS_GRAVEL.forEach((rock, brushableBlockId) -> {
+            ResourceLocation zero = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_gravel/" + rock.getSerializedName() + "_0");
+            ResourceLocation one = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_gravel/" + rock.getSerializedName() + "_1");
+            ResourceLocation two = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_gravel/" + rock.getSerializedName() + "_2");
+            ResourceLocation three = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_gravel/" + rock.getSerializedName() + "_3");
+
+            suspiciousBlockWithItem(brushableBlockId.get(), zero, one, two, three);
+        });
+
+        ModBlocks.TFC_SUSPICIOUS_SAND.forEach((sand, brushableBlockId) -> {
+            String sandName = sand.name().toLowerCase(Locale.ROOT);
+            ResourceLocation zero = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_sand/" + sandName + "_0");
+            ResourceLocation one = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_sand/" + sandName + "_1");
+            ResourceLocation two = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_sand/" + sandName + "_2");
+            ResourceLocation three = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_sand/" + sandName + "_3");
+
+            suspiciousBlockWithItem(brushableBlockId.get(), zero, one, two, three);
+        });
+
+        suspiciousBlockWithItem(ModBlocks.SUSPICIOUS_RED_SAND.get(),
+                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_red_sand_0"),
+                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_red_sand_1"),
+                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_red_sand_2"),
+                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_red_sand_3"));
     }
 
     private void cubeAllWithItem(Block block, ResourceLocation texture) {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
         simpleBlockWithItem(block, models().cubeAll(blockRes.getPath(), texture));
+    }
+
+    private void rockAnvilWithItem(Block block, ResourceLocation raw) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile anvil = models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc","block/rock/anvil"))
+                .texture("texture", raw);
+
+        simpleBlockWithItem(block, anvil);
+    }
+
+    private void suspiciousBlockWithItem(Block block, ResourceLocation zero, ResourceLocation one, ResourceLocation two, ResourceLocation three) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile susGravelModel0 = models().cubeAll(blockRes.getPath() + "_0", zero);
+        ModelFile susGravelModel1 = models().cubeAll(blockRes.getPath() + "_1", one);
+        ModelFile susGravelModel2 = models().cubeAll(blockRes.getPath() + "_2", two);
+        ModelFile susGravelModel3 = models().cubeAll(blockRes.getPath() + "_3", three);
+
+        getVariantBuilder(block)
+                .partialState().with(BlockStateProperties.DUSTED, 0).modelForState().modelFile(susGravelModel0).addModel()
+                .partialState().with(BlockStateProperties.DUSTED, 1).modelForState().modelFile(susGravelModel1).addModel()
+                .partialState().with(BlockStateProperties.DUSTED, 2).modelForState().modelFile(susGravelModel2).addModel()
+                .partialState().with(BlockStateProperties.DUSTED, 3).modelForState().modelFile(susGravelModel3).addModel();
+        simpleBlockItem(block, models().cubeAll(blockRes.getPath(), three));
     }
 
     private void grassBlockWithItem(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ResourceLocation overlay) {

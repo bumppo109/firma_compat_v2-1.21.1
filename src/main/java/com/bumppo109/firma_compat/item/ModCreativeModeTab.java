@@ -59,6 +59,8 @@ public class ModCreativeModeTab {
         add(output, ModBlocks.DRYING_MUD_BRICK);
         add(output, ModItems.MUD_BRICK);
 
+        add(output, ModBlocks.SUSPICIOUS_RED_SAND);
+
         add(output, ModItems.UNFIRED_POT);
 
         add(output, ModBlocks.COMPAT_CHEST);
@@ -85,6 +87,22 @@ public class ModCreativeModeTab {
             if (!compatMetal.equals(CompatMetal.SCRAP_NETHERITE)) return;
             itemTypeItemIdMap.forEach((itemType, itemId) -> {
                 add(output, itemId);
+            });
+        });
+        add(output, ModBlocks.LANTERN);
+
+        ModBlocks.COMPAT_LANTERNS.forEach((metal, lampBlockId) -> {
+            add(output, lampBlockId);
+        });
+        ModBlocks.TFC_SUSPICIOUS_GRAVEL.forEach((rock, brushableBlockId) -> {
+            add(output, brushableBlockId);
+        });
+        ModBlocks.TFC_SUSPICIOUS_SAND.forEach((rock, brushableBlockId) -> {
+            add(output, brushableBlockId);
+        });
+        ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
+            blockTypeIdMap.forEach((blockType, blockId) -> {
+                add(output, blockId);
             });
         });
     }

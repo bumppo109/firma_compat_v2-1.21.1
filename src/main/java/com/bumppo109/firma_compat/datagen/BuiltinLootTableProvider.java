@@ -144,6 +144,10 @@ public class BuiltinLootTableProvider extends LootTableProvider {
                 }
             }
 
+            ModBlocks.ROCK_ANVILS.forEach((rock, blockId) -> {
+                addHardenedRockLoot(blockId.get(), rock);
+            });
+
             //deposit
             dropSelf(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get());
             dropSelf(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get());
@@ -469,6 +473,10 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             knownBlocks.add(ModBlocks.PRISMARINE_BRICK_AQUEDUCT.get());
             knownBlocks.add(ModBlocks.RED_NETHER_BRICK_AQUEDUCT.get());
             knownBlocks.add(ModBlocks.QUARTZ_BRICK_AQUEDUCT.get());
+
+            ModBlocks.ROCK_ANVILS.forEach((rock, blockId) -> {
+                knownBlocks.add(blockId.get());
+            });
 
         //Earthen
             knownBlocks.add(ModBlocks.DRYING_MUD_BRICK.get());

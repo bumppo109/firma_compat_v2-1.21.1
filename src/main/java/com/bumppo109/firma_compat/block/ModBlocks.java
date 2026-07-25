@@ -16,6 +16,7 @@ import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
 import net.dries007.tfc.common.blocks.wood.TFCTrappedChestBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -28,6 +29,7 @@ import net.dries007.tfc.util.registry.RegistryHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -43,6 +45,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -108,9 +111,14 @@ public class ModBlocks {
             Helpers.mapOf(CompatRock.BlockType.class, CompatRock.BlockType::hasVariants, (type) ->
                     registerDecorations(createRockDecorationName(rock, type), () -> type.createSlab(rock), () -> type.createStairs(rock), () -> type.createWall(rock), rock.createItemProperties())));
 
-    //TODO - creation event, assets
-    public static final Map<CompatRock, Id<Block>> ROCK_ANVILS = Helpers.mapOf(CompatRock.class, CompatRock::canMakeAnvil, (rock) ->
-            register(rock.name() + "_anvil", () -> new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 10.0F).requiresCorrectToolForDrops().cloneItem((ItemLike)rock.base()).blockEntity(TFCBlockEntities.ANVIL)), (Function)((b) -> new BlockItem((Block) b, rock.createItemProperties()))));
+    public static final Map<CompatRock, Id<Block>> ROCK_ANVILS = Helpers.mapOf(CompatRock.class, (rock) ->
+            register(rock.name() + "_anvil", () ->
+                    new RockAnvilBlock(
+                            ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE)
+                                    .strength(2.0F, 10.0F)
+                                    .requiresCorrectToolForDrops().cloneItem((ItemLike)rock.base())
+                                    .blockEntity(TFCBlockEntities.ANVIL)), (Function)((b) ->
+                    new BlockItem((Block) b, rock.createItemProperties()))));
 
     public static final Map<CompatRock, Map<Ore, Id<Block>>> ORES = Helpers.mapOf(CompatRock.class, (rock) ->
             Helpers.mapOf(Ore.class, (ore) -> !ore.isGraded() && ore.hasBlock() && !skippedOre(ore), (ore) ->
@@ -152,7 +160,6 @@ public class ModBlocks {
 
 //Metal
 
-    //TODO - lang
     public static final Map<CompatMetal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOf(CompatMetal.class, metal ->
             registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(ModFluids.METALS.get(metal).source().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
     );
@@ -184,6 +191,43 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)));
     public static final Id<Block> KAOLIN_CLAY_PODZOL = register("kaolin_clay_podzol",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.PODZOL)));
+
+    public static final Map<Rock, Id<BrushableBlock>> TFC_SUSPICIOUS_GRAVEL = Helpers.mapOf(Rock.class, rock ->
+                    register("tfc_suspicious_" + rock.getSerializedName() + "_gravel",
+                            () -> new CompatBrushableBlock(
+                                    TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.GRAVEL),
+                                SoundEvents.BRUSH_GRAVEL, SoundEvents.BRUSH_GRAVEL_COMPLETED,
+                                BlockBehaviour.Properties.of()
+                                        .mapColor(rock.color())
+                                        .instrument(NoteBlockInstrument.SNARE)
+                                        .strength(0.25F)
+                                        .sound(SoundType.SUSPICIOUS_GRAVEL)
+                                        .pushReaction(PushReaction.DESTROY)))
+            );
+
+    public static final Map<SandBlockType, Id<BrushableBlock>> TFC_SUSPICIOUS_SAND = Helpers.mapOf(SandBlockType.class, sand ->
+                    register("tfc_suspicious_" + sand.name().toLowerCase(Locale.ROOT) + "_sand",
+                            () -> new CompatBrushableBlock(
+                                TFCBlocks.SAND.get(sand),
+                                SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED,
+                                BlockBehaviour.Properties.of()
+                                        .mapColor(sand.getMaterialColor())
+                                        .instrument(NoteBlockInstrument.SNARE)
+                                        .strength(0.25F)
+                                        .sound(SoundType.SUSPICIOUS_SAND)
+                                        .pushReaction(PushReaction.DESTROY)))
+            );
+
+    public static final Id<BrushableBlock> SUSPICIOUS_RED_SAND = register("suspicious_red_sand",
+            () -> new BrushableBlock(
+                    Blocks.RED_SAND,
+                    SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_ORANGE)
+                            .instrument(NoteBlockInstrument.SNARE)
+                            .strength(0.25F)
+                            .sound(SoundType.SUSPICIOUS_SAND)
+                            .pushReaction(PushReaction.DESTROY)));
 
     //Devices
         public static final Id<LampBlock> LANTERN = register("lantern",

@@ -406,6 +406,7 @@ public interface ModRemoveRecipes extends ModRecipes
         removeTFC("crafting/metal/block/gold");
         removeTFC("crafting/metal/block/copper");
         removeTFC("crafting/metal/grate/copper");
+        removeTFC("landslide/cobblestone");
     }
 }
 

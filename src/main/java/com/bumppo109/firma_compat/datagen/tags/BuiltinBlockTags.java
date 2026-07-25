@@ -42,6 +42,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.bumppo109.firma_compat.util.ModTags.Blocks.PREVENT_INTERACTION;
+import static com.bumppo109.firma_compat.util.ModTags.Blocks.TWIGS;
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 import static net.minecraft.tags.BlockTags.*;
 
@@ -96,11 +97,14 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
         for (Wood wood : Wood.VALUES) {
             tag(ModTags.Blocks.CHISELED_BOOKSHELVES)
                     .add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.BOOKSHELF).get());
+            tag(ModTags.Blocks.TWIGS)
+                    .add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.TWIG).get());
         }
 
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> tag(MINEABLE_WITH_AXE).add(blockId.get()));
         });
+        addAllCompatWoods(CompatWood.BlockType.TWIG, TWIGS);
         addAllCompatWoods(CompatWood.BlockType.LOG_FENCE, FENCES);
         addAllCompatWoods(CompatWood.BlockType.HORIZONTAL_SUPPORT, SUPPORT_BEAMS);
         addAllCompatWoods(CompatWood.BlockType.VERTICAL_SUPPORT, SUPPORT_BEAMS);
@@ -127,6 +131,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
                 if(blockType.equals(CompatRock.BlockType.HARDENED_COBBLE) || blockType.equals(CompatRock.BlockType.MOSSY_HARDENED_COBBLE)) {
                     tag(Tags.Blocks.COBBLESTONES_NORMAL).add(block);
                 }
+            }
+            if (rock.canMakeAnvil()) {
+                tag(MINEABLE_WITH_PICKAXE).add(ModBlocks.ROCK_ANVILS.get(rock).get());
+                tag(ModTags.Blocks.MAKES_ROCK_ANVIL).add(rock.rockMaterial().raw().base().get());
             }
         }
 
@@ -175,6 +183,17 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
                 .add(Blocks.BLACKSTONE)
                 .add(Blocks.END_STONE)
                 .add(Blocks.NETHERRACK);
+
+    //Metal
+        tag(LAMPS).add(ModBlocks.LANTERN.get());
+        tag(MINEABLE_WITH_PICKAXE).add(ModBlocks.LANTERN.get());
+
+        for(Metal metal : Metal.values()) {
+            if(metal.allParts()){
+                tag(LAMPS).add(ModBlocks.COMPAT_LANTERNS.get(metal).get());
+                tag(MINEABLE_WITH_PICKAXE).add(ModBlocks.COMPAT_LANTERNS.get(metal).get());
+            }
+        }
 
     //Earthen
         tag(CAN_LANDSLIDE)

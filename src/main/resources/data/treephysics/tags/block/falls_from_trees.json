@@ -1,0 +1,7 @@
+{
+  "values": [
+    { "id": "firmalife:beehive", "required": false },
+    { "id": "firmalife:wild_beehive", "required": false },
+    { "id": "afc:tree_tap", "required": false }
+  ]
+}
