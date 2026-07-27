@@ -79,6 +79,11 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
             });
         });
 
+        simpleBlock(ModBlocks.COMPAT_CHEST.get(), models().getBuilder("compat_chest")
+                .texture("particle", ResourceLocation.withDefaultNamespace("block/acacia_planks")));
+        simpleBlock(ModBlocks.COMPAT_TRAPPED_CHEST.get(), models().getBuilder("compat_trapped_chest")
+                .texture("particle", ResourceLocation.withDefaultNamespace("block/acacia_planks")));
+
         for (CompatRock rock : CompatRock.VALUES) {
             var rockMap = ModBlocks.ROCK_BLOCKS.get(rock);
             var oreMap = ModBlocks.ORES.get(rock);

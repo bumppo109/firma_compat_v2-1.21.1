@@ -196,13 +196,21 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
 
         for (CompatRock rock : CompatRock.VALUES) {
             //flagstone item
+            NonNullList<Ingredient> ingredients = NonNullList.create();
+            ingredients.add(Ingredient.of(rock.rockMaterial().raw().base().get()));
+            ingredients.add(Ingredient.of(rock.rockMaterial().raw().base().get()));
+            ingredients.add(Ingredient.of(TFCTags.Items.TOOLS_CHISEL));
+
+            System.out.println(ingredients.size());
+
             add(rock.getSerializedName() + "_flagstone", new AdvancedShapelessRecipe(
-                            NonNullList.of(Ingredient.of(rock.rockMaterial().raw().base().get()), Ingredient.of(TFCTags.Items.TOOLS_CHISEL)),
-                            ItemStackProvider.of(new ItemStack(CompatRnRItems.FLAGSTONE.get(rock).get()).copyWithCount(12)),
-                            Optional.empty(),
-                            Optional.of(Ingredient.of(TFCTags.Items.TOOLS_CHISEL))
-                    ), rnrLoaded
+                    ingredients,
+                    ItemStackProvider.of(new ItemStack(CompatRnRItems.FLAGSTONE.get(rock).get()).copyWithCount(16)),
+                    Optional.empty(),
+                    Optional.of(Ingredient.of(TFCTags.Items.TOOLS_CHISEL))
+                ), rnrLoaded
             );
+
             for (CompatRnR compatRnR : CompatRnR.VALUES) {
                 Block block = CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get();
                 Item mossyLoose = ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.MOSSY_LOOSE).get().asItem();
@@ -238,6 +246,8 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         mattock(BlockIngredient.of(CompatRnRBlocks.MACADAM_ROAD.get()), CompatRnRBlocks.MACADAM_ROAD_SLAB.get().defaultBlockState(), ChiselMode.SLAB, "slab", rnrLoaded);
         mattock(BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get().defaultBlockState(), ChiselMode.STAIR, "stair", rnrLoaded);
         mattock(BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.GRAVEL_ROAD_SLAB.get().defaultBlockState(), ChiselMode.SLAB, "slab", rnrLoaded);
+
+        shapelessCondition("gravel_fill", Blocks.GRAVEL, CompatRnRItems.GRAVEL_FILL.get(), rnrLoaded);
 
         for (CompatWood wood : CompatWood.VALUES) {
             Item shingleItem = CompatRnRItems.SHINGLE.get(wood).get();
@@ -299,6 +309,16 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         add(new ShapedRecipe("firma_compat", CraftingBookCategory.MISC,
                 ShapedRecipePattern.of(ingredientMap, pattern),
                 new ItemStack(result)),conditions);
+    }
+
+    private void shapelessCondition(String name, ItemLike input, ItemLike result, ICondition... conditions) {
+        NonNullList<Ingredient> ingredientList = NonNullList.create();
+        ingredientList.add(Ingredient.of(input));
+
+        add(name, new ShapelessRecipe("firma_compat", CraftingBookCategory.MISC,
+                new ItemStack(result),
+                ingredientList
+                ),conditions);
     }
 
     /**

@@ -232,7 +232,7 @@ public class RnRStoneZoneModule extends StoneZoneModule {
                     generateMattockStairRecipes(sink, stone, COBBLED_ROAD, COBBLED_ROAD_SLAB,"tfc:slab");
 
                     if(FLAGSTONE.items.get(stone) != null){
-                        generateToolItemRecipe(sink, stone.stone.asItem(), "c:tools/chisel", FLAGSTONE.items.get(stone), 12, null);
+                        generateFlagstoneRecipe(sink, stone.stone.asItem(), "c:tools/chisel", FLAGSTONE.items.get(stone), 16, null);
                         generateBlockModRecipe(sink, stone, FLAGSTONES);
                         generateMattockStairRecipes(sink, stone, FLAGSTONES, FLAGSTONES_STAIRS,"tfc:stair");
                         generateMattockStairRecipes(sink, stone, FLAGSTONES, FLAGSTONES_SLAB,"tfc:slab");
@@ -292,9 +292,9 @@ public class RnRStoneZoneModule extends StoneZoneModule {
         if(baseEntrySet == FLAGSTONES){
             roadItem = FLAGSTONE.items.get(stone);
         } else if(baseEntrySet == COBBLED_ROAD){
-            roadItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(StoneZone.MOD_ID, FirmaCompat.MODID + "/" + stone.getNamespace() + "/" + stone.getTypeName() +"_loose"));
+            roadItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(StoneZone.MOD_ID, "tfc/" + stone.getNamespace() + "/" + stone.getTypeName() +"_loose"));
         } else if(baseEntrySet == SETT_ROAD){
-            roadItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(StoneZone.MOD_ID, FirmaCompat.MODID + "/" + stone.getNamespace() + "/" + stone.getTypeName() +"_brick"));
+            roadItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(StoneZone.MOD_ID,"tfc/" + stone.getNamespace() + "/" + stone.getTypeName() +"_brick"));
         }
 
         if (base != null && roadItem != null){
@@ -324,9 +324,9 @@ public class RnRStoneZoneModule extends StoneZoneModule {
         }
     }
 
-    public void generateToolItemRecipe(
+    public void generateFlagstoneRecipe(
             ResourceSink sink,
-            Item inputitem,
+            Item rawStone,
             String toolTag,               // e.g. "c:tools/saw"
             Item ouptutItem,
             int count,
@@ -355,8 +355,9 @@ public class RnRStoneZoneModule extends StoneZoneModule {
         // The actual material being processed
         JsonObject materialIngredient = new JsonObject();
 
-        materialIngredient.addProperty("item", Utils.getID(inputitem).toString());
+        materialIngredient.addProperty("item", Utils.getID(rawStone).toString());
 
+        ingredients.add(materialIngredient);
         ingredients.add(materialIngredient);
 
         recipe.add("ingredients", ingredients);

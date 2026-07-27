@@ -391,7 +391,8 @@ public interface ModCraftingRecipes extends ModRecipes {
             }
         }
         //Misc Rock
-
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, ModItems.PRISMARINE_BRICK.get(), Items.PRISMARINE_SHARD);
+        recipe().useTool(TFCTags.Items.TOOLS_CHISEL, ModItems.QUARTZ_BRICK.get(), Items.QUARTZ);
         Block brickAqueduct = ModBlocks.BRICK_AQUEDUCT.get();
         Block prismarineBrickAqueduct = ModBlocks.PRISMARINE_BRICK_AQUEDUCT.get();
         Block quartzBrickAqueduct = ModBlocks.QUARTZ_BRICK_AQUEDUCT.get();

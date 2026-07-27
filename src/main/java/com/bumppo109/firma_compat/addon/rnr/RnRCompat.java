@@ -29,6 +29,7 @@ public class RnRCompat {
         }
             add(output, CompatRnRBlocks.TAMPED_MUD);
             add(output, CompatRnRBlocks.TAMPED_DIRT);
+            add(output, CompatRnRItems.GRAVEL_FILL);
             add(output, CompatRnRBlocks.GRAVEL_ROAD);
             add(output, CompatRnRBlocks.GRAVEL_ROAD_STAIRS);
             add(output, CompatRnRBlocks.GRAVEL_ROAD_SLAB);
@@ -38,6 +39,7 @@ public class RnRCompat {
             add(output, CompatRnRBlocks.MACADAM_ROAD_SLAB);
 
         for (CompatRock rock : CompatRock.VALUES) {
+            add(output, CompatRnRItems.FLAGSTONE.get(rock));
             add(output, CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(CompatRnR.FLAGSTONES));
             add(output, CompatRnRBlocks.ROCK_STAIRS.get(rock).get(CompatRnR.FLAGSTONES));
             add(output, CompatRnRBlocks.ROCK_SLABS.get(rock).get(CompatRnR.FLAGSTONES));

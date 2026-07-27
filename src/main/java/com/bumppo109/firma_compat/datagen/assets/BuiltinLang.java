@@ -81,6 +81,10 @@ public class BuiltinLang extends LanguageProvider {
         add("block_type.firma_compat.stomping_barrel", "%s Stomping Barrel");
         add("block_type.firma_compat.barrel_press", "%s Barrel Press");
 
+        add("block_type.firma_compat.shingles", "%s Shingles");
+        add("block_type.firma_compat.shingles_stairs", "%s Shingle Stairs");
+        add("block_type.firma_compat.shingles_slab", "%s Shingle Slab");
+
     //Wood
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
