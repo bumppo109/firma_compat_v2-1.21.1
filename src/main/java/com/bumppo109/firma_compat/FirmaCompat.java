@@ -63,7 +63,8 @@ public class FirmaCompat {
 
         modEventBus.addListener(this::commonSetup);
 
-        ModCompatHandler.registerModules();
+        ModCompatHandler.registerEveryCompatModules();
+        ModCompatHandler.registerAddon(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 

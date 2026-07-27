@@ -1,10 +1,8 @@
 package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.block.BlockAssets;
-import com.bumppo109.firma_compat.block.BlockTextureSlot;
-import com.bumppo109.firma_compat.block.CompatWood;
-import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.item.ModItems;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -117,7 +115,7 @@ public class BuiltinLang extends LanguageProvider {
 
         ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
-                add(blockId.get(), getBlockDisplayName(blockId.get()));
+                add(blockId.get(), getTFCname(blockId.get()));
             });
         });
 
@@ -196,6 +194,34 @@ public class BuiltinLang extends LanguageProvider {
         add(ModBlocks.COMPAT_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_CHEST.get()));
         add(ModBlocks.COMPAT_TRAPPED_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_TRAPPED_CHEST.get()));
         add(ModItems.COMPAT_CHEST_MINECART.get(), getItemDisplayName(ModItems.COMPAT_CHEST_MINECART.get()));
+
+
+    // =============== Firmalife ================
+        for (CompatWood wood : CompatWood.VALUES) {
+            Block foodShelfBlock = CompatFLBlocks.FOOD_SHELVES.get(wood).get();
+            Block hangerBlock = CompatFLBlocks.HANGERS.get(wood).get();
+            Block jarbnetBlock = CompatFLBlocks.JARBNETS.get(wood).get();
+            Block kegBlock = CompatFLBlocks.KEGS.get(wood).get();
+            Block kegSubBlock = CompatFLBlocks.KEG_SUBS.get(wood).get();
+            Block stompBarrelBlock = CompatFLBlocks.STOMPING_BARRELS.get(wood).get();
+            Block barrelPressBlock = CompatFLBlocks.BARREL_PRESSES.get(wood).get();
+            Block wineShelfBlock = CompatFLBlocks.WINE_SHELVES.get(wood).get();
+
+            add(foodShelfBlock, getBlockDisplayName(foodShelfBlock));
+            add(hangerBlock, getBlockDisplayName(hangerBlock));
+            add(jarbnetBlock, getBlockDisplayName(jarbnetBlock));
+            add(kegBlock, getBlockDisplayName(kegBlock));
+            add(kegSubBlock, getBlockDisplayName(kegBlock));
+            add(stompBarrelBlock, getBlockDisplayName(stompBarrelBlock));
+            add(barrelPressBlock, getBlockDisplayName(barrelPressBlock));
+            add(wineShelfBlock, getBlockDisplayName(wineShelfBlock));
+        }
+
+        CompatFLBlocks.CHROMITE_ORES.forEach((rock, gradeIdMap) -> {
+            gradeIdMap.forEach((grade, blockId) -> {
+                add(blockId.get(), getBlockDisplayName(blockId.get()));
+            });
+        });
     }
 
     //for "tfc_" compat blocks

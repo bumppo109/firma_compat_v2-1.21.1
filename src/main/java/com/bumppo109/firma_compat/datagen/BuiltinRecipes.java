@@ -1,8 +1,10 @@
 package com.bumppo109.firma_compat.datagen;
 
 import com.bumppo109.firma_compat.FirmaCompatHelpers;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
+import com.bumppo109.firma_compat.block.CompatWoodMaterial;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.recipe.*;
 import com.bumppo109.firma_compat.item.ModItems;
@@ -40,6 +42,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -160,6 +163,27 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         add(new LandslideRecipe(BlockIngredient.of(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get()), ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get().defaultBlockState()));
         add(new LandslideRecipe(BlockIngredient.of(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get()), ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get().defaultBlockState()));
 
+
+    // =============== Firmalife ================
+        for (CompatWood wood : CompatWood.VALUES) {
+            CompatWoodMaterial material = wood.compatWoodMaterial();
+
+            Block foodShelfBlock = CompatFLBlocks.FOOD_SHELVES.get(wood).get();
+            Block hangerBlock = CompatFLBlocks.HANGERS.get(wood).get();
+            Block jarbnetBlock = CompatFLBlocks.JARBNETS.get(wood).get();
+            Block kegBlock = CompatFLBlocks.KEGS.get(wood).get();
+            Block stompBarrelBlock = CompatFLBlocks.STOMPING_BARRELS.get(wood).get();
+            Block barrelPressBlock = CompatFLBlocks.BARREL_PRESSES.get(wood).get();
+            Block wineShelfBlock = CompatFLBlocks.WINE_SHELVES.get(wood).get();
+
+            shapedCondition(Map.of('L', Ingredient.of(ModItems.LUMBER.get(wood).get()), 'P', Ingredient.of(material.planks())), List.of("PPP", "LLL", "PPP"), foodShelfBlock, flLoaded);
+            shapedCondition(Map.of('S', Ingredient.of(Tags.Items.STRINGS), 'P', Ingredient.of(material.planks())), List.of("PPP", " S ", " S "), hangerBlock, flLoaded);
+            shapedCondition(Map.of('B', Ingredient.of(TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.ROD).get()), 'W', Ingredient.of(material.log()), 'L', Ingredient.of(ModItems.LUMBER.get(wood).get())), List.of("W  ", "BLL", "W  "), jarbnetBlock, flLoaded);
+            shapedCondition(Map.of('W', Ingredient.of(material.log()), 'S', Ingredient.of(FLItems.BARREL_STAVE), 'G', Ingredient.of(TFCItems.GLUE)), List.of("WSW", "SGS", "WSW"), kegBlock, flLoaded);
+            shapedCondition(Map.of('L', Ingredient.of(ModItems.LUMBER.get(wood).get()), 'G', Ingredient.of(TFCItems.GLUE)), List.of("LGL", "LLL", "GGG"), stompBarrelBlock, flLoaded);
+            shapedCondition(Map.of('B', Ingredient.of(stompBarrelBlock), 'R', Ingredient.of(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.ROD).get()), 'S', Ingredient.of(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.SHEET).get()), 'M', Ingredient.of(TFCItems.BRASS_MECHANISMS)), List.of("BR ", "SM "), barrelPressBlock, flLoaded);
+            shapedCondition(Map.of('L', Ingredient.of(FLItems.TREATED_LUMBER.get()), 'W', Ingredient.of(material.log())), List.of("WLW", "WLW", "WLW"), wineShelfBlock, flLoaded);
+        }
     }
 
     @Override
@@ -196,6 +220,12 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
     private void collapse(String suffix, BlockIngredient in, BlockState out, ICondition... conditions) {
         this.add(this.nameOf(out.getBlock().asItem()) + (Objects.equals(suffix, "") ? "" : "_") + suffix,
                 new CollapseRecipe(in, out), conditions);
+    }
+
+    private void shapedCondition(Map<Character, Ingredient> ingredientMap, List<String> pattern, ItemLike result, ICondition... conditions) {
+        add(new ShapedRecipe("firma_compat", CraftingBookCategory.MISC,
+                ShapedRecipePattern.of(ingredientMap, pattern),
+                new ItemStack(result)),conditions);
     }
 
     /**

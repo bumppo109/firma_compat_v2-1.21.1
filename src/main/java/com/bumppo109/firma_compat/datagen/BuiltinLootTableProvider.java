@@ -1,16 +1,20 @@
 package com.bumppo109.firma_compat.datagen;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
+import com.bumppo109.firma_compat.block.CompatWoodMaterial;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.eerussianguy.firmalife.common.items.FLItems;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.loot.ApplyStackSizeFunction;
 import net.dries007.tfc.util.loot.IsIsolatedCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
@@ -24,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -37,6 +42,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -248,6 +254,26 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             dropOther(ModBlocks.COMPAT_FARMLAND.get(), Blocks.DIRT);
 
             addDryingBricksLoot(ModBlocks.DRYING_MUD_BRICK.get(), ModItems.MUD_BRICK.get());
+
+        // ============= Firmalife ===============
+            for (CompatWood wood : CompatWood.VALUES) {
+                CompatWoodMaterial material = wood.compatWoodMaterial();
+
+                dropSelf(CompatFLBlocks.FOOD_SHELVES.get(wood).get());
+                dropSelf(CompatFLBlocks.HANGERS.get(wood).get());
+                dropSelf(CompatFLBlocks.JARBNETS.get(wood).get());
+                dropSelf(CompatFLBlocks.KEGS.get(wood).get());
+                dropSelf(CompatFLBlocks.STOMPING_BARRELS.get(wood).get());
+                dropSelf(CompatFLBlocks.BARREL_PRESSES.get(wood).get());
+                dropSelf(CompatFLBlocks.WINE_SHELVES.get(wood).get());
+            }
+
+            CompatFLBlocks.CHROMITE_ORES.forEach((rock, gradeIdMap) -> {
+                gradeIdMap.forEach((grade, blockId) -> {
+                    Item oreItem = FLItems.CHROMIUM_ORES.get(grade).get();
+                    addSimpleOreDrop(blockId.get(), oreItem);
+                });
+            });
         }
 
         private void sluiceBlockLoot(Block block) {
@@ -492,6 +518,25 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             knownBlocks.add(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get());
             knownBlocks.add(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get());
             knownBlocks.add(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get());
+
+        //======= Firmalife ========
+            for (CompatWood wood : CompatWood.VALUES) {
+                CompatWoodMaterial material = wood.compatWoodMaterial();
+
+                knownBlocks.add(CompatFLBlocks.FOOD_SHELVES.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.HANGERS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.JARBNETS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.KEGS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.STOMPING_BARRELS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.BARREL_PRESSES.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.WINE_SHELVES.get(wood).get());
+            }
+
+            CompatFLBlocks.CHROMITE_ORES.forEach((rock, gradeIdMap) -> {
+                gradeIdMap.forEach((grade, blockId) -> {
+                    knownBlocks.add(blockId.get());
+                });
+            });
 
             return knownBlocks;
         }

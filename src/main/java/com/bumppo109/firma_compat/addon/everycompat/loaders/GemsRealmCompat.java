@@ -11,9 +11,7 @@ public class GemsRealmCompat {
 
     public static void register() {
 
-        CompatMetalModule metalModule =
-                new CompatMetalModule(FirmaCompat.MODID);
-
+        CompatMetalModule metalModule = new CompatMetalModule(FirmaCompat.MODID);
         EveryCompatAPI.registerModule(metalModule);
     }
 }

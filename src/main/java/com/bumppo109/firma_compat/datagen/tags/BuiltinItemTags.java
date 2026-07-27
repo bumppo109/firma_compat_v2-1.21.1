@@ -1,6 +1,8 @@
 package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.firmalife.FLCompat;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
 import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
@@ -8,6 +10,7 @@ import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.util.ModTags;
+import com.eerussianguy.firmalife.common.FLTags;
 import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -54,10 +57,13 @@ import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_ORANGE_DYE;
 import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_PINK_DYE;
 import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_RED_DYE;
 import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_YELLOW_DYE;
+import static com.eerussianguy.firmalife.common.FLTags.Blocks.*;
+import static com.eerussianguy.firmalife.common.FLTags.Blocks.KEGS;
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 import static net.dries007.tfc.common.TFCTags.Blocks.CAN_LANDSLIDE;
 import static net.dries007.tfc.common.TFCTags.Items.*;
 import static net.dries007.tfc.common.TFCTags.Items.LAMPS;
+import static net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE;
 import static net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE;
 
 public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
@@ -269,6 +275,25 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
 
     //Misc
         tag(Tags.Items.TOOLS_IGNITER).add(TFCItems.FLINT_AND_PYRITE);
+
+    // ============== Firmalife ============
+        for (CompatWood wood : CompatWood.VALUES) {
+            ResourceLocation foodShelf = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.FOOD_SHELVES.get(wood).get());
+            ResourceLocation hanger = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.HANGERS.get(wood).get());
+            ResourceLocation jarbnet = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.JARBNETS.get(wood).get());
+            ResourceLocation keg = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.KEGS.get(wood).get());
+            ResourceLocation stompBarrel = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.STOMPING_BARRELS.get(wood).get());
+            ResourceLocation barrelPress = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.BARREL_PRESSES.get(wood).get());
+            ResourceLocation wineShelf = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.WINE_SHELVES.get(wood).get());
+
+            tag(FLTags.Items.FOOD_SHELVES).addOptional(foodShelf);
+            tag(FLTags.Items.WINE_SHELVES).addOptional(wineShelf);
+            tag(FLTags.Items.HANGERS).addOptional(hanger);
+            tag(FLTags.Items.JARBNETS).addOptional(jarbnet);
+            tag(FLTags.Items.STOMPING_BARRELS).addOptional(stompBarrel);
+            tag(FLTags.Items.BARREL_PRESSES).addOptional(barrelPress);
+            tag(FLTags.Items.KEGS).addOptional(keg);
+        }
     }
 
     private void metalTag(CompatMetal metal, CompatMetal.ItemType type, TagKey<Item> baseTag)

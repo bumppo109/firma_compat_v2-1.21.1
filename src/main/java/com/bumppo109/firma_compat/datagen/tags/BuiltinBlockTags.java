@@ -1,11 +1,16 @@
 package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
+import com.bumppo109.firma_compat.block.CompatWoodMaterial;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
+import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.util.ModTags;
+import com.eerussianguy.firmalife.common.FLTags;
+import com.eerussianguy.firmalife.common.items.FLItems;
 import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
@@ -13,6 +18,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.minecraft.core.HolderLookup;
@@ -26,6 +32,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -33,6 +41,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -43,6 +52,8 @@ import java.util.stream.Stream;
 
 import static com.bumppo109.firma_compat.util.ModTags.Blocks.PREVENT_INTERACTION;
 import static com.bumppo109.firma_compat.util.ModTags.Blocks.TWIGS;
+import static com.eerussianguy.firmalife.common.FLTags.Blocks.*;
+import static com.eerussianguy.firmalife.common.FLTags.Blocks.KEGS;
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 import static net.minecraft.tags.BlockTags.*;
 
@@ -246,6 +257,42 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
 
         tag(FARMLANDS).add(ModBlocks.COMPAT_FARMLAND.get());
         tag(NORMAL_FARMLAND).add(ModBlocks.COMPAT_FARMLAND.get());
+
+
+    // ============== Firmalife ============
+        for (CompatWood wood : CompatWood.VALUES) {
+            ResourceLocation foodShelf = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.FOOD_SHELVES.get(wood).get());
+            ResourceLocation hanger = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.HANGERS.get(wood).get());
+            ResourceLocation jarbnet = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.JARBNETS.get(wood).get());
+            ResourceLocation keg = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.KEGS.get(wood).get());
+            ResourceLocation stompBarrel = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.STOMPING_BARRELS.get(wood).get());
+            ResourceLocation barrelPress = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.BARREL_PRESSES.get(wood).get());
+            ResourceLocation wineShelf = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.WINE_SHELVES.get(wood).get());
+
+            tag(FOOD_SHELVES).addOptional(foodShelf);
+            tag(FLTags.Blocks.WINE_SHELVES).addOptional(wineShelf);
+            tag(HANGERS).addOptional(hanger);
+            tag(JARBNETS).addOptional(jarbnet);
+            tag(STOMPING_BARRELS).addOptional(stompBarrel);
+            tag(BARREL_PRESSES).addOptional(barrelPress);
+            tag(KEGS).addOptional(keg);
+
+            tag(MINEABLE_WITH_AXE)
+                    .addOptional(foodShelf)
+                    .addOptional(wineShelf)
+                    .addOptional(hanger)
+                    .addOptional(stompBarrel)
+                    .addOptional(barrelPress)
+                    .addOptional(keg)
+            ;
+        }
+        CompatFLBlocks.CHROMITE_ORES.forEach((rock, gradeIdMap) -> {
+            gradeIdMap.forEach((grade, blockId) -> {
+                ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(blockId.get());
+                tag(MINEABLE_WITH_PICKAXE).addOptional(blockRes);
+                tag(Tags.Blocks.ORES).addOptional(blockRes);
+            });
+        });
     }
 
     private void addAllCompatWoods(CompatWood.BlockType type, TagKey<Block> tagKey) {
