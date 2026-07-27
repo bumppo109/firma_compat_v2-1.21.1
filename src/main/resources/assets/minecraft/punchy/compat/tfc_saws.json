@@ -1,33 +1,32 @@
 {
   "customGroups": [
     {
-      "name": "tfc_tuyeres",
+      "name": "tfc_saws",
       "items": [
-        "tfc:metal/tuyere/copper",
-        "tfc:metal/tuyere/bronze",
-        "tfc:metal/tuyere/bismuth_bronze",
-        "tfc:metal/tuyere/black_bronze",
-        "tfc:metal/tuyere/wrought_iron",
-        "tfc:metal/tuyere/steel",
-        "tfc:metal/tuyere/black_steel",
-        "tfc:metal/tuyere/blue_steel",
-        "tfc:metal/tuyere/red_steel",
-        "firma_compat:netherite_tuyere"
+        "tfc:metal/saw/copper",
+        "tfc:metal/saw/bismuth_bronze",
+        "tfc:metal/saw/black_bronze",
+        "tfc:metal/saw/bronze",
+        "tfc:metal/saw/wrought_iron",
+        "tfc:metal/saw/steel",
+        "tfc:metal/saw/black_steel",
+        "tfc:metal/saw/blue_steel",
+        "tfc:metal/saw/red_steel"
       ]
     }
   ],
   "item": {
-    "tfc_tuyeres": {
+    "tfc_saws": {
       "kind": "INGREDIENT",
       "armKind": "INGREDIENT",
       "transforms": {
         "right": {
           "scale": 1.0,
-          "offX": 0.099966526,
-          "offY": -0.13358772,
-          "offZ": 0.056450605,
-          "rotX": -99.93404,
-          "rotY": -88.59375,
+          "offX": 0.0,
+          "offY": 0.0,
+          "offZ": 0.0,
+          "rotX": -65.80644,
+          "rotY": 0.0,
           "rotZ": 0.0,
           "pivotX": 0.0,
           "pivotY": 0.0,
@@ -35,13 +34,13 @@
         },
         "left": {
           "scale": 1.0,
-          "offX": 0.11705065,
-          "offY": -0.15298212,
-          "offZ": 0.056450605,
-          "rotX": -5.488205,
-          "rotY": 87.58011,
-          "rotZ": 0.0,
-          "pivotX": 0.0,
+          "offX": -0.0,
+          "offY": 0.0,
+          "offZ": 0.0,
+          "rotX": -65.80644,
+          "rotY": -0.0,
+          "rotZ": -0.0,
+          "pivotX": -0.0,
           "pivotY": 0.0,
           "pivotZ": 0.0
         }

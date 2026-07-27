@@ -4,8 +4,16 @@
       "kind": "INGREDIENT",
       "customAnimation": [
         {
+          "type": "mining",
+          "name": "shears"
+        },
+        {
           "type": "useItem",
-          "name": "set_fire"
+          "name": "shears"
+        },
+        {
+          "type": "attack",
+          "var_1": "shears"
         }
       ],
       "transforms": {

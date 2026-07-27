@@ -247,7 +247,7 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         mattock(BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get().defaultBlockState(), ChiselMode.STAIR, "stair", rnrLoaded);
         mattock(BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.GRAVEL_ROAD_SLAB.get().defaultBlockState(), ChiselMode.SLAB, "slab", rnrLoaded);
 
-        shapelessCondition("gravel_fill", Blocks.GRAVEL, CompatRnRItems.GRAVEL_FILL.get(), rnrLoaded);
+        shapelessCondition("gravel_fill", Blocks.GRAVEL, CompatRnRItems.GRAVEL_FILL.get(), 6, rnrLoaded);
 
         for (CompatWood wood : CompatWood.VALUES) {
             Item shingleItem = CompatRnRItems.SHINGLE.get(wood).get();
@@ -311,12 +311,12 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
                 new ItemStack(result)),conditions);
     }
 
-    private void shapelessCondition(String name, ItemLike input, ItemLike result, ICondition... conditions) {
+    private void shapelessCondition(String name, ItemLike input, ItemLike result, int count, ICondition... conditions) {
         NonNullList<Ingredient> ingredientList = NonNullList.create();
         ingredientList.add(Ingredient.of(input));
 
         add(name, new ShapelessRecipe("firma_compat", CraftingBookCategory.MISC,
-                new ItemStack(result),
+                new ItemStack(result, count),
                 ingredientList
                 ),conditions);
     }

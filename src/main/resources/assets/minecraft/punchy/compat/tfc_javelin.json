@@ -15,27 +15,39 @@
         "tfc:metal/javelin/steel",
         "tfc:metal/javelin/black_steel",
         "tfc:metal/javelin/blue_steel",
-        "tfc:metal/javelin/red_steel"
+        "tfc:metal/javelin/red_steel",
+        "firma_compat:netherite_javelin"
       ]
     }
   ],
   "item": {
     "tfc_javelin": {
       "kind": "TRIDENT",
+      "betterCombat": [
+        {
+          "type": "melee_combo",
+          "attack_1": "attack_spear_v2",
+          "attack_2": "attack_spear_v2",
+          "attack_3": "attack_spear_v2",
+          "attack_4": "attack_spear_v2",
+          "attack_5": "attack_spear_v2",
+          "attack_6": "attack_spear_v2"
+        }
+      ],
       "customAnimation": [
         {
           "type": "attack",
           "var_1": "attack_3"
         },
         {
+          "type": "useItem",
+          "name": "use_javelin"
+        },
+        {
           "type": "mining_v2",
           "start": "new_mining_st_start",
           "looping": "new_mining_st_loop",
           "end": "new_mining_st_end"
-        },
-        {
-          "type": "useItem",
-          "var_1": "use_tfc_javelin"
         }
       ]
     }

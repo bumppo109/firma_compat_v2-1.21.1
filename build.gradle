@@ -180,6 +180,9 @@ dependencies {
     //Lithostitched 1.7.13
     implementation "curse.maven:lithostitched-936015:8378498"
 
+    //Punchy 2.6.2
+    implementation "curse.maven:punchy-1374153:8408052"
+
     //TODO testing
     //Regions Unexplored
     implementation "curse.maven:regions-unexplored-659110:8419667"
