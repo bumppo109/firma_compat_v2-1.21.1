@@ -20,8 +20,8 @@ public class ModTags {
         public static final TagKey<Block> PREVENT_INTERACTION = createTag("prevent_interaction");
         public static final TagKey<Block> TWIGS = createTag("twigs");
         public static final TagKey<Block> MAKES_ROCK_ANVIL = createTag("makes_rock_anvil");
-
         public static final TagKey<Block> CHISELED_BOOKSHELVES = createTag("chiseled_bookshelves");
+        public static final TagKey<Block> MUD = createTag("mud");
 
         private static TagKey<Block> createTag(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, name));

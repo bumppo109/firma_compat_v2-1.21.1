@@ -2,6 +2,8 @@ package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnR;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.CompatWoodMaterial;
@@ -12,6 +14,7 @@ import com.bumppo109.firma_compat.util.ModTags;
 import com.eerussianguy.firmalife.common.FLTags;
 import com.eerussianguy.firmalife.common.items.FLItems;
 import com.google.common.base.Preconditions;
+import com.therighthon.rnr.common.RNRTags;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -207,6 +210,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
         }
 
     //Earthen
+        tag(ModTags.Blocks.MUD).add(Blocks.MUD);
+
         tag(CAN_LANDSLIDE)
                 .add(Blocks.GRASS_BLOCK)
                 .add(Blocks.DIRT_PATH)
@@ -293,6 +298,52 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
                 tag(Tags.Blocks.ORES).addOptional(blockRes);
             });
         });
+
+    // ============== Firmalife ============
+        for (CompatRock rock : CompatRock.VALUES) {
+            for (CompatRnR compatRnR : CompatRnR.VALUES) {
+                Function<Block, ResourceLocation> getBlockId = BuiltInRegistries.BLOCK::getKey;
+                TagKey<Block> blockTagKey = switch (compatRnR) {
+                    case FLAGSTONES -> RNRTags.Blocks.FLAGSTONE_ROAD_BLOCKS;
+                    case COBBLED_ROAD -> RNRTags.Blocks.COBBLED_ROAD_BLOCKS;
+                    case SETT_ROAD -> RNRTags.Blocks.SETT_ROAD_BLOCKS;
+                };
+                TagKey<Block> stairTagKey = switch (compatRnR) {
+                    case FLAGSTONES -> RNRTags.Blocks.FLAGSTONE_ROAD_STAIRS;
+                    case COBBLED_ROAD -> RNRTags.Blocks.COBBLED_ROAD_STAIRS;
+                    case SETT_ROAD -> RNRTags.Blocks.SETT_ROAD_STAIRS;
+                };
+                TagKey<Block> slabTagKey = switch (compatRnR) {
+                    case FLAGSTONES -> RNRTags.Blocks.FLAGSTONE_ROAD_SLABS;
+                    case COBBLED_ROAD -> RNRTags.Blocks.COBBLED_ROAD_SLABS;
+                    case SETT_ROAD -> RNRTags.Blocks.SETT_ROAD_SLABS;
+                };
+                tag(blockTagKey).addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get()));
+                tag(stairTagKey).addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get()));
+                tag(slabTagKey).addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get()));
+
+                tag(MINEABLE_WITH_PICKAXE)
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get()))
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get()))
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get()));
+                tag(CAN_LANDSLIDE)
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get()))
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get()))
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get()));
+                tag(SUPPORTS_LANDSLIDE)
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get()))
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get()))
+                        .addOptional(getBlockId.apply(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get()));
+            }
+        }
+        for(CompatWood wood : CompatWood.VALUES){
+            Function<Block, ResourceLocation> getBlockId = BuiltInRegistries.BLOCK::getKey;
+
+            tag(MINEABLE_WITH_AXE)
+                    .addOptional(getBlockId.apply(CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get()))
+                    .addOptional(getBlockId.apply(CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.get(wood).get()))
+                    .addOptional(getBlockId.apply(CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.get(wood).get()));
+        }
     }
 
     private void addAllCompatWoods(CompatWood.BlockType type, TagKey<Block> tagKey) {

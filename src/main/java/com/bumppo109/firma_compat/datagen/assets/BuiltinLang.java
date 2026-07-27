@@ -2,6 +2,8 @@ package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRItems;
 import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.item.ModItems;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -222,6 +224,33 @@ public class BuiltinLang extends LanguageProvider {
                 add(blockId.get(), getBlockDisplayName(blockId.get()));
             });
         });
+
+    // =============== Firmalife ================
+        CompatRnRBlocks.ROCK_BLOCKS.forEach((rock, compatRnRIdMap) -> {
+            compatRnRIdMap.forEach((compatRnR, blockId) -> add(blockId.get(), getBlockDisplayName(blockId.get())));
+        });
+        CompatRnRBlocks.ROCK_STAIRS.forEach((rock, compatRnRIdMap) -> {
+            compatRnRIdMap.forEach((compatRnR, blockId) -> add(blockId.get(), getBlockDisplayName(blockId.get())));
+        });
+        CompatRnRBlocks.ROCK_SLABS.forEach((rock, compatRnRIdMap) -> {
+            compatRnRIdMap.forEach((compatRnR, blockId) -> add(blockId.get(), getBlockDisplayName(blockId.get())));
+        });
+        CompatRnRItems.FLAGSTONE.forEach((compatWood, itemId) -> add(itemId.get(), getItemDisplayName(itemId.get())));
+        CompatRnRBlocks.WOOD_SHINGLE_ROOFS.forEach((compatWood, blockId) -> add(blockId.get(), getBlockDisplayName(blockId.get())));
+        CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.forEach((compatWood, blockId) -> add(blockId.get(), getBlockDisplayName(blockId.get())));
+        CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.forEach((compatWood, blockId) -> add(blockId.get(), getBlockDisplayName(blockId.get())));
+        CompatRnRItems.SHINGLE.forEach((compatWood, itemId) -> add(itemId.get(), getItemDisplayName(itemId.get())));
+
+        add(CompatRnRItems.GRAVEL_FILL.get(), getItemDisplayName(CompatRnRItems.GRAVEL_FILL.get()));
+        add(CompatRnRBlocks.TAMPED_DIRT.get(), getBlockDisplayName(CompatRnRBlocks.TAMPED_DIRT.get()));
+        add(CompatRnRBlocks.TAMPED_MUD.get(), getBlockDisplayName(CompatRnRBlocks.TAMPED_MUD.get()));
+        add(CompatRnRBlocks.GRAVEL_ROAD.get(), getBlockDisplayName(CompatRnRBlocks.GRAVEL_ROAD.get()));
+        add(CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get(), getBlockDisplayName(CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get()));
+        add(CompatRnRBlocks.GRAVEL_ROAD_SLAB.get(), getBlockDisplayName(CompatRnRBlocks.GRAVEL_ROAD_SLAB.get()));
+        add(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get(), getBlockDisplayName(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get()));
+        add(CompatRnRBlocks.MACADAM_ROAD.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD.get()));
+        add(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get()));
+        add(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_SLAB.get()));
     }
 
     //for "tfc_" compat blocks

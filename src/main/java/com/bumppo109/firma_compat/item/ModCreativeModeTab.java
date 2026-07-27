@@ -3,6 +3,7 @@ package com.bumppo109.firma_compat.item;
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.addon.ModCompat;
 import com.bumppo109.firma_compat.addon.firmalife.FLCompat;
+import com.bumppo109.firma_compat.addon.rnr.RnRCompat;
 import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
@@ -111,6 +112,10 @@ public class ModCreativeModeTab {
     //Firmalife
         if (ModCompat.loaded("firmalife")) {
             FLCompat.addFLItems(output);
+        }
+    //RnR
+        if (ModCompat.loaded("rnr")) {
+            RnRCompat.addRnRItems(output);
         }
     }
 

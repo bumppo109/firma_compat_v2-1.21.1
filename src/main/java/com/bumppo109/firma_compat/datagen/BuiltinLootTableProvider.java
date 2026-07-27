@@ -2,6 +2,9 @@ package com.bumppo109.firma_compat.datagen;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnR;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRItems;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.CompatWoodMaterial;
@@ -274,6 +277,29 @@ public class BuiltinLootTableProvider extends LootTableProvider {
                     addSimpleOreDrop(blockId.get(), oreItem);
                 });
             });
+
+        // ============= RnR ===============
+            for (CompatRock rock : CompatRock.VALUES) {
+                for (CompatRnR compatRnR : CompatRnR.VALUES) {
+                    dropSelf(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get());
+                    dropSelf(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get());
+                    dropSelf(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get());
+                }
+            }
+            for(CompatWood wood : CompatWood.VALUES){
+                dropSelf(CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get());
+                dropSelf(CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.get(wood).get());
+                dropSelf(CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.get(wood).get());
+            }
+            dropSelf(CompatRnRBlocks.TAMPED_DIRT.get());
+            dropSelf(CompatRnRBlocks.TAMPED_MUD.get());
+            dropSelf(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get());
+            dropSelf(CompatRnRBlocks.GRAVEL_ROAD.get());
+            dropSelf(CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get());
+            dropSelf(CompatRnRBlocks.GRAVEL_ROAD_SLAB.get());
+            dropSelf(CompatRnRBlocks.MACADAM_ROAD.get());
+            dropSelf(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get());
+            dropSelf(CompatRnRBlocks.MACADAM_ROAD_SLAB.get());
         }
 
         private void sluiceBlockLoot(Block block) {
@@ -537,6 +563,29 @@ public class BuiltinLootTableProvider extends LootTableProvider {
                     knownBlocks.add(blockId.get());
                 });
             });
+
+        //======= RnR ========
+            for (CompatRock rock : CompatRock.VALUES) {
+                for (CompatRnR compatRnR : CompatRnR.VALUES) {
+                    knownBlocks.add(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get());
+                    knownBlocks.add(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get());
+                    knownBlocks.add(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get());
+                }
+            }
+            for(CompatWood wood : CompatWood.VALUES){
+                knownBlocks.add(CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get());
+                knownBlocks.add(CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.get(wood).get());
+                knownBlocks.add(CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.get(wood).get());
+            }
+            knownBlocks.add(CompatRnRBlocks.TAMPED_DIRT.get());
+            knownBlocks.add(CompatRnRBlocks.TAMPED_MUD.get());
+            knownBlocks.add(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get());
+            knownBlocks.add(CompatRnRBlocks.GRAVEL_ROAD.get());
+            knownBlocks.add(CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get());
+            knownBlocks.add(CompatRnRBlocks.GRAVEL_ROAD_SLAB.get());
+            knownBlocks.add(CompatRnRBlocks.MACADAM_ROAD.get());
+            knownBlocks.add(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get());
+            knownBlocks.add(CompatRnRBlocks.MACADAM_ROAD_SLAB.get());
 
             return knownBlocks;
         }

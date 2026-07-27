@@ -4,6 +4,7 @@ import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.addon.ModCompat;
 import com.bumppo109.firma_compat.addon.everycompat.modules.woodgood.CompatWoodGoodModule;
 import com.bumppo109.firma_compat.addon.everycompat.modules.woodgood.FLWoodGoodModule;
+import com.bumppo109.firma_compat.addon.everycompat.modules.woodgood.RnRWoodGoodModule;
 import net.mehvahdjukaar.every_compat.api.EveryCompatAPI;
 
 
@@ -19,6 +20,10 @@ public class WoodGoodCompat {
         if(ModCompat.loaded("firmalife")) {
             FLWoodGoodModule flWoodGoodModule = new FLWoodGoodModule(FirmaCompat.MODID);
             EveryCompatAPI.registerModule(flWoodGoodModule);
+        }
+        if(ModCompat.loaded("rnr")) {
+            RnRWoodGoodModule rnRWoodGoodModule = new RnRWoodGoodModule(FirmaCompat.MODID);
+            EveryCompatAPI.registerModule(rnRWoodGoodModule);
         }
     }
 }

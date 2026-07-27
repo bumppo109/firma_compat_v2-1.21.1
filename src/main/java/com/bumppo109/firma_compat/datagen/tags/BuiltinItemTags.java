@@ -59,6 +59,7 @@ import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_RED_DYE;
 import static com.bumppo109.firma_compat.util.ModTags.Items.MAKES_YELLOW_DYE;
 import static com.eerussianguy.firmalife.common.FLTags.Blocks.*;
 import static com.eerussianguy.firmalife.common.FLTags.Blocks.KEGS;
+import static com.therighthon.rnr.common.RNRTags.Items.FLAGSTONE_ROAD_ITEMS;
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 import static net.dries007.tfc.common.TFCTags.Blocks.CAN_LANDSLIDE;
 import static net.dries007.tfc.common.TFCTags.Items.*;
@@ -293,6 +294,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
             tag(FLTags.Items.STOMPING_BARRELS).addOptional(stompBarrel);
             tag(FLTags.Items.BARREL_PRESSES).addOptional(barrelPress);
             tag(FLTags.Items.KEGS).addOptional(keg);
+        }
+
+    // ============== RnR ============
+        for(CompatRock rock : CompatRock.VALUES){
+            ResourceLocation flagstoneItem = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, rock.getSerializedName() + "_flagstone");
+            tag(FLAGSTONE_ROAD_ITEMS).addOptional(flagstoneItem);
         }
     }
 

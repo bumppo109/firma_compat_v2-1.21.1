@@ -2,6 +2,8 @@ package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnR;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
 import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.datagen.assets.addon.FirmalifeCustomLoaderBuilder;
 import com.eerussianguy.firmalife.common.blocks.*;
@@ -17,9 +19,11 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.Locale;
@@ -277,6 +281,144 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         });
 
     //=============== Roofs and Roads =================
+        ResourceLocation gravelTexture = ResourceLocation.withDefaultNamespace("block/gravel");
+
+        for (CompatWood wood : CompatWood.VALUES) {
+            Block shingleBlock = CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get();
+            StairBlock shingleStair = (StairBlock) CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.get(wood).get();
+            SlabBlock shingleSlab = (SlabBlock) CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.get(wood).get();
+
+            ResourceLocation woodShingleTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/" + wood.getSerializedName() + "_shingles");
+
+            cubeAllWithItem(shingleBlock, woodShingleTexture);
+            stairsWithItem(shingleStair, woodShingleTexture);
+            slabWithItem(shingleSlab, shingleBlock, woodShingleTexture);
+        }
+
+        for (CompatRock rock : CompatRock.VALUES) {
+            for (CompatRnR compatRnR : CompatRnR.VALUES) {
+                ResourceLocation topTexture = switch (compatRnR) {
+                    case COBBLED_ROAD -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_cobble");
+                    case SETT_ROAD -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_sett");
+                    case FLAGSTONES -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_flagstones");
+                };
+                rnrPathBlockWithItem(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get(), topTexture, gravelTexture);
+                rnrPathStairWithItem(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get(), topTexture);
+                rnrPathSlabWithItem(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get(), topTexture, gravelTexture);
+            }
+        }
+
+        tampedBlockWithItem(CompatRnRBlocks.TAMPED_DIRT.get(), ResourceLocation.withDefaultNamespace("block/dirt"));
+        tampedBlockWithItem(CompatRnRBlocks.TAMPED_MUD.get(), ResourceLocation.withDefaultNamespace("block/mud"));
+        rnrOverfillWithItem(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get(), gravelTexture, gravelTexture);
+        rnrPathBlockWithItem(CompatRnRBlocks.GRAVEL_ROAD.get(), gravelTexture, gravelTexture);
+        rnrPathStairWithItem(CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get(), gravelTexture);
+        rnrPathSlabWithItem(CompatRnRBlocks.GRAVEL_ROAD_SLAB.get(), gravelTexture, gravelTexture);
+        rnrPathBlockWithItem(CompatRnRBlocks.MACADAM_ROAD.get(), gravelTexture, gravelTexture);
+        rnrPathStairWithItem(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get(), gravelTexture);
+        rnrPathSlabWithItem(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), gravelTexture, gravelTexture);
+    }
+
+    private void rnrOverfillWithItem(Block block, ResourceLocation topTexture, ResourceLocation gravelTexture) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile overfillModel = models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("rnr","block/overfilled_block"))
+                .texture("top", topTexture)
+                .texture("gravel", gravelTexture);
+
+        simpleBlockWithItem(block, overfillModel);
+    }
+
+    private void tampedBlockWithItem(Block block, ResourceLocation dirt) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile tampedModel = models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("rnr","block/tamped_block"))
+                .texture("dirt", dirt);
+
+        simpleBlockWithItem(block, tampedModel);
+    }
+
+    private void rnrPathBlockWithItem(Block block, ResourceLocation topTexture, ResourceLocation gravelTexture) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile pathBlockModel = models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("rnr","block/path_block"))
+                .texture("top", topTexture)
+                .texture("gravel", gravelTexture);
+
+        simpleBlockWithItem(block, pathBlockModel);
+    }
+
+    private void rnrPathSlabWithItem(Block block, ResourceLocation topTexture, ResourceLocation gravelTexture) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile pathSlabModel = models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("rnr","block/path_slab"))
+                .texture("top", topTexture)
+                .texture("gravel", gravelTexture);
+
+        simpleBlockWithItem(block, pathSlabModel);
+    }
+
+    private void rnrPathStairWithItem(Block block, ResourceLocation texture) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        ModelFile pathStairsModel = models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("rnr","block/path_stairs"))
+                .texture("top", texture)
+                .texture("side", texture)
+                .texture("bottom", texture);
+        ModelFile pathStairsOuterModel = models().withExistingParent(blockRes.getPath() + "_outer", ResourceLocation.fromNamespaceAndPath("rnr","block/path_outer_stairs"))
+                .texture("top", texture)
+                .texture("side", texture)
+                .texture("bottom", texture);
+        ModelFile pathStairsInnerModel = models().withExistingParent(blockRes.getPath() + "_inner", ResourceLocation.fromNamespaceAndPath("rnr","block/path_inner_stairs"))
+                .texture("top", texture)
+                .texture("side", texture)
+                .texture("bottom", texture);
+
+        VariantBlockStateBuilder flagstoneBuilder = getVariantBuilder(block);
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.EAST).with(StairBlock.SHAPE, StairsShape.STRAIGHT)
+                .modelForState().modelFile(pathStairsModel).rotationY(0).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.WEST).with(StairBlock.SHAPE, StairsShape.STRAIGHT)
+                .modelForState().modelFile(pathStairsModel).rotationY(180).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.SOUTH).with(StairBlock.SHAPE, StairsShape.STRAIGHT)
+                .modelForState().modelFile(pathStairsModel).rotationY(90).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.NORTH).with(StairBlock.SHAPE, StairsShape.STRAIGHT)
+                .modelForState().modelFile(pathStairsModel).rotationY(270).uvLock(true).addModel();
+
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.EAST).with(StairBlock.SHAPE, StairsShape.OUTER_RIGHT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(0).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.WEST).with(StairBlock.SHAPE, StairsShape.OUTER_RIGHT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(180).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.SOUTH).with(StairBlock.SHAPE, StairsShape.OUTER_RIGHT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(90).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.NORTH).with(StairBlock.SHAPE, StairsShape.OUTER_RIGHT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(270).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.EAST).with(StairBlock.SHAPE, StairsShape.OUTER_LEFT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(270).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.WEST).with(StairBlock.SHAPE, StairsShape.OUTER_LEFT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(90).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.SOUTH).with(StairBlock.SHAPE, StairsShape.OUTER_LEFT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(0).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.NORTH).with(StairBlock.SHAPE, StairsShape.OUTER_LEFT)
+                .modelForState().modelFile(pathStairsOuterModel).rotationY(180).uvLock(true).addModel();
+
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.EAST).with(StairBlock.SHAPE, StairsShape.INNER_RIGHT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(0).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.WEST).with(StairBlock.SHAPE, StairsShape.INNER_RIGHT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(180).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.SOUTH).with(StairBlock.SHAPE, StairsShape.INNER_RIGHT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(90).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.NORTH).with(StairBlock.SHAPE, StairsShape.INNER_RIGHT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(270).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.EAST).with(StairBlock.SHAPE, StairsShape.INNER_LEFT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(270).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.WEST).with(StairBlock.SHAPE, StairsShape.INNER_LEFT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(90).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.SOUTH).with(StairBlock.SHAPE, StairsShape.INNER_LEFT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(0).uvLock(true).addModel();
+        flagstoneBuilder.partialState().with(StairBlock.FACING, Direction.NORTH).with(StairBlock.SHAPE, StairsShape.INNER_LEFT)
+                .modelForState().modelFile(pathStairsInnerModel).rotationY(180).uvLock(true).addModel();
+
+        simpleBlockItem(block, pathStairsModel);
     }
 
     private void foodShelfWithItem(Block block, ResourceLocation planksTexture) {

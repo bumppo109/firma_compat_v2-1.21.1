@@ -39,8 +39,8 @@ public class StoneZoneLang extends LanguageProvider {
 
         //RnR
         add("block_type.firma_compat.flagstones", "%s Flagstones");
-        add("block_type.firma_compat.flagstone_stairs", "%s Flagstone Stairs");
-        add("block_type.firma_compat.flagstone_slab", "%s Flagstone Slab");
+        add("block_type.firma_compat.flagstones_stairs", "%s Flagstone Stairs");
+        add("block_type.firma_compat.flagstones_slab", "%s Flagstone Slab");
         add("block_type.firma_compat.cobbled_road", "%s Cobbled Road");
         add("block_type.firma_compat.cobbled_road_stairs", "%s Cobbled Road Stairs");
         add("block_type.firma_compat.cobbled_road_slab", "%s Cobbled Road Slab");
