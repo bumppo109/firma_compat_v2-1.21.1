@@ -174,28 +174,4 @@ public class FirmaCompatClient {
         }
 
     }
-
-    private static void registerChestItemRenderer(
-            RegisterClientExtensionsEvent event,
-            Supplier<? extends Block> blockSupplier
-    ) {
-        if (blockSupplier == null) return;
-
-        Block block = blockSupplier.get();
-        Item item = block.asItem();
-
-        // TFC expects the item to be ChestBlockItem for type safety, but we can cast or check
-        if (!(item instanceof ChestBlockItem chestItem)) {
-            FirmaCompat.LOGGER.warn("Attempted to register chest item renderer for non-ChestBlockItem: {}", item);
-            return;
-        }
-
-        event.registerItem(new IClientItemExtensions() {
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                // Use TFC's exact renderer – it creates a dummy BE from your block and dispatches render
-                return new ChestItemRenderer(chestItem);
-            }
-        }, item);
-    }
 }

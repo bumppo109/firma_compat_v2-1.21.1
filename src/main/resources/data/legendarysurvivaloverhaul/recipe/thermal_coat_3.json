@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "legendarysurvivaloverhaul"
+    }
+  ],
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "item": "tfc:bone_needle"
+    },
+    {
+      "item": "legendarysurvivaloverhaul:cooling_coat_3"
+    },
+    {
+      "item": "legendarysurvivaloverhaul:heating_coat_3"
+    }
+  ],
+  "primary_ingredient": {
+    "item": "tfc:bone_needle"
+  },
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "legendarysurvivaloverhaul:thermal_coat_3"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "legendarysurvivaloverhaul"
+    }
+  ],
+  "type": "tfc:advanced_shaped_crafting",
+  "input_column": 0,
+  "key": {
+    "N": {
+      "item": "tfc:bone_needle"
+    },
+    "R": {
+      "tag": "c:rods/wooden"
+    },
+    "B": {
+      "item": "legendarysurvivaloverhaul:heating_coat_2"
+    }
+  },
+  "pattern": [
+    "NRB",
+    " BB"
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "legendarysurvivaloverhaul:heating_coat_3"
+  }
+}

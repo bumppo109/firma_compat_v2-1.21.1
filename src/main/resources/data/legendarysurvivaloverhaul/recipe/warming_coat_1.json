@@ -1,0 +1,39 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "legendarysurvivaloverhaul"
+    }
+  ],
+  "type": "tfc:advanced_shaped_crafting",
+  "input_column": 0,
+  "key": {
+    "N": {
+      "item": "tfc:bone_needle"
+    },
+    "R": {
+      "tag": "c:rods/wooden"
+    },
+    "B": {
+      "item": "tfc:wool_cloth"
+    },
+    "F": {
+      "item": "tfc:wool_yarn"
+    }
+  },
+  "pattern": [
+    "NRF",
+    " FB"
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "legendarysurvivaloverhaul:warming_coat_1"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "legendarysurvivaloverhaul"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": {
+      "tag": "tfc:sewing_tables"
+    },
+    "S": {
+      "item": "tfc:metal/sheet/wrought_iron"
+    },
+    "B": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "N": {
+      "item": "tfc:bone_needle"
+    }
+  },
+  "pattern": [
+    " NB",
+    "  S",
+    " T "
+  ],
+  "result": {
+    "count": 1,
+    "id": "legendarysurvivaloverhaul:sewing_table"
+  }
+}

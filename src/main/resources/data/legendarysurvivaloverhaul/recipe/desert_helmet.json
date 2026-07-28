@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "legendarysurvivaloverhaul"
+    }
+  ],
+  "type": "tfc:advanced_shaped_crafting",
+  "input_column": 2,
+  "key": {
+    "N": {
+      "item": "tfc:bone_needle"
+    },
+    "W": {
+      "item": "tfc:burlap_cloth"
+    }
+  },
+  "pattern": [
+    " WN",
+    "W W"
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "legendarysurvivaloverhaul:desert_helmet"
+  }
+}

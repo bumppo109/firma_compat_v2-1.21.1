@@ -8,7 +8,9 @@
     "DrinkableMixin",
     "ForestFeatureMixin",
     "LevelRendererExtensionMixin",
-    "SimpleWaterloggedBlockMixin"
+    "SimpleWaterloggedBlockMixin",
+    "PlayerInfoMixin",
+    "firmalife.ClimateStationAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

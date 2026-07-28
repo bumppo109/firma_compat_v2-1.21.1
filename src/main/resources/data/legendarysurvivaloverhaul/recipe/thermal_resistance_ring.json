@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "legendarysurvivaloverhaul"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "legendarysurvivaloverhaul:heat_resistance_ring"
+    },
+    {
+      "item": "legendarysurvivaloverhaul:cold_resistance_ring"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "legendarysurvivaloverhaul:thermal_resistance_ring"
+  }
+}

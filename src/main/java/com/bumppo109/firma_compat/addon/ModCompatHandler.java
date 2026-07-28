@@ -5,6 +5,7 @@ import com.bumppo109.firma_compat.addon.everycompat.loaders.StoneZoneCompat;
 import com.bumppo109.firma_compat.addon.everycompat.loaders.WoodGoodCompat;
 import com.bumppo109.firma_compat.addon.firmalife.FLCompat;
 import com.bumppo109.firma_compat.addon.firmalife.FLCompatEvents;
+import com.bumppo109.firma_compat.addon.legendarysurvivaloverhaul.LSOHandler;
 import com.bumppo109.firma_compat.addon.rnr.RnRCompat;
 import net.neoforged.bus.api.IEventBus;
 
@@ -36,6 +37,12 @@ public class ModCompatHandler {
         }
         if(ModCompat.loaded("rnr")) {
             RnRCompat.register(modEventBus);
+        }
+    }
+
+    public static void registerLSOModifiers() {
+        if(ModCompat.loaded("legendarysurvivaloverhaul")) {
+            LSOHandler.registerModifiers();
         }
     }
 }

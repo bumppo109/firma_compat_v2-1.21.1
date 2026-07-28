@@ -183,6 +183,12 @@ dependencies {
     //Punchy 2.6.2
     implementation "curse.maven:punchy-1374153:8408052"
 
+    //Ecliptic Seasons 0.14.2.1.1
+    implementation "curse.maven:ecliptic-seasons-1118306:8525040"
+
+    //Legendary Survival Overhaul 2.4.6.1
+    implementation "curse.maven:legendary-survival-overhaul-840254:8450360"
+
     //TODO testing
     //Regions Unexplored
     implementation "curse.maven:regions-unexplored-659110:8419667"

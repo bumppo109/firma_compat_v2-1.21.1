@@ -14,7 +14,6 @@ public class FirmaCompatConfig {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
         COMMON = new Common(builder);
-
         COMMON_CONFIG = builder.build();
     }
 

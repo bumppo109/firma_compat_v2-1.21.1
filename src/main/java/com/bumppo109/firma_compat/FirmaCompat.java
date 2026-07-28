@@ -32,17 +32,10 @@ public class FirmaCompat {
     public static final String MODID = "firma_compat";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static boolean isFirmalifeLoaded = false;
-    public static boolean isRnRLoaded = false;
-
     public static boolean isTreePhysicsLoaded = false;
     public static boolean isEclipticLoaded = false;
-    public static boolean isSereneLoaded = false;
     public static boolean isLSOLoaded = false;
-
-    public static boolean isWoodGoodLoaded = false;
-    public static boolean isStoneZoneLoaded = false;
-    public static boolean isGemsRealmLoaded = false;
+    public static boolean isFirmalifeLoaded = false;
 
     public FirmaCompat(IEventBus modEventBus, ModContainer modContainer) {
         this.modIntegration();
@@ -56,6 +49,7 @@ public class FirmaCompat {
         ModFluids.FLUID.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        //TODO - creative tab crash with Natures Spirit
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
         ModLootModifiers.register(modEventBus);
 
@@ -65,6 +59,7 @@ public class FirmaCompat {
 
         ModCompatHandler.registerEveryCompatModules();
         ModCompatHandler.registerAddon(modEventBus);
+        ModCompatHandler.registerLSOModifiers();
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -82,14 +77,8 @@ public class FirmaCompat {
     private void modIntegration() {
         isTreePhysicsLoaded = ModList.get().isLoaded("treephysics");
         isEclipticLoaded = ModList.get().isLoaded("eclipticseasons");
-        isSereneLoaded = ModList.get().isLoaded("sereneseasons");
         isLSOLoaded = ModList.get().isLoaded("legendarysurvivaloverhaul");
         isFirmalifeLoaded = ModList.get().isLoaded("firmalife");
-        isRnRLoaded = ModList.get().isLoaded("rnr");
-
-        isGemsRealmLoaded = ModList.get().isLoaded("gemsrealm");
-        isStoneZoneLoaded = ModList.get().isLoaded("stonezone");
-        isWoodGoodLoaded = ModList.get().isLoaded("everycomp");
     }
 
     public void commonSetup(FMLCommonSetupEvent event) {

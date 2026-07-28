@@ -227,17 +227,8 @@ public class ModClientEvents {
             return;
         }
 
-        System.out.println(
-                ModClientEvents.class.getResource(
-                        "/builtin_resource_packs/excalibur_addon/pack.mcmeta"
-                )
-        );
-
-        System.out.println(
-                ModClientEvents.class.getResource(
-                        "/builtin_resource_packs/vexxed_visuals_addon/pack.mcmeta"
-                )
-        );
+        //System.out.println(ModClientEvents.class.getResource("/builtin_resource_packs/excalibur_addon/pack.mcmeta"));
+        //System.out.println(ModClientEvents.class.getResource("/builtin_resource_packs/vexxed_visuals_addon/pack.mcmeta"));
 
         ResourceLocation excaliburAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/excalibur_addon");
         ResourceLocation vexxedAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/vexxed_visuals_addon");

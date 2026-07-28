@@ -1,0 +1,39 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "legendarysurvivaloverhaul"
+    }
+  ],
+  "type": "tfc:advanced_shaped_crafting",
+  "input_column": 0,
+  "key": {
+    "N": {
+      "item": "tfc:bone_needle"
+    },
+    "R": {
+      "tag": "c:rods/wooden"
+    },
+    "B": {
+      "item": "tfc:burlap_cloth"
+    },
+    "F": {
+      "item": "tfc:jute_fiber"
+    }
+  },
+  "pattern": [
+    "NRF",
+    " FB"
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "legendarysurvivaloverhaul:cooling_coat_1"
+  }
+}

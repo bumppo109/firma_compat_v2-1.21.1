@@ -64,8 +64,8 @@ public class VanillaClimateHelper {
 
     public static float getAdjustedAverageTempByElevation(int y, float averageTemperature) {
         if ((float)y > 63.0F) {
-            float elevationTemperature = Mth.clamp(((float)y - 63.0F) * elevationModifier, 0.0F, maxElevationChange);
-            return averageTemperature - elevationTemperature;
+            float elevationAdj = Mth.clamp(((float)y - 63.0F) * elevationModifier, 0.0F, maxElevationChange);
+            return averageTemperature - elevationAdj;
         } else {
             return averageTemperature;
         }

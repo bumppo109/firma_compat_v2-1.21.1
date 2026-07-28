@@ -1,6 +1,8 @@
 package com.bumppo109.firma_compat.world.climate;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.ModCompat;
+import com.bumppo109.firma_compat.addon.eclipticseasons.EclipticSeasonsClimateModel;
 import com.bumppo109.firma_compat.world.chunkData.ClimateData;
 import com.bumppo109.firma_compat.world.chunkData.ClimateSyncPacket;
 import com.bumppo109.firma_compat.world.chunkData.ServerClimateCache;
@@ -21,8 +23,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.bumppo109.firma_compat.FirmaCompat.isSereneLoaded;
-
 @EventBusSubscriber(modid = FirmaCompat.MODID)
 public class ClimateEventHandler {
 
@@ -41,22 +41,13 @@ public class ClimateEventHandler {
 
         if (event.getModel() instanceof BiomeBasedClimateModel) {
 
-            if(FirmaCompat.isEclipticLoaded && FirmaCompat.isLSOLoaded){
-                //event.setModel(EclipticSeasonsLSOClimateModel.INSTANCE);
-            } else if (FirmaCompat.isEclipticLoaded){
-                //event.setModel(EclipticSeasonsClimateModel.INSTANCE);
-            } else if (isSereneLoaded) {
-                //event.setModel(SereneClimateModel.INSTANCE);
+            if(ModCompat.loaded("eclipticseasons")){
+                event.setModel(EclipticSeasonsClimateModel.INSTANCE);
+                FirmaCompat.LOGGER.debug("Applied Ecliptic Seasons model for {}", event.level() != null ? event.level().dimension().location() : "unknown");
             } else {
                 event.setModel(VanillaClimateModel.INSTANCE);
+                FirmaCompat.LOGGER.debug("Applied Vanilla Firma Compat model for {}", event.level() != null ? event.level().dimension().location() : "unknown");
             }
-
-            FirmaCompat.LOGGER.info(
-                    "Applied Compat Climate Model for dimension: {}",
-                    event.level() != null
-                            ? event.level().dimension().location()
-                            : "unknown"
-            );
         }
     }
 
