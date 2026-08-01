@@ -2,6 +2,7 @@ package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.util.ModTags;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.minecraft.core.HolderLookup;
@@ -36,11 +37,10 @@ public class BuiltinBiomeTags extends TagsProvider<Biome> {
                 .addTags(Tags.Biomes.IS_TAIGA)
                 .addTags(Tags.Biomes.IS_JUNGLE);
 
-        HolderLookup.RegistryLookup<Biome> biomeLookup =
-                provider.lookupOrThrow(Registries.BIOME);
+    //TFC biomes
+        HolderLookup.RegistryLookup<Biome> biomeLookup = provider.lookupOrThrow(Registries.BIOME);
 
-        HolderLookup.RegistryLookup<BiomeExtension> tfcLookup =
-                provider.lookupOrThrow(TFCBiomes.KEY);
+        HolderLookup.RegistryLookup<BiomeExtension> tfcLookup = provider.lookupOrThrow(TFCBiomes.KEY);
 
         var tfcTag = tag(ModTags.Biomes.IS_TFC_OVERWORLD);
 
