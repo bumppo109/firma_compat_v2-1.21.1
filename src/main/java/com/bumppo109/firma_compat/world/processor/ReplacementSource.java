@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.world.processor.engine;
+package com.bumppo109.firma_compat.world.processor;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;

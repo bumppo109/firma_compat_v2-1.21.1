@@ -1,0 +1,14 @@
+{
+  "type": "lithostitched:set_pool_element_processors",
+  "template_pools": [
+    "minecraft:trail_ruins/buildings/grouped",
+    "minecraft:trail_ruins/tower/additions",
+    "minecraft:trail_ruins/tower/tower_top",
+    "minecraft:trail_ruins/buildings",
+    "minecraft:trail_ruins/decor",
+    "minecraft:trail_ruins/roads",
+    "minecraft:trail_ruins/tower"
+  ],
+  "processor_list": "firma_compat:tfc_trail_ruins",
+  "append": true
+}

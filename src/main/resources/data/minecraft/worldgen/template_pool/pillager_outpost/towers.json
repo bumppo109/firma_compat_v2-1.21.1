@@ -7,7 +7,7 @@
           {
             "element_type": "minecraft:legacy_single_pool_element",
             "location": "minecraft:pillager_outpost/watchtower_overgrown",
-            "processors": "firma_compat:testing",
+            "processors": "firma_compat:replacement_test",
             "projection": "rigid"
           }
         ],

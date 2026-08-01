@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.world.processor.engine;
+package com.bumppo109.firma_compat.world.processor;
 
 import net.minecraft.util.StringRepresentable;
 
@@ -7,6 +7,8 @@ public enum ReplacementCategory
 {
     ROCK,
     DIRT,
+    SAND,
+    SANDSTONE,
     WOOD;
 
 

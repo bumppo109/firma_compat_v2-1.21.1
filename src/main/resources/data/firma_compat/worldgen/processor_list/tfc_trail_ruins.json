@@ -1,0 +1,75 @@
+{
+  "processors": [
+    {
+      "processor_type": "firma_compat:replacement",
+      "rules": [
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:mud_bricks"
+          },
+          "target": {
+            "category": "dirt",
+            "type": "mud_bricks",
+            "shape": "block"
+          }
+        },
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:mud_brick_stairs"
+          },
+          "target": {
+            "category": "dirt",
+            "type": "mud_bricks",
+            "shape": "stairs"
+          }
+        },
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:mud_brick_slab"
+          },
+          "target": {
+            "category": "dirt",
+            "type": "mud_bricks",
+            "shape": "slab"
+          }
+        },
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:gravel"
+          },
+          "target": {
+            "category": "rock",
+            "type": "gravel",
+            "shape": "block"
+          }
+        },
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:dirt"
+          },
+          "target": {
+            "category": "dirt",
+            "type": "dirt",
+            "shape": "block"
+          }
+        },
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:coarse_dirt"
+          },
+          "target": {
+            "category": "dirt",
+            "type": "coarse_dirt",
+            "shape": "block"
+          }
+        }
+      ]
+    }
+  ]
+}

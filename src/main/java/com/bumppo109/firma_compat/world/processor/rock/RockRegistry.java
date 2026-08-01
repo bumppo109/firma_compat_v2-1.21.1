@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.world.processor;
+package com.bumppo109.firma_compat.world.processor.rock;
 
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.minecraft.world.level.block.Block;

@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.world.processor;
+package com.bumppo109.firma_compat.world.processor.rock;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.rock.Rock;

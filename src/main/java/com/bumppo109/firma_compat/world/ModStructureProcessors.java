@@ -2,7 +2,7 @@ package com.bumppo109.firma_compat.world;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 
-import com.bumppo109.firma_compat.world.processor.engine.ReplacementProcessor;
+import com.bumppo109.firma_compat.world.processor.ReplacementProcessor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 

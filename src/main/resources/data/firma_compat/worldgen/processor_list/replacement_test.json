@@ -9,9 +9,21 @@
             "block": "minecraft:cobblestone"
           },
           "target": {
-            "category": "rock",
-            "type": "bricks",
+            "category": "sandstone",
+            "type": "smooth",
             "shape": "block"
+          }
+        },
+        {
+          "source": {
+            "type": "list",
+            "blocks": [
+              "minecraft:grass_block",
+              "minecraft:dirt"
+            ]
+          },
+          "target": {
+            "category": "sand"
           }
         }
       ]

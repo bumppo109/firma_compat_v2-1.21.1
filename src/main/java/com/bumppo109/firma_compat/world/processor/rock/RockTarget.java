@@ -1,7 +1,8 @@
-package com.bumppo109.firma_compat.world.processor;
+package com.bumppo109.firma_compat.world.processor.rock;
 
-import com.bumppo109.firma_compat.world.processor.engine.ReplacementCategory;
-import com.bumppo109.firma_compat.world.processor.engine.ReplacementTarget;
+import com.bumppo109.firma_compat.world.processor.BlockShape;
+import com.bumppo109.firma_compat.world.processor.ReplacementCategory;
+import com.bumppo109.firma_compat.world.processor.ReplacementTarget;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 

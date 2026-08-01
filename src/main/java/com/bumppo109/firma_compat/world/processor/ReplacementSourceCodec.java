@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.world.processor.engine;
+package com.bumppo109.firma_compat.world.processor;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -8,7 +8,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
 
 
 public final class ReplacementSourceCodec

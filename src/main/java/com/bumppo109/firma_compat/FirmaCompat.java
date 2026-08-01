@@ -1,7 +1,6 @@
 package com.bumppo109.firma_compat;
 
 import com.bumppo109.firma_compat.block.BlockAssets;
-import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.event.ModClientEvents;
@@ -14,12 +13,8 @@ import com.bumppo109.firma_compat.loot.ModLootFunctions;
 import com.bumppo109.firma_compat.loot.loot_modifiers.ModLootModifiers;
 import com.bumppo109.firma_compat.world.ModStructureProcessors;
 import com.bumppo109.firma_compat.world.climate.ModClimateModels;
-import com.bumppo109.firma_compat.world.processor.RockRegistry;
-import com.bumppo109.firma_compat.world.processor.RockResolver;
-import com.bumppo109.firma_compat.world.processor.engine.ReplacementBootstrap;
-import com.bumppo109.firma_compat.world.processor.engine.ReplacementResolverRegistry;
-import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
-import net.mehvahdjukaar.moonlight.api.resources.RecipeTemplate;
+import com.bumppo109.firma_compat.world.processor.rock.RockRegistry;
+import com.bumppo109.firma_compat.world.processor.ReplacementBootstrap;
 import net.mehvahdjukaar.moonlight.api.set.BlockSetAPI;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodType;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodTypeRegistry;
@@ -38,8 +33,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-
-import java.util.Objects;
 
 @Mod(FirmaCompat.MODID)
 public class FirmaCompat {

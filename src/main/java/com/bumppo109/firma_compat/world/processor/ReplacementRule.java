@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.world.processor.engine;
+package com.bumppo109.firma_compat.world.processor;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -1,7 +1,10 @@
-package com.bumppo109.firma_compat.world.processor.engine;
+package com.bumppo109.firma_compat.world.processor;
 
-import com.bumppo109.firma_compat.world.processor.RockTarget;
+import com.bumppo109.firma_compat.world.processor.dirt.DirtTarget;
+import com.bumppo109.firma_compat.world.processor.rock.RockTarget;
 
+import com.bumppo109.firma_compat.world.processor.sand.SandTarget;
+import com.bumppo109.firma_compat.world.processor.sandstone.SandstoneTarget;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 
@@ -35,16 +38,10 @@ public final class ReplacementTargetCodec
     {
         return switch (category)
         {
-            case ROCK ->
-                    RockTarget.CODEC;
-
-
-            case DIRT ->
-                    throw new UnsupportedOperationException(
-                            "Dirt replacement codec not implemented"
-                    );
-
-
+            case ROCK -> RockTarget.CODEC;
+            case DIRT -> DirtTarget.CODEC;
+            case SAND -> SandTarget.CODEC;
+            case SANDSTONE -> SandstoneTarget.CODEC;
             case WOOD ->
                     throw new UnsupportedOperationException(
                             "Wood replacement codec not implemented"

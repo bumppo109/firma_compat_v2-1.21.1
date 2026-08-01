@@ -1,4 +1,4 @@
-package com.bumppo109.firma_compat.world.processor.engine;
+package com.bumppo109.firma_compat.world.processor;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
