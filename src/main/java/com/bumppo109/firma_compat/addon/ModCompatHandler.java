@@ -1,12 +1,10 @@
 package com.bumppo109.firma_compat.addon;
 
+import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.addon.everycompat.loaders.GemsRealmCompat;
 import com.bumppo109.firma_compat.addon.everycompat.loaders.StoneZoneCompat;
 import com.bumppo109.firma_compat.addon.everycompat.loaders.WoodGoodCompat;
-import com.bumppo109.firma_compat.addon.firmalife.FLCompat;
-import com.bumppo109.firma_compat.addon.firmalife.FLCompatEvents;
-import com.bumppo109.firma_compat.addon.legendarysurvivaloverhaul.LSOHandler;
-import com.bumppo109.firma_compat.addon.rnr.RnRCompat;
+import com.bumppo109.firma_compat.addon.legendarysurvivaloverhaul.LSOModifiers;
 import net.neoforged.bus.api.IEventBus;
 
 
@@ -32,17 +30,18 @@ public class ModCompatHandler {
     public static void registerAddon(IEventBus modEventBus) {
 
         if(ModCompat.loaded("firmalife")) {
-            FLCompat.register(modEventBus);
-            modEventBus.addListener(FLCompatEvents::addToBlockEntities);
+            com.bumppo109.firma_compat.addon.firmalife.FLCompat.register(modEventBus);
+            modEventBus.addListener(com.bumppo109.firma_compat.addon.firmalife.FLCompatEvents::addToBlockEntities);
         }
         if(ModCompat.loaded("rnr")) {
-            RnRCompat.register(modEventBus);
+            com.bumppo109.firma_compat.addon.rnr.RnRCompat.register(modEventBus);
         }
     }
 
     public static void registerLSOModifiers() {
-        if(ModCompat.loaded("legendarysurvivaloverhaul")) {
-            LSOHandler.registerModifiers();
+        if (ModCompat.loaded("legendarysurvivaloverhaul")) {
+            FirmaCompat.LOGGER.debug("Registering LSO greenhouse modifier");
+            LSOModifiers.register();
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat;
 
 import com.bumppo109.firma_compat.block.BlockAssets;
+import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.event.ModClientEvents;
@@ -11,7 +12,18 @@ import com.bumppo109.firma_compat.item.ModItemCapabilities;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.loot.ModLootFunctions;
 import com.bumppo109.firma_compat.loot.loot_modifiers.ModLootModifiers;
+import com.bumppo109.firma_compat.world.ModStructureProcessors;
 import com.bumppo109.firma_compat.world.climate.ModClimateModels;
+import com.bumppo109.firma_compat.world.processor.RockRegistry;
+import com.bumppo109.firma_compat.world.processor.RockResolver;
+import com.bumppo109.firma_compat.world.processor.engine.ReplacementBootstrap;
+import com.bumppo109.firma_compat.world.processor.engine.ReplacementResolverRegistry;
+import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
+import net.mehvahdjukaar.moonlight.api.resources.RecipeTemplate;
+import net.mehvahdjukaar.moonlight.api.set.BlockSetAPI;
+import net.mehvahdjukaar.moonlight.api.set.wood.WoodType;
+import net.mehvahdjukaar.moonlight.api.set.wood.WoodTypeRegistry;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
@@ -26,6 +38,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+import java.util.Objects;
 
 @Mod(FirmaCompat.MODID)
 public class FirmaCompat {
@@ -43,6 +57,7 @@ public class FirmaCompat {
         modEventBus.addListener(ModClientEvents::addToBlockEntities);
         modEventBus.addListener(ModClientEvents::addResourcePacks);
 
+        ModStructureProcessors.register(modEventBus);
         ModDataComponents.COMPONENTS.register(modEventBus);
         ModLootFunctions.FUNCTIONS.register(modEventBus);
         ModFluids.FLUID_TYPES.register(modEventBus);
@@ -58,8 +73,9 @@ public class FirmaCompat {
         modEventBus.addListener(this::commonSetup);
 
         ModCompatHandler.registerEveryCompatModules();
-        ModCompatHandler.registerAddon(modEventBus);
+        registerEveryCompatChildren();
         ModCompatHandler.registerLSOModifiers();
+        ModCompatHandler.registerAddon(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -82,7 +98,12 @@ public class FirmaCompat {
     }
 
     public void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(BlockAssets::bootstrap);
+        event.enqueueWork(() -> {
+            BlockAssets.bootstrap();
+            //TODO - complete processor
+            RockRegistry.bootstrap();
+            ReplacementBootstrap.init();
+        });
     }
 
     // Add the example block item to the building blocks tab
@@ -94,5 +115,21 @@ public class FirmaCompat {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
+    }
+
+    private static void checkChild() {
+        WoodType oak = BlockSetAPI.getBlockSet(WoodType.class)
+                .get(ResourceLocation.fromNamespaceAndPath("minecraft", "oak"));
+
+        FirmaCompat.LOGGER.debug("{} WoodType lumber - {}", oak, oak.getChild("lumber"));
+    }
+
+    private static void registerEveryCompatChildren() {
+        WoodTypeRegistry.INSTANCE
+                .addSimpleFinder("minecraft", "oak")
+                .childItem("lumber", ResourceLocation.fromNamespaceAndPath(
+                        MODID,
+                        "oak_lumber"
+                ));
     }
 }

@@ -1,7 +1,5 @@
 package com.bumppo109.firma_compat.addon.firmalife;
 
-import com.bumppo109.firma_compat.addon.ModCompat;
-import com.bumppo109.firma_compat.addon.ModCompatHandler;
 import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
 import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLItems;
 import com.bumppo109.firma_compat.block.CompatWood;

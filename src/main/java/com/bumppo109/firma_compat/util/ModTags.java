@@ -71,6 +71,7 @@ public class ModTags {
     public static class Biomes {
 
         public static final TagKey<Biome> FORESTED_BIOMES = createTag("forested_biomes");
+        public static final TagKey<Biome> IS_TFC_OVERWORLD = createTag("is_tfc_overworld");
 
         private static TagKey<Biome> createTag(String name) {
             return TagKey.create(Registries.BIOME,

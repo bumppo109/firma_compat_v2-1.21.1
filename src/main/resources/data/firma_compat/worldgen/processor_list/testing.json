@@ -1,0 +1,26 @@
+{
+  "processors": [
+    {
+      "processor_type": "lithostitched:block_swap",
+      "blocks": {
+        "minecraft:dark_oak_planks": "minecraft:diamond_block"
+      }
+    },
+    {
+      "processor_type": "firma_compat:replacement",
+      "rules": [
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:mossy_cobblestone"
+          },
+          "target": {
+            "category": "rock",
+            "type": "bricks",
+            "shape": "block"
+          }
+        }
+      ]
+    }
+  ]
+}

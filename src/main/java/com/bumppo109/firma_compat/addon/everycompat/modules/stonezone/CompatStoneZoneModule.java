@@ -85,7 +85,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/hardened"), Registries.BLOCK)
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/hardened"), Registries.ITEM)
-                .dropSelf()
+                .copyParentDrop()
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)
                 .build();
@@ -97,7 +97,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 )
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
                 .noItem()
-                .dropSelf()
+                .copyParentDrop()
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)
                 .build();
@@ -109,7 +109,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 )
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/spike"), Registries.BLOCK)
-                .dropSelf()
+                .copyParentDrop()
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)
                 .build();
@@ -124,7 +124,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/loose"), Registries.BLOCK)
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/loose"), Registries.ITEM)
                 .addTag(ResourceLocation.fromNamespaceAndPath("tfc","stones/loose/metamorphic"), Registries.ITEM)
-                .dropSelf()
+                .copyParentDrop()
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)
                 .build();
@@ -138,7 +138,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/loose"), Registries.BLOCK)
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/loose"), Registries.ITEM)
                 .addTag(ResourceLocation.fromNamespaceAndPath("tfc","stones/loose/metamorphic"), Registries.ITEM)
-                .dropSelf()
+                .copyParentDrop()
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)
                 .build();
@@ -288,14 +288,6 @@ public class CompatStoneZoneModule extends StoneZoneModule {
         }
     }
 
-    /*
-    @Override
-    public boolean isEntryAlreadyRegistered(String entrySetId, ResourceLocation blockId, BlockType blockType, Registry<?> registry) {
-        return false;
-    }
-
-     */
-
     @Override
     public void addDynamicClientResources(Consumer<ResourceGenTask> executor) {
         super.addDynamicClientResources(executor);
@@ -341,42 +333,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
             for(StoneType stoneType : StoneTypeRegistry.INSTANCE){
                 ResourceLocation rockTag = ResourceLocation.fromNamespaceAndPath(stoneType.getNamespace(), "stone_type/" + stoneType.getTypeName());
                 UtilityTag.createAndAddCustomTags(rockTag, sink, stoneType.stone);
-
-                if(LOOSE.items.get(stoneType) != null){
-                    if(HARDENED_COBBLE.items.get(stoneType) != null){
-                        generateBrickBlockRecipe(sink, LOOSE.items.get(stoneType).toString(), HARDENED_COBBLE.items.get(stoneType).toString(), 4, null);
-                    }
-                    if(BRICK.items.get(stoneType) != null){
-                        if(stoneType.hasChild(VanillaRockChildKeys.BRICKS) || stoneType.hasChild(VanillaRockChildKeys.BUTTON) || stoneType.hasChild(VanillaRockChildKeys.PRESSURE_PLATE)){
-                            generateBrickRecipe(sink, LOOSE.items.get(stoneType), BRICK.items.get(stoneType), "c:tools/chisel", 1,null);
-                        }
-                        if(stoneType.hasChild(VanillaRockChildKeys.BUTTON)){
-                            generateBrickRecipe(sink, BRICK.items.get(stoneType), stoneType.getItemOfThis("button"), "c:tools/chisel", 1,null);
-                            UtilityTag.createAndAddCustomTags(modRes("remove_from_crafting"), sink, stoneType.getItemOfThis("button"));
-                        }
-                        if(stoneType.hasChild(VanillaRockChildKeys.PRESSURE_PLATE)){
-                            generatePressurePlateFromBrickRecipe(sink, stoneType, BRICK.items.get(stoneType).asItem(), 1, null);
-                            UtilityTag.createAndAddCustomTags(modRes("remove_from_crafting"), sink, stoneType.getItemOfThis("pressure_plate"));
-                        }
-                        if(stoneType.hasChild(VanillaRockChildKeys.BRICKS)){
-                            generateBrickBlockRecipe(sink, BRICK.items.get(stoneType).toString(), Utils.getID(Objects.requireNonNull(stoneType.getChild(VanillaRockChildKeys.BRICKS))).toString(), 4, null);
-                            UtilityTag.createAndAddCustomTags(modRes("remove_from_crafting"), sink, stoneType.getItemOfThis("bricks"));
-                        }
-                    }
-                }
             }
-
-            HARDENED.blocks.forEach((stoneType, block) -> {
-                if (stoneType == null) return;  // safety check
-                //raw
-                generateLootTableForStone(null, stoneType.stone, LOOSE.blocks.get(stoneType), sink, manager);
-                UtilityTag.createAndAddCustomTags(ResourceLocation.fromNamespaceAndPath("tfc", "breaks_when_isolated"), sink, stoneType.stone);
-                UtilityTag.createAndAddCustomTags(ResourceLocation.fromNamespaceAndPath("tfc", "can_collapse"), sink, stoneType.stone);
-                UtilityTag.createAndAddCustomTags(ResourceLocation.fromNamespaceAndPath("tfc", "can_start_collapse"), sink, stoneType.stone);
-                UtilityTag.createAndAddCustomTags(ResourceLocation.fromNamespaceAndPath("tfc", "can_trigger_collapse"), sink, stoneType.stone);
-                //hardened
-                generateLootTableForStone("hardened", stoneType.stone, LOOSE.blocks.get(stoneType), sink, manager);
-            });
 
             //Building Hardend Data Map
             JsonObject hardenedDataMap = new JsonObject();
@@ -785,35 +742,6 @@ public class CompatStoneZoneModule extends StoneZoneModule {
             sink.addJson(biomeModifierPath, biomeModifier, ResType.GENERIC);
             FirmaCompat.LOGGER.info("Generated biome modifier: {}", biomeModifierPath);
 
-            //Landslide Recipes
-            /*
-            for (StoneType stone : StoneTypeRegistry.INSTANCE) {
-                Block looseCobble = COBBLE.blocks.get(stone);
-                if (looseCobble == null) continue;
-                String looseCobbleId   = BuiltInRegistries.BLOCK.getKey(looseCobble).toString();
-                String looseCobblePath = Utils.getID(looseCobble).getPath();
-
-                JsonObject landslideRecipeJson = new JsonObject();
-                JsonArray landslideArray = new JsonArray();
-
-                landslideArray.add(looseCobbleId);
-
-                landslideRecipeJson.addProperty("type", "tfc:landslide");
-                landslideRecipeJson.add("ingredient", landslideArray);
-                landslideRecipeJson.addProperty("result", looseCobbleId);
-
-                // Write individual placed feature
-                ResourceLocation landslideRecipeLoc = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,
-                        "recipe/landslide/" + looseCobblePath + ".json"
-                );
-
-                sink.addJson(landslideRecipeLoc, landslideRecipeJson, ResType.GENERIC);
-                FirmaCompat.LOGGER.info("Generated biome modifier: {}", landslideRecipeLoc);
-            }
-
-             */
-
-
             //Collapse Recipes
             for (StoneType stone : StoneTypeRegistry.INSTANCE) {
                 // Skip if required blocks are missing
@@ -1111,6 +1039,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
         }
     }
 
+    /*
     private JsonObject heightProviderJson(int minY, int maxY) {
         JsonObject obj = new JsonObject();
         obj.addProperty("type", "minecraft:uniform"); // or "absolute" if you prefer
@@ -1151,6 +1080,8 @@ public class CompatStoneZoneModule extends StoneZoneModule {
         System.out.println("Vein " + vein.name() + ": Added " + added + " replacements, skipped " + skipped);
         return map;
     }
+
+     */
 
     //Graded BlockMap
     private static Map<Block, IWeighted<BlockState>> buildReplacementMap(CompatVein vein) {
@@ -1257,265 +1188,6 @@ public class CompatStoneZoneModule extends StoneZoneModule {
             hash = 31 * hash + c;
         }
         return hash & 0x7FFFFFFFFFFFFFFFL; // positive
-    }
-
-    /**
-     * Generates a pressure plate recipe from lumber planks.
-     * Pattern: 2×1 horizontal (2 lumber → 1 pressure plate)
-     *
-     * @param sink       ResourceSink to write the JSON
-     * @param stone       The WoodType providing the lumber
-     * @param brickItem The child key for the lumber item (e.g. "lumber")
-     * @param count      Number of pressure plates produced (usually 1)
-     * @param suffix     Optional suffix for recipe path
-     */
-    public void generatePressurePlateFromBrickRecipe(
-            ResourceSink sink,
-            StoneType stone,
-            Item brickItem,
-            int count,
-            @Nullable String suffix
-    ) {
-        String brickItemPath = Utils.getID(Objects.requireNonNull(brickItem)).getPath();
-        String brickNamespace = Utils.getID(Objects.requireNonNull(brickItem)).getNamespace();
-
-        String plateItemPath = Utils.getID(Objects.requireNonNull(stone.getChild("pressure_plate"))).getPath();
-        String plateItemNamespace = Utils.getID(Objects.requireNonNull(stone.getChild("pressure_plate"))).getNamespace();
-
-        if (count < 1) {
-            FirmaCompat.LOGGER.warn("Invalid count {} for pressure plate recipe {}, defaulting to 1", count, brickItemPath);
-            count = 1;
-        }
-
-        JsonObject recipe = new JsonObject();
-        recipe.addProperty("type", "minecraft:crafting_shaped");
-        recipe.addProperty("category", "misc");
-
-        JsonObject key = new JsonObject();
-        JsonObject brickKey = new JsonObject();
-        brickKey.addProperty("item", brickNamespace + ":" + brickItemPath);
-        key.add("L", brickKey);
-        recipe.add("key", key);
-
-        // Pattern: pressure plate (2 planks)
-        JsonArray pattern = new JsonArray();
-        pattern.add("LL");
-        recipe.add("pattern", pattern);
-
-        JsonObject result = new JsonObject();
-        result.addProperty("count", count);
-        result.addProperty("id", plateItemNamespace + ":" + plateItemPath);
-        recipe.add("result", result);
-
-        ResourceLocation outputLoc = ResourceLocation.parse(plateItemNamespace + ":" + plateItemPath);
-        String recipePath = "crafting/" + outputLoc.getPath();
-
-        if (suffix != null && !suffix.isEmpty()) {
-            recipePath += suffix;
-        }
-
-        ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(
-                FirmaCompat.MODID, recipePath
-        );
-
-        sink.addJson(recipeId, recipe, ResType.RECIPES);
-    }
-
-    public void generateBrickRecipe(
-            ResourceSink sink,
-            Item inputItem,
-            Item outputItem,
-            String toolTag,
-            int count,
-            @Nullable String suffix
-    ) {
-        String input = Utils.getID(inputItem).getPath();
-        String inputNamespace = Utils.getID(inputItem).getNamespace();
-
-        if (count < 1) {
-            EveryCompat.LOGGER.warn("Invalid count {} for brick recipe {} → {}, defaulting to 1",
-                    count, input, outputItem);
-            count = 1;
-        }
-
-        JsonObject recipe = new JsonObject();
-        recipe.addProperty("type", "tfc:advanced_shapeless_crafting");
-
-        JsonArray ingredients = new JsonArray();
-
-        // Tool (saw)
-        JsonObject toolIngredient = new JsonObject();
-        toolIngredient.addProperty("tag", toolTag);
-        ingredients.add(toolIngredient);
-
-        // Input log/block
-        JsonObject inputIngredient = new JsonObject();
-        inputIngredient.addProperty("item", inputNamespace + ":" + input);
-        ingredients.add(inputIngredient);
-
-        recipe.add("ingredients", ingredients);
-
-        // Primary ingredient = tool
-        JsonObject primaryIngredient = new JsonObject();
-        primaryIngredient.addProperty("tag", toolTag);
-        recipe.add("primary_ingredient", primaryIngredient);
-
-        // Remainder with damage modifier
-        JsonObject remainder = new JsonObject();
-        JsonArray modifiers = new JsonArray();
-        JsonObject damageModifier = new JsonObject();
-        damageModifier.addProperty("type", "tfc:damage_crafting_remainder");
-        modifiers.add(damageModifier);
-        remainder.add("modifiers", modifiers);
-        recipe.add("remainder", remainder);
-
-        // Result
-        JsonObject result = new JsonObject();
-        result.addProperty("count", count);           // ← now uses the parameter
-        result.addProperty("id", String.valueOf(outputItem));
-        recipe.add("result", result);
-
-        // Create recipe ResourceLocation based on output item's ID + optional suffix
-        ResourceLocation outputLoc = ResourceLocation.parse(outputItem.toString());
-        String recipePath = "crafting/" + outputLoc.getPath();  // e.g. "brick/acacia_brick"
-
-        if (suffix != null && !suffix.isEmpty()) {
-            recipePath += suffix;
-        }
-
-        // Final location: <output_namespace>:recipe/<recipePath>
-        ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(
-                FirmaCompat.MODID, recipePath
-        );
-
-        sink.addJson(recipeId, recipe, ResType.RECIPES);
-    }
-
-    /**
-     * Generates a Minecraft shaped crafting recipe for TFC-style rock bricks.
-     * Pattern is fixed as:
-     *   X Y X
-     *   Y X Y
-     *   X Y X
-     * (Bricks in X positions, mortar in Y positions)
-     *
-     * @param sink       ResourceSink to write the generated JSON
-     * @param inputItem  Full item ID for the brick ingredient (e.g. "tfc:brick/andesite", "mycoolmod:brick/basalt")
-     * @param outputItem Full output item ID (e.g. "tfc:rock/bricks/andesite", "mycoolmod:rock/bricks/basalt")
-     * @param count      Number of output items per craft (e.g. 4, 8)
-     * @param suffix     Optional suffix to append to the recipe path (e.g. "_from_bricks"). Null/empty = no suffix.
-     */
-    public void generateBrickBlockRecipe(
-            ResourceSink sink,
-            String inputItem,
-            String outputItem,
-            int count,
-            @Nullable String suffix
-    ) {
-        if (count < 1) {
-            count = 1;
-            EveryCompat.LOGGER.warn("Invalid count {} for brick recipe {} → {}, clamped to 1",
-                    count, inputItem, outputItem);
-        }
-
-        JsonObject recipe = new JsonObject();
-        recipe.addProperty("type", "minecraft:crafting_shaped");
-        recipe.addProperty("category", "misc");
-
-        // Key definitions
-        JsonObject key = new JsonObject();
-
-        JsonObject brickKey = new JsonObject();
-        brickKey.addProperty("item", inputItem);
-        key.add("X", brickKey);
-
-        JsonObject mortarKey = new JsonObject();
-        mortarKey.addProperty("item", "tfc:mortar");  // fixed as per TFC standard
-        key.add("Y", mortarKey);
-
-        recipe.add("key", key);
-
-        // Fixed 3x3 pattern from your example
-        JsonArray pattern = new JsonArray();
-        pattern.add("XYX");
-        pattern.add("YXY");
-        pattern.add("XYX");
-        recipe.add("pattern", pattern);
-
-        // Result
-        JsonObject result = new JsonObject();
-        result.addProperty("count", count);
-        result.addProperty("id", outputItem);
-        recipe.add("result", result);
-
-        // Build recipe ResourceLocation based on output item's namespace + path
-        ResourceLocation outLoc = ResourceLocation.parse(outputItem);
-        String recipePath = "crafting/" + outLoc.getPath();  // e.g. "bricks/andesite"
-
-        if (suffix != null && !suffix.isEmpty()) {
-            recipePath += suffix;
-        }
-
-        // Final location: <output_namespace>:recipes/<recipePath>
-        ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(
-                FirmaCompat.MODID, recipePath
-        );
-
-        sink.addJson(recipeId, recipe, ResType.RECIPES);
-    }
-
-    private void generateLootTableForStone(
-            @Nullable String type,
-            Block hardenedBlock,
-            Block looseBlock,
-            ResourceSink sink,
-            ResourceManager manager
-    ) {
-        ResourceLocation templateLoc = modRes("loot_table/blocks/stone_hardened.json");
-        String outputNamespace = "";
-
-        ResourceLocation hardenedId = BuiltInRegistries.BLOCK.getKey(hardenedBlock);
-        ResourceLocation looseId = BuiltInRegistries.BLOCK.getKey(looseBlock);
-
-        if ((hardenedId == null || hardenedId.equals(BuiltInRegistries.BLOCK.getDefaultKey())) &&
-                (looseId == null || looseId.equals(BuiltInRegistries.BLOCK.getDefaultKey()))) return;
-
-        String hardenedPath = "";
-        String loosePath = looseId.getPath();
-        String outputPath = "loot_table/blocks/";
-
-        if(type != null){
-            hardenedPath = hardenedId.getPath() + "_" + type;
-            outputNamespace = StoneZone.MOD_ID;
-            outputPath = outputPath + FirmaCompat.MODID + "/" + hardenedId.getNamespace() + "/" +  hardenedPath;
-        } else {
-            hardenedPath = hardenedId.getPath();
-            outputNamespace = hardenedId.getNamespace();
-            outputPath = outputPath + hardenedPath;
-        }
-
-        ResourceLocation outputLoc = ResourceLocation.fromNamespaceAndPath(
-                outputNamespace,outputPath + ".json");
-
-
-        try (InputStream stream = manager.getResource(templateLoc).orElseThrow(
-                () -> new FileNotFoundException("Loot template not found: " + templateLoc)).open()) {
-
-            String templateText = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-
-            // Replace with clean block ID string (e.g. "firma_compat:granite_loose")
-            String modifiedText = templateText.replace("minecraft:stone", hardenedId.toString());
-            modifiedText = modifiedText.replace("firma_compat:stone_loose", looseId.toString());
-            modifiedText = modifiedText.replace("firma_compat:blocks/stone", hardenedId.getNamespace() + "blocks/" + hardenedId.getPath());
-
-            JsonObject json = JsonParser.parseString(modifiedText).getAsJsonObject();
-
-            sink.addJson(outputLoc, json, ResType.GENERIC);
-
-        } catch (Exception e) {  // catch broader to log everything
-            EveryCompat.LOGGER.error("Failed generating loot table for {} from {}: {}",
-                    hardenedId, templateLoc, e.getMessage(), e);
-        }
     }
 
     public static void generateLoosePlacedFeature(

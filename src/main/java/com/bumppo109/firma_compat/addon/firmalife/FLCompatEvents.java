@@ -128,40 +128,4 @@ public class FLCompatEvents {
     {
         event.modify(type, extraBlock);
     }
-
-    @SubscribeEvent
-    public static void addResourcePacks(AddPackFindersEvent event) {
-        if (event.getPackType() != PackType.CLIENT_RESOURCES) {
-            return;
-        }
-
-        System.out.println(
-                FLCompatEvents.class.getResource(
-                        "/builtin_resource_packs/excalibur_addon/pack.mcmeta"
-                )
-        );
-
-        System.out.println(
-                FLCompatEvents.class.getResource(
-                        "/builtin_resource_packs/vexxed_visuals_addon/pack.mcmeta"
-                )
-        );
-
-        ResourceLocation excaliburAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/excalibur_addon");
-        ResourceLocation vexxedAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/vexxed_visuals_addon");
-
-        event.addPackFinders(excaliburAddon, PackType.CLIENT_RESOURCES,
-                Component.literal("Excalibur Support"),
-                PackSource.DEFAULT,
-                false,
-                Pack.Position.TOP
-        );
-
-        event.addPackFinders(vexxedAddon, PackType.CLIENT_RESOURCES,
-                Component.literal("Vexxed Visuals Support"),
-                PackSource.DEFAULT,
-                false,
-                Pack.Position.TOP
-        );
-    }
 }

@@ -5,6 +5,7 @@ import com.bumppo109.firma_compat.datagen.assets.BuiltinBlockStateProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinItemModelProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinLang;
 import com.bumppo109.firma_compat.datagen.assets.StoneZoneLang;
+import com.bumppo109.firma_compat.datagen.tags.BuiltinBiomeTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinBlockTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinFluidTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinItemTags;
@@ -66,7 +67,7 @@ public final class DataEntryPoint {
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
         //add(event, new BuiltinPlacedFeatureTags(packOutput, vanillaLookup, existingFileHelper));
-        //add(event, new BuiltinBiomeTags(packOutput, vanillaLookup, existingFileHelper));
+        add(event, new BuiltinBiomeTags(packOutput, vanillaLookup, existingFileHelper));
 
         add(event, new BuiltinDeposits(packOutput, lookup));
         add(event, new BuiltinFoods(packOutput, lookup));

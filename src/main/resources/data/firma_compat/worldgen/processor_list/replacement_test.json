@@ -1,0 +1,20 @@
+{
+  "processors": [
+    {
+      "processor_type": "firma_compat:replacement",
+      "rules": [
+        {
+          "source": {
+            "type": "block",
+            "block": "minecraft:cobblestone"
+          },
+          "target": {
+            "category": "rock",
+            "type": "bricks",
+            "shape": "block"
+          }
+        }
+      ]
+    }
+  ]
+}

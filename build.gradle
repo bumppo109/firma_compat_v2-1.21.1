@@ -189,6 +189,9 @@ dependencies {
     //Legendary Survival Overhaul 2.4.6.1
     implementation "curse.maven:legendary-survival-overhaul-840254:8450360"
 
+    //Structure Generation Improver 2.0.0
+    implementation "curse.maven:structure-generation-improver-sgi-foundations-1473087:8102461"
+
     //TODO testing
     //Regions Unexplored
     implementation "curse.maven:regions-unexplored-659110:8419667"
