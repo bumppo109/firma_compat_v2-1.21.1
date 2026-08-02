@@ -1,7 +1,6 @@
-package com.bumppo109.firma_compat.world.climate;
+package com.bumppo109.firma_compat.addon;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.addon.ModCompat;
 import com.bumppo109.firma_compat.addon.eclipticseasons.EclipticSeasonsClimateModel;
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.util.Helpers;
@@ -14,7 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class ModClimateModels {
+public class AddonClimateModels {
 
     // The registry key (matches what TFC uses)
     public static final ResourceKey<Registry<ClimateModelType<?>>> KEY =
@@ -25,7 +24,7 @@ public class ModClimateModels {
             DeferredRegister.create(KEY, FirmaCompat.MODID);
 
     // Your custom model entry
-    public static final Id<VanillaClimateModel> VANILLA_MODEL = register("vanilla", VanillaClimateModel.STREAM_CODEC);
+    public static final Id<EclipticSeasonsClimateModel> ECLIPTIC_MODEL = register("ecliptic", EclipticSeasonsClimateModel.STREAM_CODEC);
 
     private static <T extends ClimateModel> Id<T> register(String id, StreamCodec<ByteBuf, T> codec) {
         return new Id<>(TYPES.register(id, () -> new ClimateModelType<>(codec)));

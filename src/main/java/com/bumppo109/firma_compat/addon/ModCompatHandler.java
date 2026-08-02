@@ -44,4 +44,11 @@ public class ModCompatHandler {
             LSOModifiers.register();
         }
     }
+
+    public static void registerAddonClimateModels(IEventBus modEventBus) {
+        if (ModCompat.loaded("eclipticseasons")) {
+            FirmaCompat.LOGGER.debug("Registering Addon climate model");
+            AddonClimateModels.TYPES.register(modEventBus);
+        }
+    }
 }

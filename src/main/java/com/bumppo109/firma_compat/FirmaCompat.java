@@ -15,10 +15,6 @@ import com.bumppo109.firma_compat.world.ModStructureProcessors;
 import com.bumppo109.firma_compat.world.climate.ModClimateModels;
 import com.bumppo109.firma_compat.world.processor.rock.RockRegistry;
 import com.bumppo109.firma_compat.world.processor.ReplacementBootstrap;
-import net.mehvahdjukaar.moonlight.api.set.BlockSetAPI;
-import net.mehvahdjukaar.moonlight.api.set.wood.WoodType;
-import net.mehvahdjukaar.moonlight.api.set.wood.WoodTypeRegistry;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
@@ -57,7 +53,6 @@ public class FirmaCompat {
         ModFluids.FLUID.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        //TODO - creative tab crash with Natures Spirit
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
         ModLootModifiers.register(modEventBus);
 
@@ -66,13 +61,11 @@ public class FirmaCompat {
         modEventBus.addListener(this::commonSetup);
 
         ModCompatHandler.registerEveryCompatModules();
-        registerEveryCompatChildren();
+        ModCompatHandler.registerAddonClimateModels(modEventBus);
         ModCompatHandler.registerLSOModifiers();
         ModCompatHandler.registerAddon(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
-
-        modEventBus.addListener(this::addCreative);
 
         FirmaCompatConfig.register(modContainer);
 
@@ -98,30 +91,9 @@ public class FirmaCompat {
         });
     }
 
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
-    }
-
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
-    }
-
-    private static void checkChild() {
-        WoodType oak = BlockSetAPI.getBlockSet(WoodType.class)
-                .get(ResourceLocation.fromNamespaceAndPath("minecraft", "oak"));
-
-        FirmaCompat.LOGGER.debug("{} WoodType lumber - {}", oak, oak.getChild("lumber"));
-    }
-
-    private static void registerEveryCompatChildren() {
-        WoodTypeRegistry.INSTANCE
-                .addSimpleFinder("minecraft", "oak")
-                .childItem("lumber", ResourceLocation.fromNamespaceAndPath(
-                        MODID,
-                        "oak_lumber"
-                ));
     }
 }

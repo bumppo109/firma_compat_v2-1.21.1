@@ -1,5 +1,6 @@
 package com.bumppo109.firma_compat.addon.eclipticseasons;
 
+import com.bumppo109.firma_compat.addon.AddonClimateModels;
 import com.bumppo109.firma_compat.world.climate.ModClimateModels;
 import io.netty.buffer.ByteBuf;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -14,7 +15,7 @@ public class EclipticSeasonsClimateModel implements ClimateModel {
 
     @Override
     public ClimateModelType type() {
-        return ModClimateModels.ECLIPTIC_MODEL.get();
+        return AddonClimateModels.ECLIPTIC_MODEL.get();
     }
 
     @Override

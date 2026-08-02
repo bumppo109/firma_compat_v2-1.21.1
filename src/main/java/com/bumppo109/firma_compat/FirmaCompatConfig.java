@@ -23,6 +23,7 @@ public class FirmaCompatConfig {
         public final ModConfigSpec.IntValue sheepWoolRegrowthDelayTicks;
         public final ModConfigSpec.IntValue cowMilkingDelayTicks;
 
+        public final ModConfigSpec.DoubleValue presumedWorldHeight;
         public final ModConfigSpec.DoubleValue tempLerpValue;
         public final ModConfigSpec.BooleanValue doTempLerp;
         public final ModConfigSpec.DoubleValue tempScale;
@@ -76,6 +77,18 @@ public class FirmaCompatConfig {
             builder.pop();
 
             builder.push("world");
+
+            presumedWorldHeight = builder
+                    .comment(
+                            "World Height used to adjust elevation temperature contribution",
+                            "Default: 320"
+                    )
+                    .defineInRange(
+                            "presumedWorldHeight",
+                            320.0,
+                            0.0,
+                            Double.MAX_VALUE
+                    );
 
             tempLerpValue = builder
                     .comment(

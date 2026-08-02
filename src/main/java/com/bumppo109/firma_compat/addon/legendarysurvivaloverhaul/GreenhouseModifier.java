@@ -20,7 +20,7 @@ import sfiomn.legendarysurvivaloverhaul.config.Config;
 import java.util.Optional;
 import java.util.Set;
 
-public class TestModifier extends ModifierBase {
+public class GreenhouseModifier extends ModifierBase {
 
     private static final int SEARCH_DISTANCE = 64;
     private static final float NORMAL_TEMPERATURE = 20.0F;

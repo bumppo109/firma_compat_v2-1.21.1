@@ -95,12 +95,12 @@ versionRange="[4.2.6,)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.${mod_id}]]
-modId="firmalife"
-type="required"
-versionRange="[3.0.11,)"
-ordering="NONE"
-side="BOTH"
+# [[dependencies.${mod_id}]]
+# modId="firmalife"
+# type="required"
+# versionRange="[3.0.11,)"
+# ordering="NONE"
+# side="BOTH"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't

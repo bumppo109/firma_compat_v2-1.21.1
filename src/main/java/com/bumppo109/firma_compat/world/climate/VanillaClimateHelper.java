@@ -28,6 +28,8 @@ public class VanillaClimateHelper {
     public static double rainScale = FirmaCompatConfig.COMMON.rainScale.get();
     public static double tempLerpValue = FirmaCompatConfig.COMMON.tempLerpValue.get();
 
+    public static double presumedWorldHeight = FirmaCompatConfig.COMMON.presumedWorldHeight.get();
+
     public static float maxElevationChange = 17.822f;
     public static float elevationModifier = 0.16225F;
 
@@ -63,12 +65,23 @@ public class VanillaClimateHelper {
     }
 
     public static float getAdjustedAverageTempByElevation(int y, float averageTemperature) {
-        if ((float)y > 63.0F) {
-            float elevationAdj = Mth.clamp(((float)y - 63.0F) * elevationModifier, 0.0F, maxElevationChange);
-            return averageTemperature - elevationAdj;
-        } else {
+        final float seaLevel = 63.0F;
+
+        if (y <= seaLevel) {
             return averageTemperature;
         }
+
+        float scale = (320.0F - seaLevel) / ((float) presumedWorldHeight - seaLevel);
+
+        float adjustedElevation = (y - seaLevel) * scale;
+
+        float elevationAdj = Mth.clamp(
+                adjustedElevation * elevationModifier,
+                0.0F,
+                maxElevationChange
+        );
+
+        return averageTemperature - elevationAdj;
     }
 
     public static float getTemperatureWorldgen(LevelReader level, BlockPos pos) {

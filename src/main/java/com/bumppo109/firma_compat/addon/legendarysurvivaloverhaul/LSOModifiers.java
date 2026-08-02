@@ -4,6 +4,6 @@ import sfiomn.legendarysurvivaloverhaul.registry.TemperatureModifierRegistry;
 
 public class LSOModifiers {
     public static void register() {
-        TemperatureModifierRegistry.MODIFIERS.register("test_modifier", TestModifier::new);
+        TemperatureModifierRegistry.MODIFIERS.register("firmalife_greenhouse", GreenhouseModifier::new);
     }
 }
