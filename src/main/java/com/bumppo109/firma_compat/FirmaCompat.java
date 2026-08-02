@@ -93,7 +93,6 @@ public class FirmaCompat {
     public void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             BlockAssets.bootstrap();
-            //TODO - complete processor
             RockRegistry.bootstrap();
             ReplacementBootstrap.init();
         });

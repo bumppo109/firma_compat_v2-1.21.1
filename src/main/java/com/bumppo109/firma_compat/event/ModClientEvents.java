@@ -230,8 +230,16 @@ public class ModClientEvents {
         //System.out.println(ModClientEvents.class.getResource("/builtin_resource_packs/excalibur_addon/pack.mcmeta"));
         //System.out.println(ModClientEvents.class.getResource("/builtin_resource_packs/vexxed_visuals_addon/pack.mcmeta"));
 
+        ResourceLocation punchyAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/punchy_addon");
         ResourceLocation excaliburAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/excalibur_addon");
         ResourceLocation vexxedAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/vexxed_visuals_addon");
+
+        event.addPackFinders(punchyAddon, PackType.CLIENT_RESOURCES,
+                Component.literal("Punchy Support"),
+                PackSource.DEFAULT,
+                false,
+                Pack.Position.TOP
+        );
 
         event.addPackFinders(excaliburAddon, PackType.CLIENT_RESOURCES,
                 Component.literal("Excalibur Support"),
