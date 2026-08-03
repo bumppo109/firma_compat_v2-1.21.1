@@ -72,7 +72,7 @@ public class ModTags {
 
         public static final TagKey<Biome> FORESTED_BIOMES = createTag("forested_biomes");
         public static final TagKey<Biome> IS_TFC_OVERWORLD = createTag("is_tfc_overworld");
-        public static final TagKey<Biome> IS_TFC_TERRA = createTag("is_tfc_terra");
+        public static final TagKey<Biome> CAN_BE_DEEP_DARK = createTag("can_be_deep_dark");
 
         private static TagKey<Biome> createTag(String name) {
             return TagKey.create(Registries.BIOME,

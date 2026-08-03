@@ -78,6 +78,28 @@ public class BuiltinLootTableProvider extends LootTableProvider {
                     )
             );
 
+            add(Blocks.CHEST, LootTable.lootTable()
+                    .withPool(lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(lootTableItem(ModItems.LUMBER.get(CompatWood.OAK))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 4.0f)))
+                                    .apply(ApplyExplosionDecay.explosionDecay())     // optional: less items if exploded
+                            )
+                            .when(survivesExplosion())
+                    )
+            );
+
+            add(Blocks.TRAPPED_CHEST, LootTable.lootTable()
+                    .withPool(lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(lootTableItem(ModItems.LUMBER.get(CompatWood.OAK))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 4.0f)))
+                                    .apply(ApplyExplosionDecay.explosionDecay())     // optional: less items if exploded
+                            )
+                            .when(survivesExplosion())
+                    )
+            );
+
             add(Blocks.BOOKSHELF, LootTable.lootTable()
                     .withPool(lootPool()
                             .setRolls(ConstantValue.exactly(1))
@@ -488,6 +510,9 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             knownBlocks.add(Blocks.BARREL);
             knownBlocks.add(Blocks.ANCIENT_DEBRIS);
             knownBlocks.add(Blocks.BOOKSHELF);
+            knownBlocks.add(Blocks.CHEST);
+            knownBlocks.add(Blocks.TRAPPED_CHEST);
+
 
         //Wood
             ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {

@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#firma_compat:can_be_deep_dark",
+  "features": [
+    "firma_compat:deep_dark_deepslate_ceiling",
+    "firma_compat:deep_dark_deepslate_ceiling_hardened",
+    "firma_compat:deep_dark_deepslate_floor",
+    "firma_compat:sculk_vein",
+    "firma_compat:sculk_patch_deep_dark"
+  ],
+  "step": "underground_ores"
+}
