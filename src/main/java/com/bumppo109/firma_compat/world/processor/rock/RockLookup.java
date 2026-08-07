@@ -45,6 +45,7 @@ public final class RockLookup
      *
      * Returns null if terrain data is unavailable.
      */
+    /*
     @Nullable
     public static RockSettings settings(
             LevelReader level,
@@ -66,19 +67,40 @@ public final class RockLookup
         return rockData.getRock(pos);
     }
 
-    /**
-     * Gets the terrain rock.
-     *
-     * Returns null if terrain data is unavailable.
      */
+    @Nullable
+    public static RockSettings settings(
+            LevelReader level,
+            BlockPos pos
+    )
+    {
+        final ChunkData chunkData = ChunkData.get(level, pos);
+
+        if (chunkData == null
+                || chunkData == ChunkData.EMPTY
+                || chunkData.status() != ChunkData.Status.FULL)
+        {
+            return null;
+        }
+
+        try
+        {
+            return chunkData.getRockData().getRock(pos);
+        }
+        catch (NullPointerException e)
+        {
+            // Non-TFC chunk generator.
+            return null;
+        }
+    }
+
     @Nullable
     public static Rock rock(
             LevelReader level,
             BlockPos pos
     )
     {
-        RockSettings settings =
-                settings(level, pos);
+        RockSettings settings = settings(level, pos);
 
         if (settings == null)
         {
@@ -88,27 +110,11 @@ public final class RockLookup
         return rock(settings);
     }
 
-    /**
-     * Converts RockSettings into the corresponding Rock enum.
-     */
-    public static Rock rock(
-            RockSettings settings
-    )
+    @Nullable
+    public static Rock rock(RockSettings settings)
     {
         initialize();
-
-        Rock rock =
-                RAW_LOOKUP.get(settings.raw());
-
-        if (rock == null)
-        {
-            throw new IllegalStateException(
-                    "Unable to resolve TFC rock for "
-                            + settings.raw()
-            );
-        }
-
-        return rock;
+        return RAW_LOOKUP.get(settings.raw());
     }
 
     /**

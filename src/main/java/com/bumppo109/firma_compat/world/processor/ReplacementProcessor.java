@@ -45,72 +45,7 @@ public final class ReplacementProcessor
 
 
 
-    @Override
-    @Nullable
-    public StructureTemplate.StructureBlockInfo process(
-            LevelReader level,
-            BlockPos offset,
-            BlockPos pos,
-            StructureTemplate.StructureBlockInfo original,
-            StructureTemplate.StructureBlockInfo transformed,
-            StructurePlaceSettings settings,
-            @Nullable StructureTemplate template
-    )
-    {
-        Block current =
-                transformed.state()
-                        .getBlock();
-
-
-        FirmaCompat.LOGGER.debug(
-                "[ReplacementProcessor] checking {}",
-                current
-        );
-
-
-        for (ReplacementRule rule : rules)
-        {
-            if (!rule.matches(current))
-            {
-                continue;
-            }
-
-
-            Block replacement =
-                    resolve(
-                            level,
-                            transformed.pos(),
-                            rule.target()
-                    );
-
-
-            FirmaCompat.LOGGER.debug(
-                    "[ReplacementProcessor] {} -> {}",
-                    current,
-                    replacement
-            );
-
-
-            if (replacement == current)
-            {
-                return transformed;
-            }
-
-
-            return new StructureTemplate.StructureBlockInfo(
-                    transformed.pos(),
-                    replacement.defaultBlockState(),
-                    transformed.nbt()
-            );
-        }
-
-
-        return transformed;
-    }
-
-
-
-    private static <T extends ReplacementTarget> Block resolve(
+    private static <T extends ReplacementTarget> @Nullable Block resolve(
             LevelReader level,
             BlockPos pos,
             T target
@@ -126,6 +61,55 @@ public final class ReplacementProcessor
                 pos,
                 target
         );
+    }
+
+    @Override
+    @Nullable
+    public StructureTemplate.StructureBlockInfo process(
+            LevelReader level,
+            BlockPos offset,
+            BlockPos pos,
+            StructureTemplate.StructureBlockInfo original,
+            StructureTemplate.StructureBlockInfo transformed,
+            StructurePlaceSettings settings,
+            @Nullable StructureTemplate template
+    )
+    {
+        Block current = transformed.state().getBlock();
+
+        for (ReplacementRule rule : rules)
+        {
+            if (!rule.matches(current))
+            {
+                continue;
+            }
+
+            Block replacement =
+                    resolve(
+                            level,
+                            transformed.pos(),
+                            rule.target()
+                    );
+
+            // No terrain information available.
+            if (replacement == null)
+            {
+                return transformed;
+            }
+
+            if (replacement == current)
+            {
+                return transformed;
+            }
+
+            return new StructureTemplate.StructureBlockInfo(
+                    transformed.pos(),
+                    replacement.defaultBlockState(),
+                    transformed.nbt()
+            );
+        }
+
+        return transformed;
     }
 
 

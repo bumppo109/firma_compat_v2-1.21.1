@@ -8,10 +8,12 @@ import net.dries007.tfc.common.blocks.DecorationBlockHolder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 
+import net.dries007.tfc.world.settings.RockSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 /**
@@ -37,15 +39,26 @@ public final class RockResolver
     }
 
     @Override
+    @Nullable
     public Block resolve(
             LevelReader level,
             BlockPos pos,
             RockTarget material
     )
     {
-        Rock rock =
-                RockLookup.rock(level, pos);
+        RockSettings settings =
+                RockLookup.settings(level, pos);
 
+        // No TFC terrain information.
+        if (settings == null)
+        {
+            return null;
+        }
+
+        Rock rock =
+                RockLookup.rock(settings);
+
+        // Terrain exists, but couldn't resolve the rock.
         if (rock == null)
         {
             rock = FALLBACK_ROCK;

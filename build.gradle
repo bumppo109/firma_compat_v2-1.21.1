@@ -160,7 +160,9 @@ dependencies {
     compileOnly "curse.maven:polytone-958094:8466918"
 
     //TFC 4.2.6
-    implementation "curse.maven:terrafirmacraft-302973:8467670"
+    //implementation "curse.maven:terrafirmacraft-302973:8467670"
+    //4.2.7
+    implementation "curse.maven:terrafirmacraft-302973:8566530"
     //Patchouli
     implementation "curse.maven:patchouli-306770:7730942"
 
@@ -188,9 +190,6 @@ dependencies {
 
     //Legendary Survival Overhaul 2.4.6.1
     implementation "curse.maven:legendary-survival-overhaul-840254:8450360"
-
-    //Structure Generation Improver 2.0.0
-    implementation "curse.maven:structure-generation-improver-sgi-foundations-1473087:8102461"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

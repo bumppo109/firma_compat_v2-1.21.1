@@ -1,0 +1,103 @@
+{
+  "itemSpecific": {
+    "firma_compat:netherite_mace": {
+      "kind": "MACE",
+      "betterCombat": [
+        {
+          "type": "melee_combo",
+          "attack_1": "attack_mace",
+          "attack_2": "attack_mace",
+          "attack_3": "attack_mace",
+          "attack_4": "attack_mace",
+          "attack_5": "attack_mace",
+          "attack_6": "attack_mace"
+        }
+      ],
+      "customAnimation": [
+        {
+          "type": "mining_v2",
+          "start": "new_mining_forward_start",
+          "looping": "new_mining_forward_loop",
+          "end": "new_mining_forward_end"
+        },
+        {
+          "type": "attack",
+          "var_1": "attack_mace",
+          "critical_hit": "attack_mace"
+        }
+      ]
+    },
+    "firma_compat:netherite_knife": {
+      "kind": "SWORD",
+      "disable_sprint_lateral_tilt": true,
+      "customAnimation": [
+        {
+          "type": "attack",
+          "var_1": "attack_1",
+          "var_2": "attack_2",
+          "var_3": "attack_3",
+          "critical_hit": "attack_critical"
+        },
+        {
+          "type": "mining_v2",
+          "start": "new_mining_st_start",
+          "looping": "new_mining_st_loop",
+          "end": "new_mining_st_end"
+        },
+        {
+          "type": "inspect",
+          "name": "new_inspect"
+        },
+        { "type": "triggerable", "name": "sword_inspect_rework", "key": "G" },
+        { "type": "triggerable", "name": "sword_inspect_old", "key": "J" }
+      ],
+      "transforms": {
+        "right": {
+          "scale": 1.0,
+          "offX": 0.0,
+          "offY": 0.0,
+          "offZ": 0.0,
+          "rotX": 12.256821,
+          "rotY": 2.8015594,
+          "rotZ": 0.0,
+          "pivotX": 0.0,
+          "pivotY": 0.03891051,
+          "pivotZ": 0.019455194
+        },
+        "left": {
+          "scale": 1.0,
+          "offX": -0.0,
+          "offY": 0.0,
+          "offZ": 0.0,
+          "rotX": 12.256821,
+          "rotY": -2.8015594,
+          "rotZ": -0.0,
+          "pivotX": -0.0,
+          "pivotY": 0.03891051,
+          "pivotZ": 0.019455194
+        }
+      }
+    },
+    "firma_compat:netherite_propick": {
+      "kind": "PICKAXE",
+      "customAnimation": [
+        {
+          "type": "mining_v2",
+          "start": "new_mining_forward_start",
+          "looping": "new_mining_forward_loop",
+          "end": "new_mining_forward_end"
+        },
+        {
+          "type": "attack",
+          "var_1": "attack_1",
+          "var_2": "attack_2",
+          "critical_hit": "attack_critical"
+        },
+        {
+          "type": "inspect",
+          "name": "new_inspect_pickaxe"
+        }
+      ]
+    }
+  }
+}

@@ -11,7 +11,8 @@
         "tfc:metal/saw/steel",
         "tfc:metal/saw/black_steel",
         "tfc:metal/saw/blue_steel",
-        "tfc:metal/saw/red_steel"
+        "tfc:metal/saw/red_steel",
+        "firma_compat:netherite_saw"
       ]
     }
   ],

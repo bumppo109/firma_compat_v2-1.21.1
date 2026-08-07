@@ -2,6 +2,7 @@ package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
+import com.bumppo109.firma_compat.util.ModTags;
 import net.dries007.tfc.common.fluids.FluidHolder;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.minecraft.core.HolderLookup;
@@ -10,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
@@ -44,6 +46,12 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements ModAccessor
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+        //Sable Waves
+        tag(FluidTags.WATER)
+                .add(TFCFluids.RIVER_WATER.get())
+                .add(TFCFluids.SALT_WATER.getSource())
+                .add(TFCFluids.SALT_WATER.getFlowing());
+
         tag(WATERLOGGING_WATER)
                 .add(Fluids.WATER)
                 .add(Fluids.FLOWING_WATER)

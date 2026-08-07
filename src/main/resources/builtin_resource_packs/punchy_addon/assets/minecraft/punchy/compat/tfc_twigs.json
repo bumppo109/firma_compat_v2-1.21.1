@@ -1,0 +1,69 @@
+{
+  "customGroups": [
+    {
+      "name": "tfc_twigs",
+      "items": [
+        "tfc:wood/twig/acacia",
+        "tfc:wood/twig/ash",
+        "tfc:wood/twig/aspen",
+        "tfc:wood/twig/birch",
+        "tfc:wood/twig/blackwood",
+        "tfc:wood/twig/chestnut",
+        "tfc:wood/twig/douglas_fir",
+        "tfc:wood/twig/hickory",
+        "tfc:wood/twig/kapok",
+        "tfc:wood/twig/mangrove",
+        "tfc:wood/twig/maple",
+        "tfc:wood/twig/oak",
+        "tfc:wood/twig/palm",
+        "tfc:wood/twig/pine",
+        "tfc:wood/twig/rosewood",
+        "tfc:wood/twig/sequoia",
+        "tfc:wood/twig/spruce",
+        "tfc:wood/twig/sycamore",
+        "tfc:wood/twig/white_cedar",
+        "tfc:wood/twig/willow",
+
+        "afc:wood/twig/araucaria",
+        "afc:wood/twig/baobab",
+        "afc:wood/twig/beech",
+        "afc:wood/twig/black_oak",
+        "afc:wood/twig/cypress",
+        "afc:wood/twig/eucalyptus",
+        "afc:wood/twig/fig",
+        "afc:wood/twig/ginkgo",
+        "afc:wood/twig/gum_arabic",
+        "afc:wood/twig/hevea",
+        "afc:wood/twig/ipe",
+        "afc:wood/twig/ironwood",
+        "afc:wood/twig/kauri",
+        "afc:wood/twig/mahoe",
+        "afc:wood/twig/mahogany",
+        "afc:wood/twig/poplar",
+        "afc:wood/twig/rainbow_eucalyptus",
+        "afc:wood/twig/redcedar",
+        "afc:wood/twig/rubber_fig",
+        "afc:wood/twig/teak",
+        "afc:wood/twig/tualang"
+      ]
+    }
+  ],
+  "item": {
+    "tfc_twigs": {
+      "kind": "TRIDENT",
+      "customAnimation": [
+        {
+          "type": "attack",
+          "var_1": "attack_1",
+          "var_2": "attack_3"
+        },
+        {
+          "type": "mining_v2",
+          "start": "new_mining_st_start",
+          "looping": "new_mining_st_loop",
+          "end": "new_mining_st_end"
+        }
+      ]
+    }
+  }
+}
