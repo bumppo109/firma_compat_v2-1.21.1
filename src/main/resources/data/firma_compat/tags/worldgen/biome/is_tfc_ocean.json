@@ -1,0 +1,9 @@
+{
+  "values": [
+    "tfc:ice_sheet_oceanic",
+    "tfc:ocean",
+    "tfc:ocean_atolls",
+    "tfc:ocean_reef",
+    "tfc:ocean_ridge"
+  ]
+}

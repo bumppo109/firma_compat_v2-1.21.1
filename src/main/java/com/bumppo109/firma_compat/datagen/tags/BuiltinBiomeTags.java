@@ -38,8 +38,6 @@ public class BuiltinBiomeTags extends TagsProvider<Biome> {
                 .addTags(Tags.Biomes.IS_TAIGA)
                 .addTags(Tags.Biomes.IS_JUNGLE);
 
-        tag(ModTags.Biomes.CAN_BE_DEEP_DARK).add(TFCBiomes.OLD_MOUNTAINS.key());
-
     //TFC biomes
         HolderLookup.RegistryLookup<Biome> biomeLookup = provider.lookupOrThrow(Registries.BIOME);
 
