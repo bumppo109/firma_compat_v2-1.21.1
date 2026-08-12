@@ -242,6 +242,13 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                 ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_red_sand_2"),
                 ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/suspicious_red_sand_3"));
 
+        ModBlocks.TFC_CHISELED_SANDSTONE.forEach((sand, block) -> {
+            String sandName = sand.name().toLowerCase(Locale.ROOT);
+            ResourceLocation side = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/chiseled_sandstone/" + sandName);
+            ResourceLocation top = ResourceLocation.fromNamespaceAndPath("tfc","block/sandstone/top/" + sandName);
+
+            cubeColumnWithItem(block.get(), side, top);
+        });
 
     //=============== Firmalife =================
 
@@ -788,6 +795,12 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
         simpleBlockWithItem(block, models().cubeAll(blockRes.getPath(), texture));
+    }
+
+    private void cubeColumnWithItem(Block block, ResourceLocation side, ResourceLocation top) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+
+        simpleBlockWithItem(block, models().cubeColumn(blockRes.getPath(), side, top));
     }
 
     private void rockAnvilWithItem(Block block, ResourceLocation raw) {

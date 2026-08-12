@@ -103,6 +103,9 @@ public class ModCreativeModeTab {
         ModBlocks.TFC_SUSPICIOUS_SAND.forEach((rock, brushableBlockId) -> {
             add(output, brushableBlockId);
         });
+        ModBlocks.TFC_CHISELED_SANDSTONE.forEach((rock, block) -> {
+            add(output, block);
+        });
         ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
                 add(output, blockId);

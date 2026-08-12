@@ -57,6 +57,7 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
 
     @Override
     protected void regenerateDynamicAssets(Consumer<ResourceGenTask> executor) {
+        executor.accept(this::generateChiseledSandstone);
         //executor.accept(this::generateSuspiciousGravel);
         //executor.accept(this::generateSuspiciousSand);
         /*
@@ -80,6 +81,38 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
     @Override
     public void reload(ResourceManager manager, IProgressTracker reporter) {
         super.reload(manager, reporter);
+    }
+
+    private void generateChiseledSandstone(ResourceManager manager, ResourceSink sink) {
+
+        try (TextureImage template = TextureImage.open(manager,
+                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/block/chiseled_sandstone"))) {
+
+            var respriter = net.mehvahdjukaar.moonlight.api.resources.textures.Respriter.of(template);
+
+            for (SandBlockType sand : SandBlockType.values()) {
+
+                ResourceLocation output = FirmaCompatHelpers.modIdentifier("block/chiseled_sandstone/" + sand.name().toLowerCase(Locale.ROOT));
+
+                sink.addTextureUnlessPresent(manager, output, () -> {
+
+                    ResourceLocation sandstoneTexture = ResourceLocation.fromNamespaceAndPath(
+                            "tfc",
+                            "block/sandstone/top/" + sand.name().toLowerCase(Locale.ROOT)
+                    );
+
+                    try (TextureImage sandstone = TextureImage.open(manager, sandstoneTexture)) {
+
+                        Palette palette = SpriteUtils.extrapolateWoodItemPalette(sandstone);
+
+                        return respriter.recolor(palette);
+                    }
+                });
+            }
+
+        } catch (Exception e) {
+            FirmaCompat.LOGGER.error("Failed generating chiseled sandstone textures", e);
+        }
     }
 
     private void generateSuspiciousGravel(ResourceManager manager, ResourceSink sink) {

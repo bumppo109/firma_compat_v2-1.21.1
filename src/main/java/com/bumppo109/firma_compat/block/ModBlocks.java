@@ -218,6 +218,11 @@ public class ModBlocks {
                                         .pushReaction(PushReaction.DESTROY)))
             );
 
+    public static final Map<SandBlockType, Id<Block>> TFC_CHISELED_SANDSTONE = Helpers.mapOf(SandBlockType.class, sand ->
+            register("tfc_chiseled_" + sand.name().toLowerCase(Locale.ROOT) + "_sandstone",
+                    () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_SANDSTONE)))
+    );
+
     public static final Id<BrushableBlock> SUSPICIOUS_RED_SAND = register("suspicious_red_sand",
             () -> new BrushableBlock(
                     Blocks.RED_SAND,

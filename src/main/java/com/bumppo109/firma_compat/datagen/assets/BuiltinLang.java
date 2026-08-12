@@ -196,10 +196,14 @@ public class BuiltinLang extends LanguageProvider {
         });
         add(ModBlocks.SUSPICIOUS_RED_SAND.get(), getBlockDisplayName(ModBlocks.SUSPICIOUS_RED_SAND.get()));
 
+        ModBlocks.TFC_CHISELED_SANDSTONE.forEach((sand, block) -> {
+            add(block.get(), getTFCname(block.get()));
+        });
+
         //Misc
-        add(ModBlocks.COMPAT_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_CHEST.get()));
-        add(ModBlocks.COMPAT_TRAPPED_CHEST.get(), getBlockDisplayName(ModBlocks.COMPAT_TRAPPED_CHEST.get()));
-        add(ModItems.COMPAT_CHEST_MINECART.get(), getItemDisplayName(ModItems.COMPAT_CHEST_MINECART.get()));
+        add(ModBlocks.COMPAT_CHEST.get(), "Chest");
+        add(ModBlocks.COMPAT_TRAPPED_CHEST.get(), "Trapped Chest");
+        add(ModItems.COMPAT_CHEST_MINECART.get(), "Chest Minecart");
 
 
     // =============== Firmalife ================

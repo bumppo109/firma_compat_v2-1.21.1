@@ -70,7 +70,6 @@ public class FirmaCompat {
         FirmaCompatConfig.register(modContainer);
 
         if (FMLEnvironment.dist.isClient()) {
-            //RegHelper.registerDynamicResourceProvider(ModClientDynamicResources.INSTANCE);
             modEventBus.addListener(ModItemCapabilities::register);
             modEventBus.addListener(FirmaCompatClient::registerExtensions);
         }

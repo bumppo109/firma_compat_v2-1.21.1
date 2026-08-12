@@ -4,6 +4,7 @@ import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.util.ModTags;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -562,6 +563,10 @@ public interface ModCraftingRecipes extends ModRecipes {
         recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.RED_SANDSTONE, Items.SMOOTH_RED_SANDSTONE);
         recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.SMOOTH_RED_SANDSTONE, Items.CUT_RED_SANDSTONE);
         recipe().useTool(TFCTags.Items.TOOLS_CHISEL, Items.CUT_RED_SANDSTONE, Items.CHISELED_RED_SANDSTONE);
+
+        ModBlocks.TFC_CHISELED_SANDSTONE.forEach((sandBlockType, blockId) -> {
+            recipe().useTool(TFCTags.Items.TOOLS_CHISEL, TFCBlocks.SANDSTONE.get(sandBlockType).get(SandstoneBlockType.CUT).get().asItem(), blockId.get().asItem());
+        });
 
         recipe()
                 .input('A', Blocks.SANDSTONE)
