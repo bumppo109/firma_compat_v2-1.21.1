@@ -2,8 +2,6 @@ package com.bumppo109.firma_compat.world.processor.sandstone;
 
 import com.mojang.serialization.Codec;
 
-import net.dries007.tfc.common.blocks.SandstoneBlockType;
-
 import net.minecraft.util.StringRepresentable;
 
 
@@ -12,7 +10,8 @@ public enum SandstoneType
 {
     RAW(SandstoneBlockType.RAW),
     SMOOTH(SandstoneBlockType.SMOOTH),
-    CUT(SandstoneBlockType.CUT);
+    CUT(SandstoneBlockType.CUT),
+    CHISELED(SandstoneBlockType.CHISELED);
 
 
     public static final Codec<SandstoneType> CODEC =

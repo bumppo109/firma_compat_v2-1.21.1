@@ -1,11 +1,11 @@
 package com.bumppo109.firma_compat.world.processor.sandstone;
 
+import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.world.processor.ReplacementCategory;
 import com.bumppo109.firma_compat.world.processor.ReplacementResolver;
 import com.bumppo109.firma_compat.world.processor.rock.RockLookup;
 
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
-import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.world.settings.RockSettings;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 
 public final class SandstoneResolver
@@ -112,37 +113,45 @@ public final class SandstoneResolver
             SandstoneBlockType type
     )
     {
-        Map<SandstoneBlockType, TFCBlocks.Id<Block>> blocks =
-                TFCBlocks.SANDSTONE.get(
-                        sand
+        if(type.tfcSandStoneType() != null) {
+            Map<net.dries007.tfc.common.blocks.SandstoneBlockType, TFCBlocks.Id<Block>> tfcBlockMap =
+                    TFCBlocks.SANDSTONE.get(sand);
+
+            if (tfcBlockMap == null)
+            {
+                throw new IllegalStateException(
+                        "Missing sandstone registry for "
+                                + sand
                 );
+            }
 
+            TFCBlocks.Id<Block> block =
+                    tfcBlockMap.get(type.tfcSandStoneType());
 
-        if (blocks == null)
-        {
-            throw new IllegalStateException(
-                    "Missing sandstone registry for "
-                            + sand
-            );
+            if (block == null)
+            {
+                throw new IllegalStateException(
+                        "Missing sandstone "
+                                + type
+                                + " for "
+                                + sand
+                );
+            }
+
+            return block.get();
+        } else {
+            Supplier<Block> chiseledSandstoneBlock = ModBlocks.TFC_CHISELED_SANDSTONE.get(sand);
+
+            if (chiseledSandstoneBlock == null)
+            {
+                throw new IllegalStateException(
+                        "Missing sandstone registry for "
+                                + sand
+                );
+            }
+
+            return chiseledSandstoneBlock.get();
         }
-
-
-        TFCBlocks.Id<Block> block =
-                blocks.get(type);
-
-
-        if (block == null)
-        {
-            throw new IllegalStateException(
-                    "Missing sandstone "
-                            + type
-                            + " for "
-                            + sand
-            );
-        }
-
-
-        return block.get();
     }
 
 
@@ -151,7 +160,15 @@ public final class SandstoneResolver
             SandstoneBlockType type
     )
     {
-        Map<SandstoneBlockType, DecorationBlockHolder> decorations =
+        if (type.tfcSandStoneType() == null)
+        {
+            throw new IllegalStateException(
+                    "Chiseled Sandstone has no decorations, "
+                            + sand
+            );
+        }
+
+        Map<net.dries007.tfc.common.blocks.SandstoneBlockType, DecorationBlockHolder> decorations =
                 TFCBlocks.SANDSTONE_DECORATIONS.get(
                         sand
                 );
@@ -167,7 +184,7 @@ public final class SandstoneResolver
 
 
         DecorationBlockHolder holder =
-                decorations.get(type);
+                decorations.get(type.tfcSandStoneType());
 
 
         if (holder == null)
