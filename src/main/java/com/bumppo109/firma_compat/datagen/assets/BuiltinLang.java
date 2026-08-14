@@ -33,7 +33,7 @@ public class BuiltinLang extends LanguageProvider {
         add("firma_compat.creative_tab.firma_compat", "Firma Compat");
 
         add("fluid.firma_compat.metal.netherite", "Molten Netherite");
-        add("fluid.firma_compat.metal.poor_netherite", "Molten Poor Netherite");
+        add("fluid.firma_compat.metal.scrap_netherite", "Molten Scrap Netherite");
 
         //Gems Realm Compat
         add("item_type.firma_compat.rod", "%s Rod");

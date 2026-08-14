@@ -1,5 +1,6 @@
 package com.bumppo109.firma_compat.world.processor.rock;
 
+import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.world.processor.BlockShape;
 import com.bumppo109.firma_compat.world.processor.ReplacementCategory;
 import com.bumppo109.firma_compat.world.processor.ReplacementResolver;
@@ -108,34 +109,47 @@ public final class RockResolver
             RockBlockType type
     )
     {
-        Rock.BlockType tfcType =
-                requireTfcType(type);
+        if(type.tfcType() == null) {
+            if (type.equals(RockBlockType.HARDENED_COBBLE)) {
+                return ModBlocks.TFC_ROCK_BLOCKS.get(rock).get(Rock.BlockType.COBBLE).get();
+            } else if (type.equals(RockBlockType.HARDENED_MOSSY_COBBLE)) {
+                return ModBlocks.TFC_ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).get();
+            } else {
+                throw new IllegalStateException(
+                        "Invalid Rock BlockType for "
+                                + rock
+                );
+            }
+        } else {
+            Rock.BlockType tfcType =
+                    requireTfcType(type);
 
-        Map<Rock.BlockType, TFCBlocks.Id<Block>> blocks =
-                TFCBlocks.ROCK_BLOCKS.get(rock);
+            Map<Rock.BlockType, TFCBlocks.Id<Block>> blocks =
+                    TFCBlocks.ROCK_BLOCKS.get(rock);
 
-        if (blocks == null)
-        {
-            throw new IllegalStateException(
-                    "Missing TFC rock block registry for "
-                            + rock
-            );
+            if (blocks == null)
+            {
+                throw new IllegalStateException(
+                        "Missing TFC rock block registry for "
+                                + rock
+                );
+            }
+
+            TFCBlocks.Id<Block> id =
+                    blocks.get(tfcType);
+
+            if (id == null)
+            {
+                throw new IllegalStateException(
+                        "Missing TFC rock block "
+                                + tfcType
+                                + " for "
+                                + rock
+                );
+            }
+
+            return id.get();
         }
-
-        TFCBlocks.Id<Block> id =
-                blocks.get(tfcType);
-
-        if (id == null)
-        {
-            throw new IllegalStateException(
-                    "Missing TFC rock block "
-                            + tfcType
-                            + " for "
-                            + rock
-            );
-        }
-
-        return id.get();
     }
 
     private Block resolveSlab(
@@ -182,7 +196,7 @@ public final class RockResolver
         Map<Rock.BlockType, DecorationBlockHolder> decorations =
                 TFCBlocks.ROCK_DECORATIONS.get(rock);
 
-        if (decorations == null)
+        if (decorations == null || type.equals(RockBlockType.HARDENED_COBBLE) || type.equals(RockBlockType.HARDENED_MOSSY_COBBLE))
         {
             throw new IllegalStateException(
                     "Missing TFC rock decoration registry for "

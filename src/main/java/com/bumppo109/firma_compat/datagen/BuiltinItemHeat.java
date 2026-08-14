@@ -61,9 +61,11 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
 
         //food
         add(Items.KELP, 1.0f);
+        add(Items.DRIED_KELP, 1.0f);
 
         //misc
         add(Items.WET_SPONGE, 1.0f);
+        add(ModItems.UNFIRED_POT, 2.5f);
 
         add("chain", Ingredient.of(Items.CHAIN), Metal.CAST_IRON, 6);
         add("iron_nugget", Ingredient.of(Items.IRON_NUGGET), Metal.CAST_IRON, 10);

@@ -30,7 +30,11 @@ public enum RockBlockType implements StringRepresentable
     PRESSURE_PLATE(Rock.BlockType.PRESSURE_PLATE),
     BUTTON(Rock.BlockType.BUTTON),
 
-    GRAVEL(Rock.BlockType.GRAVEL);
+    GRAVEL(Rock.BlockType.GRAVEL),
+
+    HARDENED_COBBLE(null),
+    HARDENED_MOSSY_COBBLE(null)
+    ;
 
     private final Rock.BlockType tfcType;
 

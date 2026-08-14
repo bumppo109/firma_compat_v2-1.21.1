@@ -104,15 +104,13 @@ public final class ReplacementProcessor
 
             return new StructureTemplate.StructureBlockInfo(
                     transformed.pos(),
-                    replacement.defaultBlockState(),
+                    replacement.withPropertiesOf(transformed.state()),
                     transformed.nbt()
             );
         }
 
         return transformed;
     }
-
-
 
     @Override
     protected StructureProcessorType<?> getType()
