@@ -34,11 +34,6 @@ public class IgniteUnlitBlockEvent {
             return;
         }
 
-        // Already lit
-        if (state.getValue(BlockStateProperties.LIT)) {
-            return;
-        }
-
         var player = event.getEntity();
 
         InteractionHand eventHand = event.getHand();
@@ -50,6 +45,18 @@ public class IgniteUnlitBlockEvent {
 
         ItemStack eventHandStack = player.getItemInHand(eventHand);
         ItemStack otherHandStack = player.getItemInHand(otherHand);
+
+
+        // Already lit
+        if (state.getValue(BlockStateProperties.LIT)) {
+            if (eventHandStack.isEmpty()) {
+                if (player.isCrouching()) {
+                    state.setValue(BlockStateProperties.LIT, false);
+                }
+            } else {
+                return;
+            }
+        }
 
         boolean eventHandIgniter = eventHandStack.is(Tags.Items.TOOLS_IGNITER);
         boolean otherHandIgniter = otherHandStack.is(Tags.Items.TOOLS_IGNITER);

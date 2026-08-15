@@ -67,6 +67,12 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         add(Items.WET_SPONGE, 1.0f);
         add(ModItems.UNFIRED_POT, 2.5f);
 
+        add("raw_iron_block", Ingredient.of(Items.RAW_IRON_BLOCK), Metal.CAST_IRON, 100);
+        add("raw_iron", Ingredient.of(Items.RAW_IRON), Metal.CAST_IRON, 10);
+        add("raw_copper_block", Ingredient.of(Items.RAW_COPPER_BLOCK), Metal.COPPER, 100);
+        add("raw_copper", Ingredient.of(Items.RAW_COPPER), Metal.COPPER, 10);
+        add("raw_gold_block", Ingredient.of(Items.RAW_GOLD_BLOCK), Metal.GOLD, 100);
+        add("raw_gold", Ingredient.of(Items.RAW_GOLD), Metal.GOLD, 10);
         add("chain", Ingredient.of(Items.CHAIN), Metal.CAST_IRON, 6);
         add("iron_nugget", Ingredient.of(Items.IRON_NUGGET), Metal.CAST_IRON, 10);
         add("gold_nugget", Ingredient.of(Items.GOLD_NUGGET), Metal.GOLD, 10);

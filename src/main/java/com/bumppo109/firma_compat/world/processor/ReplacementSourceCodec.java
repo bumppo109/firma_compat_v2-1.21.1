@@ -44,7 +44,7 @@ public final class ReplacementSourceCodec
                     "tag";
 
             case ReplacementSource.ListSource ignored ->
-                    "list";
+                    "blocks";
         };
     }
 
@@ -62,7 +62,7 @@ public final class ReplacementSourceCodec
             case "tag" ->
                     tagCodec();
 
-            case "list" ->
+            case "blocks" ->
                     listCodec();
 
             default ->
