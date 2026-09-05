@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "firma_compat:block/tuff_cobble",
-    "side": "firma_compat:block/tuff_cobble",
-    "top": "firma_compat:block/tuff_cobble"
-  }
-}

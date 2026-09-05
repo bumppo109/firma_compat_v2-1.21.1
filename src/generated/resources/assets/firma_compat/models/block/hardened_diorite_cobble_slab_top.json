@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "firma_compat:block/diorite_cobble",
-    "side": "firma_compat:block/diorite_cobble",
-    "top": "firma_compat:block/diorite_cobble"
-  }
-}

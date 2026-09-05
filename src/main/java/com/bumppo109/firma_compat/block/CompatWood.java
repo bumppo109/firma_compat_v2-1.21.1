@@ -1,10 +1,12 @@
 package com.bumppo109.firma_compat.block;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.bumppo109.firma_compat.materials.WoodMaterial;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
@@ -17,48 +19,62 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rotation.*;
 import net.dries007.tfc.common.blocks.wood.*;
 import net.dries007.tfc.common.items.BarrelBlockItem;
+import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.registry.RegistryWood;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.apache.commons.lang3.function.TriFunction;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public enum CompatWood implements ModRegistryWood {
-    ACACIA(MapColor.COLOR_ORANGE, MapColor.STONE,true),
-    BIRCH(MapColor.SAND, MapColor.QUARTZ,true),
-    CHERRY(MapColor.TERRACOTTA_WHITE, MapColor.TERRACOTTA_PINK,true),
-    DARK_OAK(MapColor.COLOR_BROWN, MapColor.COLOR_BROWN,true),
-    JUNGLE(MapColor.DIRT, MapColor.PODZOL,true),
-    MANGROVE(MapColor.COLOR_RED, MapColor.PODZOL,true),
-    OAK(MapColor.WOOD, MapColor.PODZOL,true),
-    SPRUCE(MapColor.PODZOL, MapColor.COLOR_BROWN,true),
-    BAMBOO(MapColor.COLOR_YELLOW, MapColor.COLOR_LIGHT_GREEN,true),
-    CRIMSON(MapColor.CRIMSON_STEM, MapColor.CRIMSON_STEM, false),
-    WARPED(MapColor.WARPED_STEM, MapColor.WARPED_STEM, false)
+    ACACIA(MapColor.COLOR_ORANGE, MapColor.STONE),
+    BIRCH(MapColor.SAND, MapColor.QUARTZ),
+    CHERRY(MapColor.TERRACOTTA_WHITE, MapColor.TERRACOTTA_PINK),
+    DARK_OAK(MapColor.COLOR_BROWN, MapColor.COLOR_BROWN),
+    JUNGLE(MapColor.DIRT, MapColor.PODZOL),
+    MANGROVE(MapColor.COLOR_RED, MapColor.PODZOL),
+    OAK(MapColor.WOOD, MapColor.PODZOL),
+    SPRUCE(MapColor.PODZOL, MapColor.COLOR_BROWN),
+    BAMBOO(MapColor.COLOR_YELLOW, MapColor.COLOR_LIGHT_GREEN),
+    CRIMSON(MapColor.CRIMSON_STEM, MapColor.CRIMSON_STEM, WoodMaterial.CRIMSON,false),
+    WARPED(MapColor.WARPED_STEM, MapColor.WARPED_STEM, WoodMaterial.WARPED,false)
     ;
 
     public static final CompatWood[] VALUES = values();
     private final String serializedName;
     private final MapColor woodColor;
     private final MapColor barkColor;
+    private final WoodMaterial woodMaterial;
     private final boolean isFlammable;
 
-    private CompatWood(MapColor woodColor, MapColor barkColor, boolean isFlammable) {
+    private CompatWood(MapColor woodColor, MapColor barkColor) {
         this.serializedName = this.name().toLowerCase(Locale.ROOT);
         this.woodColor = woodColor;
         this.barkColor = barkColor;
-        this.isFlammable = isFlammable;
+        this.woodMaterial = WoodMaterial.valueOf(this.name());
+        this.isFlammable = true;
     }
 
-    public CompatWoodMaterial compatWoodMaterial() {
-        return CompatWoodMaterial.valueOf(this.name());
+    private CompatWood(MapColor woodColor, MapColor barkColor, WoodMaterial woodMaterial) {
+        this.serializedName = this.name().toLowerCase(Locale.ROOT);
+        this.woodColor = woodColor;
+        this.barkColor = barkColor;
+        this.woodMaterial = woodMaterial;
+        this.isFlammable = true;
+    }
+
+    private CompatWood(MapColor woodColor, MapColor barkColor, WoodMaterial woodMaterial, boolean isFlammable) {
+        this.serializedName = this.name().toLowerCase(Locale.ROOT);
+        this.woodColor = woodColor;
+        this.barkColor = barkColor;
+        this.woodMaterial = woodMaterial;
+        this.isFlammable = isFlammable;
     }
 
     public String getSerializedName() {
@@ -78,57 +94,57 @@ public enum CompatWood implements ModRegistryWood {
     }
 
     @Override
-    public Supplier<Block> getBlock(BlockType type) {
+    public Supplier<Block> getBlock(CompatWood.BlockType type) {
         return ModBlocks.WOODS.get(this).get(type);
     }
 
+    public WoodMaterial woodMaterial() {
+        return this.woodMaterial;
+    }
+
     public static enum BlockType {
-        //BOOKSHELF((wood) -> new BookshelfBlock(properties(wood, Flammable.LOGS).strength(2.0F, 3.0F).enchantPower(BookshelfBlock::getEnchantPower).blockEntity(TFCBlockEntities.BOOKSHELF))),
-        LOG_FENCE((wood) -> new TFCFenceBlock(properties(wood, Flammable.LOGS).strength(2.0F, 3.0F))),
-        TOOL_RACK((wood) -> new ToolRackBlock(properties(wood, Flammable.LOGS).strength(2.0F).noOcclusion().blockEntity(TFCBlockEntities.TOOL_RACK))),
-        TWIG((wood) -> GroundcoverBlock.twig(properties(wood, Flammable.WOOL).strength(0.05F, 0.0F).sound(SoundType.WOOD).noCollission())),
-        //FALLEN_LEAVES((self, wood) -> new FallenLeavesBlock(properties(wood, Flammable.WOOL).strength(0.05F, 0.0F).noOcclusion().noCollission().isViewBlocking(TFCBlocks::never).sound(SoundType.CROP), CompatWood.getBlock(self.leaves()))),
-        VERTICAL_SUPPORT((wood) -> new VerticalSupportBlock(properties(wood, Flammable.LOGS).strength(1.0F).noOcclusion())),
-        HORIZONTAL_SUPPORT((wood) -> new HorizontalSupportBlock(properties(wood, Flammable.LOGS).strength(1.0F).noOcclusion())),
-        //WORKBENCH((wood) -> new TFCCraftingTableBlock(properties(wood, Flammable.LOGS).strength(2.5F))),
-        //TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(properties(wood, Flammable.LOGS).strength(2.5F).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), CompatWood.getSerializedName()), ChestBlockItem::new),
-        //CHEST((self, wood) -> new TFCChestBlock(properties(wood, Flammable.LOGS).strength(2.5F).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), CompatWood.getSerializedName()), ChestBlockItem::new),
-        LOOM((self, wood) -> new TFCLoomBlock(properties(wood, Flammable.PLANKS).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), self.planksTexture(wood))),
-        SLUICE((wood) -> new SluiceBlock(properties(wood, Flammable.LOGS).strength(3.0F).noOcclusion().blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick))),
-        BARREL((self, wood) -> new BarrelBlock(properties(wood, Flammable.PLANKS).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), BarrelBlockItem::new),
-        //LECTERN((wood) -> new TFCLecternBlock(properties(wood, Flammable.LOGS).noCollission().strength(2.5F).blockEntity(TFCBlockEntities.LECTERN))),
-        SCRIBING_TABLE((wood) -> new ScribingTableBlock(properties(wood, Flammable.PLANKS).noOcclusion().strength(2.5F))),
-        SEWING_TABLE((wood) -> new SewingTableBlock(properties(wood, Flammable.PLANKS).noOcclusion().strength(2.5F))),
-        SHELF((wood) -> new ShelfBlock(properties(wood, Flammable.PLANKS).noOcclusion().strength(2.5F).blockEntity(TFCBlockEntities.SHELF), false)),
-        AXLE((self, wood) -> new AxleBlock(properties(wood, Flammable.LOGS).noOcclusion().strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.AXLE), getBlock(wood, self.windmill()), self.planksTexture(wood))),
-        BLADED_AXLE((self, wood) -> new BladedAxleBlock(properties(wood, Flammable.LOGS).noOcclusion().strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.BLADED_AXLE), getBlock(wood, self.axle()))),
-        ENCASED_AXLE((self, wood) -> new EncasedAxleBlock(properties(wood, Flammable.LOGS).strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.ENCASED_AXLE))),
-        CLUTCH((self, wood) -> new ClutchBlock(properties(wood, Flammable.LOGS).strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.CLUTCH), getBlock(wood, self.axle()))),
-        GEAR_BOX((self, wood) -> new GearBoxBlock(properties(wood, Flammable.LOGS).strength(2.0F).noOcclusion().blockEntity(TFCBlockEntities.GEAR_BOX), getBlock(wood, self.axle()))),
-        WINDMILL((self, wood) -> new WindmillBlock(properties(wood, Flammable.LOGS).strength(9.0F).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick), getBlock(wood, self.axle()))),
-        WATER_WHEEL((self, wood) -> new WaterWheelBlock(properties(wood, Flammable.LOGS).strength(9.0F).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), getBlock(wood, self.axle()), self.waterWheelTexture(wood))),
-        CRATE((self, wood) -> new CrateBlock(properties(wood, Flammable.LOGS).strength(9.0F).noOcclusion().blockEntity(TFCBlockEntities.CRATE)));
+        //BOOKSHELF((self,wood) -> new BookshelfBlock(properties(wood, self).strength(2.0F, 3.0F).enchantPower(BookshelfBlock::getEnchantPower).blockEntity(TFCBlockEntities.BOOKSHELF))),
+        //LECTERN((self,wood) -> new TFCLecternBlock(properties(wood, self).noCollission().strength(2.5F).blockEntity(TFCBlockEntities.LECTERN))),
+        //TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(properties(wood, self).strength(2.5F).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), (block, properties, wood) -> new ChestBlockItem(block, properties, chestBoatRes(wood))),
+        //CHEST((self, wood) -> new TFCChestBlock(properties(wood, self).strength(2.5F).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), (block, properties, wood) -> new ChestBlockItem(block, properties, chestBoatRes(wood))),
+        //WORKBENCH((self,wood) -> new TFCCraftingTableBlock(properties(wood, self).strength(2.5F))),
+
+        LOG_FENCE((self,wood) -> new TFCFenceBlock(properties(wood, self).strength(2.0F, 3.0F))),
+        TOOL_RACK((self,wood) -> new ToolRackBlock(properties(wood, self).strength(2.0F).noOcclusion().blockEntity(TFCBlockEntities.TOOL_RACK))),
+        TWIG((wood) -> GroundcoverBlock.twig(ExtendedProperties.of().strength(0.05F, 0.0F).sound(SoundType.WOOD).noCollission())),
+        FALLEN_LEAVES((self, wood) -> new FallenLeavesBlock(ExtendedProperties.of().strength(0.05F, 0.0F).noOcclusion().noCollission().isViewBlocking(TFCBlocks::never).sound(SoundType.CROP), Objects.requireNonNull(wood.woodMaterial().leaves()))),
+        VERTICAL_SUPPORT((self,wood) -> new VerticalSupportBlock(properties(wood, self).strength(1.0F).noOcclusion())),
+        HORIZONTAL_SUPPORT((self,wood) -> new HorizontalSupportBlock(properties(wood, self).strength(1.0F).noOcclusion())),
+        LOOM((self, wood) -> new TFCLoomBlock(properties(wood, self).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), self.planksTexture(wood))),
+        SLUICE((self,wood) -> new SluiceBlock(properties(wood, self).strength(3.0F).noOcclusion().blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick))),
+        BARREL((self, wood) -> new BarrelBlock(properties(wood, self).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), BarrelBlockItem::new),
+        SCRIBING_TABLE((self,wood) -> new ScribingTableBlock(properties(wood, self).noOcclusion().strength(2.5F))),
+        SEWING_TABLE((self,wood) -> new SewingTableBlock(properties(wood, self).noOcclusion().strength(2.5F))),
+        SHELF((self,wood) -> new ShelfBlock(properties(wood, self).noOcclusion().strength(2.5F).blockEntity(TFCBlockEntities.SHELF), false)),
+        AXLE((self, wood) -> new AxleBlock(properties(wood, self).noOcclusion().strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.AXLE), getBlock(wood, self.windmill()), self.planksTexture(wood))),
+        BLADED_AXLE((self, wood) -> new BladedAxleBlock(properties(wood, self).noOcclusion().strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.BLADED_AXLE), getBlock(wood, self.axle()))),
+        ENCASED_AXLE((self, wood) -> new EncasedAxleBlock(properties(wood, self).strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.ENCASED_AXLE))),
+        CLUTCH((self, wood) -> new ClutchBlock(properties(wood, self).strength(2.5F).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.CLUTCH), getBlock(wood, self.axle()))),
+        GEAR_BOX((self, wood) -> new GearBoxBlock(properties(wood, self).strength(2.0F).noOcclusion().blockEntity(TFCBlockEntities.GEAR_BOX), getBlock(wood, self.axle()))),
+        WINDMILL((self, wood) -> new WindmillBlock(properties(wood, self).strength(9.0F).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick), getBlock(wood, self.axle()))),
+        WATER_WHEEL((self, wood) -> new WaterWheelBlock(properties(wood, self).strength(9.0F).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), getBlock(wood, self.axle()), self.waterWheelTexture(wood))),
+        CRATE((self, wood) -> new CrateBlock(properties(wood, self).strength(9.0F).noOcclusion().blockEntity(TFCBlockEntities.CRATE)));
 
         private final BiFunction<BlockType, ModRegistryWood, Block> blockFactory;
         private final TriFunction<Block, Item.Properties, ModRegistryWood, ? extends BlockItem> blockItemFactory;
 
-        private static ExtendedProperties properties(ModRegistryWood wood, Flammable flammableType)
-        {
-            if(flammableType.equals(Flammable.LOGS) && wood.isFlammable()) {
-                return ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS).flammableLikeLogs();
-            } else if (flammableType.equals(Flammable.PLANKS) && wood.isFlammable()) {
-                return ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS).flammableLikePlanks();
-            } else if (flammableType.equals(Flammable.WOOL) && wood.isFlammable()) {
-                return ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS).flammableLikeWool();
-            } else {
-                return ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS);
-            }
-        }
+        private static ExtendedProperties properties(ModRegistryWood wood, CompatWood.BlockType blockType) {
+            ExtendedProperties properties = ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).instrument(NoteBlockInstrument.BASS);
 
-        public enum Flammable {
-            LOGS,
-            PLANKS,
-            WOOL
+            if (wood.isFlammable()) {
+                return switch(blockType) {
+                    case TWIG, FALLEN_LEAVES -> properties.flammableLikeWool();
+                    case LOOM, BARREL, SHELF -> properties.flammableLikePlanks();
+                    default -> properties.flammableLikeLogs();
+                };
+            } else {
+                return properties;
+            }
         }
 
         @SuppressWarnings("unchecked")
@@ -178,6 +194,19 @@ public enum CompatWood implements ModRegistryWood {
             };
         }
 
+        public boolean hasVariant(CompatWood wood) {
+            boolean hasLog = wood.woodMaterial.log() != null;
+            boolean hasPlanks = wood.woodMaterial.planks() != null;
+            boolean hasLeaves = wood.woodMaterial.leaves() != null;
+
+            return switch (this) {
+                case FALLEN_LEAVES -> hasLeaves;
+                case TWIG, VERTICAL_SUPPORT, HORIZONTAL_SUPPORT -> hasLog;
+                case LOG_FENCE -> hasLog && hasPlanks;
+                default -> hasPlanks;
+            };
+        }
+
         private ResourceLocation planksTexture(ModRegistryWood wood) {
             return ResourceLocation.withDefaultNamespace("block/" + wood.getSerializedName() + "_planks");
         }
@@ -186,19 +215,17 @@ public enum CompatWood implements ModRegistryWood {
             return Helpers.identifier("textures/entity/water_wheel/" + wood.getSerializedName() + ".png");
         }
 
+        private static ResourceLocation chestBoatRes(ModRegistryWood wood) {
+            return Helpers.identifier("textures/entity/chest_boat/" + wood.getSerializedName() + ".png");
+        }
+
         private CompatWood.BlockType twig() {
             return TWIG;
         }
 
-        /*
         private CompatWood.BlockType fallenLeaves() {
             return FALLEN_LEAVES;
         }
-
-        private CompatWood.BlockType leaves() {
-            return LEAVES;
-        }
-         */
 
         private CompatWood.BlockType axle() {
             return AXLE;

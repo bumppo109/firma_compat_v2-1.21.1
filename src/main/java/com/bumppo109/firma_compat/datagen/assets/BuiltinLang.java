@@ -1,26 +1,14 @@
 package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
-import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
-import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRItems;
 import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.item.ModItems;
-import net.dries007.tfc.common.blocks.wood.Wood;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.LanguageProvider;
-
-import java.util.Locale;
-
-import static com.bumppo109.firma_compat.block.ModBlocks.GRADED_ORES;
-import static com.bumppo109.firma_compat.block.ModBlocks.ORES;
 
 public class BuiltinLang extends LanguageProvider {
     public BuiltinLang(PackOutput output) {
@@ -85,7 +73,7 @@ public class BuiltinLang extends LanguageProvider {
         add("block_type.firma_compat.shingles_stairs", "%s Shingle Stairs");
         add("block_type.firma_compat.shingles_slab", "%s Shingle Slab");
 
-    //Wood
+        //Wood
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
                 if (blockType.equals(CompatWood.BlockType.VERTICAL_SUPPORT)) {
@@ -101,7 +89,8 @@ public class BuiltinLang extends LanguageProvider {
             add(itemId.asItem(), getItemDisplayName(itemId.get()));
         });
 
-    //Rock
+        /*
+        //Rock
         ModBlocks.ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
                 add(blockId.get(), getBlockDisplayName(blockId.get()));
@@ -155,7 +144,7 @@ public class BuiltinLang extends LanguageProvider {
             add(blockId.get(), getBlockDisplayName(blockId.get()));
         });
 
-    //Metal
+        //Metal
         add(ModItems.SCRAP_NETHERITE_INGOT.get(), getItemDisplayName(ModItems.SCRAP_NETHERITE_INGOT.get()));
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
             if (compatMetal.isDummy()) return;
@@ -169,7 +158,7 @@ public class BuiltinLang extends LanguageProvider {
         });
         add(ModBlocks.LANTERN.get(), getBlockDisplayName(ModBlocks.LANTERN.get()));
 
-    //Earthen
+        //Earthen
         add(ModBlocks.CLAY_DIRT.get(), getBlockDisplayName(ModBlocks.CLAY_DIRT.get()));
         add(ModBlocks.CLAY_GRASS_BLOCK.get(), getBlockDisplayName(ModBlocks.CLAY_GRASS_BLOCK.get()));
         add(ModBlocks.CLAY_PODZOL.get(), getBlockDisplayName(ModBlocks.CLAY_PODZOL.get()));
@@ -206,7 +195,7 @@ public class BuiltinLang extends LanguageProvider {
         add(ModItems.COMPAT_CHEST_MINECART.get(), "Chest Minecart");
 
 
-    // =============== Firmalife ================
+        // =============== Firmalife ================
         for (CompatWood wood : CompatWood.VALUES) {
             Block foodShelfBlock = CompatFLBlocks.FOOD_SHELVES.get(wood).get();
             Block hangerBlock = CompatFLBlocks.HANGERS.get(wood).get();
@@ -233,7 +222,7 @@ public class BuiltinLang extends LanguageProvider {
             });
         });
 
-    // =============== Firmalife ================
+        // =============== Firmalife ================
         CompatRnRBlocks.ROCK_BLOCKS.forEach((rock, compatRnRIdMap) -> {
             compatRnRIdMap.forEach((compatRnR, blockId) -> add(blockId.get(), getBlockDisplayName(blockId.get())));
         });
@@ -259,9 +248,10 @@ public class BuiltinLang extends LanguageProvider {
         add(CompatRnRBlocks.MACADAM_ROAD.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD.get()));
         add(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get()));
         add(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_SLAB.get()));
+
+         */
     }
 
-    //for "tfc_" compat blocks
     private String getTFCname(Block block) {
         if (block == null) {
             return "Unknown Block";

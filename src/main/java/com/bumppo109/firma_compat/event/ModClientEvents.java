@@ -1,7 +1,6 @@
 package com.bumppo109.firma_compat.event;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -73,12 +72,12 @@ public class ModClientEvents {
                 BuiltInRegistries.BLOCK.stream()
                         .filter(block -> {
                             ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
-                                if (id == null) return false;
-                                String path = id.getPath();
-                                return (id.getNamespace().equals(FirmaCompat.MODID) || id.getNamespace().equals("everycomp"))
-                                        && path.endsWith("_barrel")
-                                        && !path.endsWith("_stomping_barrel")
-                                        && !path.equals("compat_barrel");
+                            if (id == null) return false;
+                            String path = id.getPath();
+                            return (id.getNamespace().equals(FirmaCompat.MODID) || id.getNamespace().equals("everycomp"))
+                                    && path.endsWith("_barrel")
+                                    && !path.endsWith("_stomping_barrel")
+                                    && !path.equals("compat_barrel");
                         }),
                 event
         );
@@ -157,12 +156,12 @@ public class ModClientEvents {
                 BuiltInRegistries.BLOCK.stream()
                         .filter(block -> {
                             ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
-                                if (id == null) return false;
-                                String path = id.getPath();
-                                return (id.getNamespace().equals(FirmaCompat.MODID) || id.getNamespace().equals("everycomp"))
-                                        && path.endsWith("_shelf")
-                                        && !path.endsWith("_wine_shelf")
-                                        && !path.endsWith("_food_shelf");
+                            if (id == null) return false;
+                            String path = id.getPath();
+                            return (id.getNamespace().equals(FirmaCompat.MODID) || id.getNamespace().equals("everycomp"))
+                                    && path.endsWith("_shelf")
+                                    && !path.endsWith("_wine_shelf")
+                                    && !path.endsWith("_food_shelf");
                         }),
                 event
         );
@@ -177,6 +176,7 @@ public class ModClientEvents {
                 event
         );
 
+        /*
         for (Rock rock : Rock.values()) {
             event.modify(BlockEntityType.BRUSHABLE_BLOCK, ModBlocks.TFC_SUSPICIOUS_GRAVEL.get(rock).get());
         }
@@ -202,6 +202,8 @@ public class ModClientEvents {
                 modifyBlockEntityType(TFCBlockEntities.LAMP.get(), Stream.of(ModBlocks.COMPAT_LANTERNS.get(metal).get()), event);
             }
         }
+
+         */
     }
 
     private static void modifyWood(BlockEntityType<?> type, CompatWood.BlockType blockType, BlockEntityTypeAddBlocksEvent event)

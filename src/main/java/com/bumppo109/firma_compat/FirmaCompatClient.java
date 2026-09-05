@@ -1,19 +1,11 @@
 package com.bumppo109.firma_compat;
 
 import com.bumppo109.firma_compat.block.ModBlocks;
-import com.bumppo109.firma_compat.data.ModDataComponents;
-import com.bumppo109.firma_compat.fluid.ModFluids;
-import net.dries007.tfc.client.ClientEventHandler;
-import net.dries007.tfc.client.extensions.FluidRendererExtension;
 import net.dries007.tfc.client.extensions.ItemRendererExtension;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
 import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.component.TFCComponents;
-import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -24,14 +16,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -48,8 +38,6 @@ import static com.bumppo109.firma_compat.block.CompatWood.BlockType.ENCASED_AXLE
 import static com.bumppo109.firma_compat.block.CompatWood.BlockType.GEAR_BOX;
 import static com.bumppo109.firma_compat.block.CompatWood.BlockType.SEWING_TABLE;
 import static com.bumppo109.firma_compat.block.CompatWood.BlockType.SHELF;
-import static com.bumppo109.firma_compat.block.ModBlocks.GRADED_ORES;
-import static com.bumppo109.firma_compat.block.ModBlocks.ORES;
 
 @Mod(value = FirmaCompat.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = FirmaCompat.MODID, value = Dist.CLIENT)
@@ -102,38 +90,14 @@ public class FirmaCompatClient {
 
             ModBlocks.WOODS.forEach((wood, map) -> {
                 HorseChestLayer.registerChest(map.get(BARREL).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_barrel.png"));
+                //HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_chest.png"));
+                //HorseChestLayer.registerChest(map.get(TRAPPED_CHEST).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_chest.png"));
             });
-
-            HorseChestLayer.registerChest(ModBlocks.COMPAT_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
-            HorseChestLayer.registerChest(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
         });
 
         ModBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
 
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get(), cutout);
-
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CLAY_GRASS_BLOCK.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CLAY_PODZOL.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.KAOLIN_CLAY_PODZOL.get(), cutout);
-
-        ORES.forEach((rock, oreMap) ->
-                oreMap.forEach((ore, blockId) ->
-                        ItemBlockRenderTypes.setRenderLayer(blockId.get(), RenderType.cutout())
-                )
-        );
-
-        GRADED_ORES.forEach((rock, oreMap) ->
-                oreMap.forEach((ore, gradeMap) ->
-                        gradeMap.forEach((grade, blockId) ->
-                                ItemBlockRenderTypes.setRenderLayer(blockId.get(), RenderType.cutout())
-                        )
-                )
-        );
-
+        /*
         registerLampLitProperty(ModBlocks.LANTERN.get());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.LANTERN.get(), cutout);
 
@@ -143,29 +107,38 @@ public class FirmaCompatClient {
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.COMPAT_LANTERNS.get(metal).get(), cutout);
             }
         }
+
+         */
     }
 
     public static void registerExtensions(RegisterClientExtensionsEvent event) {
+        /*
         ModFluids.METALS.forEach((metal, holder) -> event.registerFluidType(
                 new FluidRendererExtension(TFCFluids.ALPHA_MASK | metal.getColor(), ClientEventHandler.MOLTEN_STILL, ClientEventHandler.MOLTEN_FLOW, null, null),
                 holder.getType()
         ));
-        // Chest item renderers
-        registerCustomItemRenderer(event, ModBlocks.COMPAT_CHEST, ChestItemRenderer::new);
-        registerCustomItemRenderer(event, ModBlocks.COMPAT_TRAPPED_CHEST, ChestItemRenderer::new);
 
+         */
+        // Chest item renderers
+        ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
+            //registerCustomItemRenderer(event, blockTypeIdMap.get(CHEST), ChestItemRenderer::new);
+            //registerCustomItemRenderer(event, blockTypeIdMap.get(TRAPPED_CHEST), ChestItemRenderer::new);
+        });
     }
 
     private static void registerSealedProperty(ItemLike item, Supplier<? extends DataComponentType<?>> type) {
         ItemProperties.register(item.asItem(), SEALED, (stack, level, entity, unused) -> stack.has(type) ? 1.0f : 0f);
     }
 
+    /*
     private static void registerLampLitProperty(ItemLike item) {
         ItemProperties.register(item.asItem(), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "lit"),
                 (stack, level, entity, seed) ->
                         stack.getOrDefault(ModDataComponents.LIT, false) ? 1.0F : 0.0F
         );
     }
+
+     */
 
     private static <T> void registerCustomItemRenderer(RegisterClientExtensionsEvent event, @Nullable Supplier<? extends ItemLike> item, Function<T, BlockEntityWithoutLevelRenderer> renderer) {
         if (item != null) {

@@ -1,7 +1,0 @@
-{
-  "parent": "tfc:block/rock/spike_tip",
-  "textures": {
-    "particle": "minecraft:block/dripstone_block",
-    "texture": "minecraft:block/dripstone_block"
-  }
-}

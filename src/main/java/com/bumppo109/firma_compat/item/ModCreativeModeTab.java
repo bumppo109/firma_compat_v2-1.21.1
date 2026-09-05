@@ -1,11 +1,6 @@
 package com.bumppo109.firma_compat.item;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.addon.ModCompat;
-import com.bumppo109.firma_compat.addon.firmalife.FLCompat;
-import com.bumppo109.firma_compat.addon.rnr.RnRCompat;
-import com.bumppo109.firma_compat.block.CompatMetal;
-import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
@@ -38,88 +33,7 @@ public class ModCreativeModeTab {
 
     private static void addItems(CreativeModeTab.Output output) {
         addWood(output);
-        addRocks(output);
-        ModBlocks.AQUEDUCTS.forEach((compatRockSets, blockId) -> add(output, blockId));
-        add(output, ModBlocks.BRICK_AQUEDUCT);
-        add(output, ModBlocks.RED_NETHER_BRICK_AQUEDUCT);
-        add(output, ModItems.QUARTZ_BRICK);
-        add(output, ModBlocks.QUARTZ_BRICK_AQUEDUCT);
-        add(output, ModItems.PRISMARINE_BRICK);
-        add(output, ModBlocks.PRISMARINE_BRICK_AQUEDUCT);
 
-        add(output, ModBlocks.CASSITERITE_GRAVEL_DEPOSIT);
-        add(output, ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT);
-        add(output, ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT);
-        add(output, ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT);
-
-        add(output, ModBlocks.CLAY_DIRT);
-        add(output, ModBlocks.CLAY_GRASS_BLOCK);
-        add(output, ModBlocks.CLAY_PODZOL);
-        add(output, ModBlocks.KAOLIN_CLAY_DIRT);
-        add(output, ModBlocks.KAOLIN_CLAY_GRASS_BLOCK);
-        add(output, ModBlocks.KAOLIN_CLAY_PODZOL);
-        add(output, ModBlocks.COMPAT_FARMLAND);
-        add(output, ModBlocks.DRYING_MUD_BRICK);
-        add(output, ModItems.MUD_BRICK);
-
-        add(output, ModBlocks.SUSPICIOUS_RED_SAND);
-
-        add(output, ModItems.UNFIRED_POT);
-
-        add(output, ModBlocks.COMPAT_CHEST);
-        add(output, ModBlocks.COMPAT_TRAPPED_CHEST);
-        add(output, ModItems.COMPAT_CHEST_MINECART);
-
-        for (CompatMetal metal : CompatMetal.values()) {
-            if (metal.isDummy()) continue;
-            if (metal.equals(CompatMetal.SCRAP_NETHERITE)) {
-                add(output, ModItems.SCRAP_NETHERITE_INGOT);
-            }
-            for (CompatMetal.ItemType itemType : CompatMetal.ItemType.values()) {
-                add(output, ModItems.METAL_ITEMS.get(metal).get(itemType));
-            }
-        }
-
-        ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
-            if (!compatMetal.equals(CompatMetal.NETHERITE)) return;
-            itemTypeItemIdMap.forEach((itemType, itemId) -> {
-                add(output, itemId);
-            });
-        });
-        ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
-            if (!compatMetal.equals(CompatMetal.SCRAP_NETHERITE)) return;
-            itemTypeItemIdMap.forEach((itemType, itemId) -> {
-                add(output, itemId);
-            });
-        });
-        add(output, ModBlocks.LANTERN);
-
-        ModBlocks.COMPAT_LANTERNS.forEach((metal, lampBlockId) -> {
-            add(output, lampBlockId);
-        });
-        ModBlocks.TFC_SUSPICIOUS_GRAVEL.forEach((rock, brushableBlockId) -> {
-            add(output, brushableBlockId);
-        });
-        ModBlocks.TFC_SUSPICIOUS_SAND.forEach((rock, brushableBlockId) -> {
-            add(output, brushableBlockId);
-        });
-        ModBlocks.TFC_CHISELED_SANDSTONE.forEach((rock, block) -> {
-            add(output, block);
-        });
-        ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
-            blockTypeIdMap.forEach((blockType, blockId) -> {
-                add(output, blockId);
-            });
-        });
-
-    //Firmalife
-        if (ModCompat.loaded("firmalife")) {
-            FLCompat.addFLItems(output);
-        }
-    //RnR
-        if (ModCompat.loaded("rnr")) {
-            RnRCompat.addRnRItems(output);
-        }
     }
 
     private static void addWood(CreativeModeTab.Output output) {
@@ -134,6 +48,7 @@ public class ModCreativeModeTab {
         }
     }
 
+    /*
     private static void addRocks(CreativeModeTab.Output output) {
         for (CompatRock rock : CompatRock.VALUES) {
             var blocks = ModBlocks.ROCK_BLOCKS.get(rock);
@@ -150,6 +65,8 @@ public class ModCreativeModeTab {
             }
         }
     }
+
+     */
 
     private static void add(CreativeModeTab.Output output, Supplier<? extends ItemLike> supplier) {
 

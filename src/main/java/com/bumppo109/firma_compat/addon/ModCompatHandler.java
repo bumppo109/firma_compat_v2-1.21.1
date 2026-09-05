@@ -1,12 +1,6 @@
 package com.bumppo109.firma_compat.addon;
 
-import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.addon.everycompat.loaders.GemsRealmCompat;
-import com.bumppo109.firma_compat.addon.everycompat.loaders.StoneZoneCompat;
 import com.bumppo109.firma_compat.addon.everycompat.loaders.WoodGoodCompat;
-import com.bumppo109.firma_compat.addon.legendarysurvivaloverhaul.LSOModifiers;
-import net.neoforged.bus.api.IEventBus;
-
 
 public class ModCompatHandler {
 
@@ -15,11 +9,11 @@ public class ModCompatHandler {
     public static void registerEveryCompatModules() {
 
         if(ModCompat.loaded("gemsrealm")) {
-            GemsRealmCompat.register();
+            //GemsRealmCompat.register();
         }
 
         if(ModCompat.loaded("stonezone")) {
-            StoneZoneCompat.register();
+            //StoneZoneCompat.register();
         }
 
         if(ModCompat.loaded("everycomp")) {
@@ -27,6 +21,7 @@ public class ModCompatHandler {
         }
     }
 
+    /*
     public static void registerAddon(IEventBus modEventBus) {
 
         if(ModCompat.loaded("firmalife")) {
@@ -51,4 +46,6 @@ public class ModCompatHandler {
             AddonClimateModels.TYPES.register(modEventBus);
         }
     }
+
+     */
 }

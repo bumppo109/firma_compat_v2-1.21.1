@@ -1,6 +1,0 @@
-{
-  "parent": "tfc:block/axle",
-  "textures": {
-    "wood": "minecraft:block/stripped_crimson_stem"
-  }
-}

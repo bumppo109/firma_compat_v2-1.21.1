@@ -193,6 +193,11 @@ dependencies {
 
     //Legendary Survival Overhaul 2.4.6.1
     implementation "curse.maven:legendary-survival-overhaul-840254:8450360"
+
+    //TODO testing NS
+    implementation "curse.maven:natures-spirit-1044992:6962784"
+
+    implementation "curse.maven:terrablender-neoforge-940057:6054947"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

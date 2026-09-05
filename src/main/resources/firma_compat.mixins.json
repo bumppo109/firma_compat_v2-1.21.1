@@ -3,14 +3,6 @@
   "package": "com.bumppo109.firma_compat.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "BiomeNoiseMixin",
-    "BuriedTreasurePieceMixin",
-    "DrinkableMixin",
-    "ForestFeatureMixin",
-    "LevelRendererExtensionMixin",
-    "SimpleWaterloggedBlockMixin",
-    "PlayerInfoMixin",
-    "firmalife.ClimateStationAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

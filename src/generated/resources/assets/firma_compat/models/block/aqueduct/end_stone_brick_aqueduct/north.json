@@ -1,7 +1,0 @@
-{
-  "parent": "tfc:block/aqueduct/north",
-  "textures": {
-    "particle": "minecraft:block/end_stone_bricks",
-    "texture": "minecraft:block/end_stone_bricks"
-  }
-}

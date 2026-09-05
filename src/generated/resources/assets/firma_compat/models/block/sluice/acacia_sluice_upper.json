@@ -1,6 +1,0 @@
-{
-  "parent": "tfc:block/sluice_upper",
-  "textures": {
-    "texture": "minecraft:block/stripped_acacia_log"
-  }
-}

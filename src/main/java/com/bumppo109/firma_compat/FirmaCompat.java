@@ -1,93 +1,47 @@
 package com.bumppo109.firma_compat;
 
-import com.bumppo109.firma_compat.block.BlockAssets;
-import com.bumppo109.firma_compat.block.ModBlocks;
-import com.bumppo109.firma_compat.data.ModDataComponents;
-import com.bumppo109.firma_compat.event.ModClientEvents;
 import com.bumppo109.firma_compat.addon.ModCompatHandler;
-import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
+import com.bumppo109.firma_compat.event.ModClientEvents;
 import com.bumppo109.firma_compat.item.ModCreativeModeTab;
-import com.bumppo109.firma_compat.item.ModItemCapabilities;
 import com.bumppo109.firma_compat.item.ModItems;
-import com.bumppo109.firma_compat.loot.ModLootFunctions;
-import com.bumppo109.firma_compat.loot.loot_modifiers.ModLootModifiers;
-import com.bumppo109.firma_compat.world.ModStructureProcessors;
-import com.bumppo109.firma_compat.world.climate.ModClimateModels;
-import com.bumppo109.firma_compat.world.processor.rock.RockRegistry;
-import com.bumppo109.firma_compat.world.processor.ReplacementBootstrap;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.loading.FMLEnvironment;
-import org.slf4j.Logger;
-
 import com.mojang.logging.LogUtils;
-
+import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.slf4j.Logger;
 
 @Mod(FirmaCompat.MODID)
 public class FirmaCompat {
     public static final String MODID = "firma_compat";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static boolean isTreePhysicsLoaded = false;
-    public static boolean isEclipticLoaded = false;
-    public static boolean isLSOLoaded = false;
-    public static boolean isFirmalifeLoaded = false;
-
     public FirmaCompat(IEventBus modEventBus, ModContainer modContainer) {
-        this.modIntegration();
 
         modEventBus.addListener(ModClientEvents::addToBlockEntities);
-        modEventBus.addListener(ModClientEvents::addResourcePacks);
 
-        ModStructureProcessors.register(modEventBus);
-        ModDataComponents.COMPONENTS.register(modEventBus);
-        ModLootFunctions.FUNCTIONS.register(modEventBus);
-        ModFluids.FLUID_TYPES.register(modEventBus);
-        ModFluids.FLUID.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
-        ModLootModifiers.register(modEventBus);
-
-        ModClimateModels.TYPES.register(modEventBus);
-
-        modEventBus.addListener(this::commonSetup);
 
         ModCompatHandler.registerEveryCompatModules();
-        ModCompatHandler.registerAddonClimateModels(modEventBus);
-        ModCompatHandler.registerLSOModifiers();
-        ModCompatHandler.registerAddon(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 
-        FirmaCompatConfig.register(modContainer);
-
         if (FMLEnvironment.dist.isClient()) {
-            modEventBus.addListener(ModItemCapabilities::register);
+            RegHelper.registerDynamicResourceProvider(new ModClientDynamicResources());
             modEventBus.addListener(FirmaCompatClient::registerExtensions);
         }
     }
 
-    private void modIntegration() {
-        isTreePhysicsLoaded = ModList.get().isLoaded("treephysics");
-        isEclipticLoaded = ModList.get().isLoaded("eclipticseasons");
-        isLSOLoaded = ModList.get().isLoaded("legendarysurvivaloverhaul");
-        isFirmalifeLoaded = ModList.get().isLoaded("firmalife");
-    }
-
     public void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            BlockAssets.bootstrap();
-            RockRegistry.bootstrap();
-            ReplacementBootstrap.init();
-        });
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

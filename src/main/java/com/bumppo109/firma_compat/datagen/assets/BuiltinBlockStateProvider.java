@@ -1,11 +1,10 @@
 package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
-import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnR;
-import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
 import com.bumppo109.firma_compat.block.*;
-import com.bumppo109.firma_compat.datagen.assets.addon.FirmalifeCustomLoaderBuilder;
+import com.bumppo109.firma_compat.materials.BlockAssets;
+import com.bumppo109.firma_compat.materials.BlockTextureSlot;
+import com.bumppo109.firma_compat.materials.WoodMaterial;
 import com.eerussianguy.firmalife.common.blocks.*;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
@@ -26,6 +25,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import javax.annotation.Nullable;
 import java.util.Locale;
 
 public class BuiltinBlockStateProvider extends BlockStateProvider {
@@ -40,12 +40,12 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         ModelFile emptyModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("tfc", "block/empty"));
 
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
-            CompatWoodMaterial material = compatWood.compatWoodMaterial();
+            WoodMaterial material = compatWood.woodMaterial();
 
-            ResourceLocation planksTexture = BlockAssets.get(material.planks()).textures().get(BlockTextureSlot.SIDE);
-            ResourceLocation logSideTexture = BlockAssets.getColumn(material.log()).textures().get(BlockTextureSlot.SIDE);
-            ResourceLocation logTopTexture = BlockAssets.getColumn(material.log()).textures().get(BlockTextureSlot.END);
-            ResourceLocation strippedLogTexture = BlockAssets.getColumn(material.strippedLog()).textures().get(BlockTextureSlot.SIDE);
+            ResourceLocation planksTexture = BlockAssets.get(material.planks().get()).textures().get(BlockTextureSlot.SIDE);
+            ResourceLocation logSideTexture = BlockAssets.getColumn(material.log().get()).textures().get(BlockTextureSlot.SIDE);
+            ResourceLocation logTopTexture = BlockAssets.getColumn(material.log().get()).textures().get(BlockTextureSlot.END);
+            ResourceLocation strippedLogTexture = BlockAssets.getColumn(material.strippedLog().get()).textures().get(BlockTextureSlot.SIDE);
             ResourceLocation crateTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + compatWood.getSerializedName() + "_crate");
 
             ModelFile connection = supportConnectionModel(compatWood, strippedLogTexture);
@@ -79,6 +79,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
             });
         });
 
+        /*
         simpleBlock(ModBlocks.COMPAT_CHEST.get(), models().getBuilder("compat_chest")
                 .texture("particle", ResourceLocation.withDefaultNamespace("entity/chest/normal")));
         simpleBlock(ModBlocks.COMPAT_TRAPPED_CHEST.get(), models().getBuilder("compat_trapped_chest")
@@ -106,9 +107,6 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                     case SPIKE -> spikeWithItem(block, rawTexture);
                 }
 
-                /**
-                 * assumes only COMPAT_HARDENED_COBBLE and MOSSY_HARDENED_COBBLE have variants
-                 */
                 if(blockType.hasVariants()) {
                     slabWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).slab().get(), block, cobbleMossyTexture);
                     stairsWithItem(ModBlocks.ROCK_DECORATIONS.get(rock).get(blockType).stair().get(), cobbleMossyTexture);
@@ -168,7 +166,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
 
 
 
-    //Natural
+        //Natural
         ResourceLocation dirtTexture = ResourceLocation.withDefaultNamespace("block/dirt");
         ResourceLocation farmlandTexture = ResourceLocation.withDefaultNamespace("block/farmland");
         ResourceLocation mudTexture = ResourceLocation.withDefaultNamespace("block/mud");
@@ -250,7 +248,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
             cubeColumnWithItem(block.get(), side, top);
         });
 
-    //=============== Firmalife =================
+        //=============== Firmalife =================
 
         for (CompatWood wood : CompatWood.VALUES) {
 
@@ -292,7 +290,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
             });
         });
 
-    //=============== Roofs and Roads =================
+        //=============== Roofs and Roads =================
         ResourceLocation gravelTexture = ResourceLocation.withDefaultNamespace("block/gravel");
 
         for (CompatWood wood : CompatWood.VALUES) {
@@ -329,6 +327,8 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         rnrPathBlockWithItem(CompatRnRBlocks.MACADAM_ROAD.get(), gravelTexture, gravelTexture);
         rnrPathStairWithItem(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get(), gravelTexture);
         rnrPathSlabWithItem(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), gravelTexture, gravelTexture);
+
+         */
     }
 
     private void rnrOverfillWithItem(Block block, ResourceLocation topTexture, ResourceLocation gravelTexture) {
@@ -433,6 +433,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(block, pathStairsModel);
     }
 
+    /*
     private void foodShelfWithItem(Block block, ResourceLocation planksTexture) {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
@@ -530,6 +531,8 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
 
         simpleBlockItem(block, wineShelfModel);
     }
+
+     */
 
     private void stompingBarrelWithItem(Block block, ResourceLocation planksTexture) {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/wall_inventory",
-  "textures": {
-    "wall": "firma_compat:block/mossy_blackstone_cobble"
-  }
-}
