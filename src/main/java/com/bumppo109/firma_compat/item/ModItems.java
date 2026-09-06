@@ -1,14 +1,18 @@
 package com.bumppo109.firma_compat.item;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.fluid.ModFluids;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -41,6 +45,20 @@ public class ModItems {
                     )
             )
     );
+
+    //Metal
+    public static final Map<CompatMetal, Map<CompatMetal.ItemType, ItemId>> METAL_ITEMS = Helpers.mapOf(CompatMetal.class, metal ->
+            Helpers.mapOf(CompatMetal.ItemType.class, type -> type.has(metal), type ->
+                    register(metal.name() + "_" + type.name(), () -> type.create(metal))
+            )
+    );
+
+    public static final Map<CompatMetal, ItemId> METAL_FLUID_BUCKETS = Helpers.mapOf(CompatMetal.class, metal ->
+            register("bucket/metal/" + metal.name(), () -> new BucketItem(ModFluids.METALS.get(metal).getSource(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
+    );
+
+    public static final ItemId SCRAP_NETHERITE_INGOT = register("scrap_netherite_ingot");
+    public static final ItemId UNFINISHED_LANTERN = register("unfinished_lantern");
 
 
 

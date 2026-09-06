@@ -1,11 +1,12 @@
 package com.bumppo109.firma_compat;
 
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.therighthon.afc.common.blocks.AFCBlocks;
 import net.dries007.tfc.client.extensions.ItemRendererExtension;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
-import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.util.Helpers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -16,6 +17,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -27,6 +29,7 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -57,10 +60,33 @@ public class FirmaCompatClient {
         final RenderType cutoutMipped = RenderType.cutoutMipped();
         final RenderType translucent = RenderType.translucent();
         final Predicate<RenderType> ghostBlock = rt -> rt == cutoutMipped || rt == Sheets.translucentCullBlockSheet();
+        Predicate<RenderType> leafPredicate = (layer) -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid;
 
         ModBlocks.WOODS.values().forEach(map -> {
-            Stream.of(TWIG, BARREL, SCRIBING_TABLE, SEWING_TABLE, SHELF, ENCASED_AXLE, CLUTCH, GEAR_BOX).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(
+                            TWIG,
+                            BARREL,
+                            SCRIBING_TABLE,
+                            SEWING_TABLE,
+                            SHELF,
+                            ENCASED_AXLE,
+                            CLUTCH,
+                            GEAR_BOX
+                    )
+                    .map(map::get)
+                    .filter(Objects::nonNull)
+                    .forEach(id ->
+                            ItemBlockRenderTypes.setRenderLayer(id.get(), cutout)
+                    );
+
+            Stream.of(FALLEN_LEAVES)
+                    .map(map::get)
+                    .filter(Objects::nonNull)
+                    .forEach(id ->
+                            ItemBlockRenderTypes.setRenderLayer(id.get(), leafPredicate)
+                    );
         });
+
 
         event.enqueueWork(() -> {
 

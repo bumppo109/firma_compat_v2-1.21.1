@@ -12,10 +12,12 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
 import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
+import net.dries007.tfc.common.blocks.wood.FallenLeavesBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.StairsShape;
@@ -25,13 +27,13 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-import javax.annotation.Nullable;
-import java.util.Locale;
-
 public class BuiltinBlockStateProvider extends BlockStateProvider {
+
+    private final ExistingFileHelper existingFileHelper;
+
     public BuiltinBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, FirmaCompat.MODID, existingFileHelper);
-
+        this.existingFileHelper = existingFileHelper;
         BlockAssets.bootstrap();
     }
 
@@ -58,6 +60,11 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                     horizontalSupport(blockId.get(), connection, strippedLogTexture);
                 }
                 switch (blockType) {
+                    case FALLEN_LEAVES -> {
+                        if (material.leaves() != null) {
+                            fallenLeaves(blockId.get(), material.leaves().get());
+                        }
+                    }
                     case TWIG -> twigWithItem(blockId.get(), logSideTexture, logTopTexture);
                     case SLUICE -> sluice(blockId.get(), strippedLogTexture);
                     case TOOL_RACK -> toolRack(blockId.get(), planksTexture);
@@ -74,7 +81,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                     case GEAR_BOX -> gearBox(blockId.get(), planksTexture);
                     case WATER_WHEEL -> waterWheel(blockId.get(), planksTexture);
                     case WINDMILL -> simpleBlock(blockId.get(), emptyModel);
-                    case CRATE -> cubeAllWithItem(blockId.get(), crateTexture);
+                    case CRATE -> cubeAllWithItem("block/crate/" + BuiltInRegistries.BLOCK.getKey(blockId.get()).getPath(), blockId.get(), crateTexture);
                 }
             });
         });
@@ -329,6 +336,54 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         rnrPathSlabWithItem(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), gravelTexture, gravelTexture);
 
          */
+    }
+
+    private void fallenLeaves(Block block, Block fullLeaves) {
+        ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
+        ResourceLocation fullRes = BuiltInRegistries.BLOCK.getKey(fullLeaves);
+        ResourceLocation fullTexture = ResourceLocation.fromNamespaceAndPath(fullRes.getNamespace(),"block/" + fullRes.getPath());
+
+        ModelFile height2Model = models().withExistingParent(
+                "block/fallen_leaves/" + blockRes.getPath() + "_height2", ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/fallen_leaves_height2"))
+                .texture("all", fullTexture);
+        ModelFile height4Model = models().withExistingParent(
+                "block/fallen_leaves/" + blockRes.getPath() + "_height4", ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/fallen_leaves_height4"))
+                .texture("all", fullTexture);
+        ModelFile height6Model = models().withExistingParent(
+                "block/fallen_leaves/" + blockRes.getPath() + "_height6", ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/fallen_leaves_height6"))
+                .texture("all", fullTexture);
+        ModelFile height8Model = models().withExistingParent(
+                "block/fallen_leaves/" + blockRes.getPath() + "_height8", ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/fallen_leaves_height8"))
+                .texture("all", fullTexture);
+        ModelFile height10Model = models().withExistingParent(
+                "block/fallen_leaves/" + blockRes.getPath() + "_height10", ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/fallen_leaves_height10"))
+                .texture("all", fullTexture);
+        ModelFile height12Model = models().withExistingParent(
+                "block/fallen_leaves/" + blockRes.getPath() + "_height12", ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/fallen_leaves_height12"))
+                .texture("all", fullTexture);
+        ModelFile height14Model = models().withExistingParent(
+                "block/fallen_leaves/" + blockRes.getPath() + "_height14", ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/fallen_leaves_height14"))
+                .texture("all", fullTexture);
+        ModelFile denseLeavesModel = models().getExistingFile(fullRes);
+
+        VariantBlockStateBuilder fallenLeavesBuilder = getVariantBuilder(block);
+
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 1)
+                .modelForState().modelFile(height2Model).addModel();
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 2)
+                .modelForState().modelFile(height4Model).addModel();
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 3)
+                .modelForState().modelFile(height6Model).addModel();
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 4)
+                .modelForState().modelFile(height8Model).addModel();
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 5)
+                .modelForState().modelFile(height10Model).addModel();
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 6)
+                .modelForState().modelFile(height12Model).addModel();
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 7)
+                .modelForState().modelFile(height14Model).addModel();
+        fallenLeavesBuilder.partialState().with(FallenLeavesBlock.LAYERS, 8)
+                .modelForState().modelFile(denseLeavesModel).addModel();
     }
 
     private void rnrOverfillWithItem(Block block, ResourceLocation topTexture, ResourceLocation gravelTexture) {
@@ -794,10 +849,25 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(block, bigBarrelItem);
     }
 
+    private ResourceLocation generatedTexture(ResourceLocation texture) {
+        existingFileHelper.trackGenerated(
+                texture,
+                PackType.CLIENT_RESOURCES,
+                ".png",
+                "textures"
+        );
+
+        return texture;
+    }
+
+    private void cubeAllWithItem(String id, Block block, ResourceLocation texture) {
+        simpleBlockWithItem(block, models().cubeAll(id, generatedTexture(texture)));
+    }
+
     private void cubeAllWithItem(Block block, ResourceLocation texture) {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
-        simpleBlockWithItem(block, models().cubeAll(blockRes.getPath(), texture));
+        simpleBlockWithItem(block, models().cubeAll(blockRes.getPath(), generatedTexture(texture)));
     }
 
     private void cubeColumnWithItem(Block block, ResourceLocation side, ResourceLocation top) {
@@ -1085,7 +1155,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
         ModelFile twigModel = models()
-                .withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc", "block/groundcover/twig"))
+                .withExistingParent("block/twig/" + blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc", "block/groundcover/twig"))
                 .texture("side", logSideTexture)
                 .texture("top", logTopTexture);
 
@@ -1458,7 +1528,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
         ModelFile loomModel = models()
-                .withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc", "block/loom"))
+                .withExistingParent("block/loom/" + blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc", "block/loom"))
                 .texture("texture", planksTexture)
                 .texture("particle", planksTexture);
 

@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat.block;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModItems;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -30,21 +32,21 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
     public static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
 
-    public static final Map<CompatWood, Map<CompatWood.BlockType, Id<Block>>> WOODS =
-            Helpers.mapOf(
-                    CompatWood.class,
-                    wood -> Helpers.mapOf(
-                            CompatWood.BlockType.class,
-                            blockType -> blockType.hasVariant(wood),
-                            blockType -> register(
-                                    wood.name() + "_" + blockType.name(),
-                                    blockType.create(wood),
-                                    blockType.createBlockItem(wood, new Item.Properties())
-                            )
+    public static final Map<CompatWood, Map<CompatWood.BlockType, Id<Block>>> WOODS = Helpers.mapOf(CompatWood.class,
+            wood -> Helpers.mapOf(
+                    CompatWood.BlockType.class,
+                    blockType -> blockType.hasVariant(wood),
+                    blockType -> register(
+                            wood.name() + "_" + blockType.name(),
+                            blockType.create(wood),
+                            blockType.createBlockItem(wood, new Item.Properties())
                     )
-            );
+            )
+    );
 
-
+    public static final Map<CompatMetal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOf(CompatMetal.class, metal ->
+            registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(ModFluids.METALS.get(metal).source().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
+    );
 
 
     public static boolean skippedOre(Ore ore) {

@@ -173,7 +173,7 @@ public enum WoodMaterial {
     CRIMSON(
             WoodType.CRIMSON,
             BlockSetType.CRIMSON,
-            () -> Blocks.NETHER_WART_BLOCK,
+            null,
             () -> Blocks.CRIMSON_STEM,
             () -> Blocks.STRIPPED_CRIMSON_STEM,
             () -> Blocks.CRIMSON_HYPHAE,
@@ -193,7 +193,7 @@ public enum WoodMaterial {
     WARPED(
             WoodType.WARPED,
             BlockSetType.WARPED,
-            () -> Blocks.WARPED_WART_BLOCK,
+            null,
             () -> Blocks.WARPED_STEM,
             () -> Blocks.STRIPPED_WARPED_STEM,
             () -> Blocks.WARPED_HYPHAE,

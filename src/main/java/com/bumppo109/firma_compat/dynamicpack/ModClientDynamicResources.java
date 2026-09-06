@@ -57,9 +57,13 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
     private void generateWoodTextures(ResourceManager manager, ResourceSink sink) {
         for (CompatWood wood: CompatWood.values()) {
             ResourceLocation woodColor = ResourceLocation.withDefaultNamespace("block/" + wood.getSerializedName() + "_planks");
+            ResourceLocation leavesColor = ResourceLocation.withDefaultNamespace("block/" + wood.getSerializedName() + "_leaves");
+
+            ResourceLocation fallenLeavesTexture = ResourceLocation.fromNamespaceAndPath("tfc","item/groundcover/fallen_leaves");
             ResourceLocation lumberTexture = ResourceLocation.fromNamespaceAndPath("tfc","item/wood/lumber");
             ResourceLocation twigTexture = ResourceLocation.fromNamespaceAndPath("tfc","item/wood/twig");
             ResourceLocation waterwheelTexture = ResourceLocation.fromNamespaceAndPath("tfc","entity/water_wheel/oak");
+            ResourceLocation waterwheelItemTexture = ResourceLocation.fromNamespaceAndPath("tfc","item/wood/water_wheel");
             ResourceLocation crateTexture = ResourceLocation.fromNamespaceAndPath("tfc","block/wood/crate/oak");
 
             ResourceLocation bookshelfTexture = ResourceLocation.fromNamespaceAndPath("tfc","block/wood/bookshelf/oak_empty");
@@ -85,10 +89,15 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             ResourceLocation trappedChestLeftTexture = ResourceLocation.fromNamespaceAndPath("tfc","entity/chest/trapped_left/oak");
             ResourceLocation trappedChestRightTexture = ResourceLocation.fromNamespaceAndPath("tfc","entity/chest/trapped_right/oak");
 
-            recolorTexture(manager, sink, lumberTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/item/" + wood.getSerializedName() + "_lumber"), woodColor);
-            recolorTexture(manager, sink, twigTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/item/" + wood.getSerializedName() + "_twig"), woodColor);
-            recolorTexture(manager, sink, waterwheelTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/entity/water_wheel/" + wood.getSerializedName()), woodColor);
-            recolorTexture(manager, sink, crateTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/block/crate/" + wood.getSerializedName()), woodColor);
+            if (wood.woodMaterial().leaves() != null) {
+                recolorTexture(manager, sink, fallenLeavesTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + wood.getSerializedName() + "_fallen_leaves"), leavesColor);
+            }
+
+            recolorTexture(manager, sink, lumberTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + wood.getSerializedName() + "_lumber"), woodColor);
+            recolorTexture(manager, sink, twigTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + wood.getSerializedName() + "_twig"), woodColor);
+            recolorTexture(manager, sink, waterwheelTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"entity/water_wheel/" + wood.getSerializedName()), woodColor);
+            recolorTexture(manager, sink, waterwheelItemTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + wood.getSerializedName() + "_water_wheel"), woodColor);
+            recolorTexture(manager, sink, crateTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + wood.getSerializedName() + "_crate"), woodColor);
 
             //simpleOverlayRecolor(manager, sink, bookshelfTexture, bookshelfEmptyOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/block/wood/bookshelf/" + wood.getSerializedName() + "_empty"), woodColor);
             //simpleOverlayRecolor(manager, sink, bookshelfFullTexture, bookshelfOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/block/wood/bookshelf/" + wood.getSerializedName() + "_occupied"), woodColor);

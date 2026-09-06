@@ -102,6 +102,8 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 .requiresChildren("planks")
                 .addTexture(modRes("item/oak_lumber"), PaletteStrategies.MAIN_CHILD)
                 .addTag(ResourceLocation.fromNamespaceAndPath("tfc","lumber"), Registries.ITEM)
+                .addRecipe(modRes("crafting/oak_lumber_from_planks"))
+                .addRecipe(modRes("crafting/oak_planks"))
                 .setTab(tab)
                 .excludeBlockTypes("tfc:.*")
                 .excludeBlockTypes("afc:.*")

@@ -4,6 +4,7 @@ import com.bumppo109.firma_compat.addon.ModCompatHandler;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
 import com.bumppo109.firma_compat.event.ModClientEvents;
+import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModCreativeModeTab;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.mojang.logging.LogUtils;
@@ -29,6 +30,7 @@ public class FirmaCompat {
 
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModFluids.FLUID.register(modEventBus);
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
 
         ModCompatHandler.registerEveryCompatModules();

@@ -1,7 +1,14 @@
 {
   "targets": [
     "firma_compat:clay_grass_block",
-    "firma_compat:kaolin_clay_grass_block"
+    "firma_compat:kaolin_clay_grass_block",
+    "firma_compat:acacia_fallen_leaves",
+    "firma_compat:birch_fallen_leaves",
+    "firma_compat:dark_oak_fallen_leaves",
+    "firma_compat:jungle_fallen_leaves",
+    "firma_compat:mangrove_fallen_leaves",
+    "firma_compat:oak_fallen_leaves",
+    "firma_compat:spruce_fallen_leaves"
   ],
   "colormap": "minecraft:grass_color"
 }
