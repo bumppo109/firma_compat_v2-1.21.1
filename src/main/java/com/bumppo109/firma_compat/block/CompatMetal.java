@@ -29,8 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
     NETHERITE(2167299, MapColor.COLOR_BLACK, Rarity.COMMON, PartType.ALL, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL),
-    SCRAP_NETHERITE(6897943, MapColor.COLOR_BROWN, Rarity.COMMON, PartType.DEFAULT),
-    IRON(6897943, MapColor.COLOR_BROWN, Rarity.UNCOMMON, PartType.ALL, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON)
+    SCRAP_NETHERITE(6897943, MapColor.COLOR_BROWN, Rarity.COMMON, PartType.DEFAULT)
     ;
 
     private final String serializedName;
@@ -65,10 +64,6 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
 
     public String getSerializedName() {
         return this.serializedName;
-    }
-
-    public boolean isDummy() {
-        return this.equals(IRON);
     }
 
     public MetalMaterial getMetalMaterial() {
@@ -161,11 +156,12 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
         SCYTHE_BLADE(CompatMetal.PartType.ALL, true),
         UNFINISHED_HELMET(CompatMetal.PartType.ALL, false),
         UNFINISHED_CHESTPLATE(CompatMetal.PartType.ALL, false),
-        UNFINISHED_LEGGINGS(CompatMetal.PartType.ALL, false),
+        UNFINISHED_GREAVES(CompatMetal.PartType.ALL, false),
         UNFINISHED_BOOTS(CompatMetal.PartType.ALL, false),
         ;
 
         private final Function<ModRegistryMetal, Item> itemFactory;
+        private final String serializedName;
         private final PartType type;
         private final boolean mold;
 
@@ -190,9 +186,14 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
         }
 
         private ItemType(PartType type, boolean mold, Function<ModRegistryMetal, Item> itemFactory) {
+            this.serializedName = this.name().toLowerCase(Locale.ROOT);
             this.type = type;
             this.mold = mold;
             this.itemFactory = itemFactory;
+        }
+
+        public String getSerializedName() {
+            return this.serializedName;
         }
 
         public Item create(ModRegistryMetal CompatMetal) {
@@ -221,7 +222,7 @@ public enum CompatMetal implements StringRepresentable, ModRegistryMetal {
             case SWORD_BLADE, JAVELIN, JAVELIN_HEAD, MACE, MACE_HEAD -> material.sword() != null;
             case UNFINISHED_HELMET -> material.helmet() != null;
             case UNFINISHED_CHESTPLATE -> material.chestplate() != null;
-            case UNFINISHED_LEGGINGS -> material.leggings() != null;
+            case UNFINISHED_GREAVES -> material.leggings() != null;
             case UNFINISHED_BOOTS -> material.boots() != null;
             default -> true;
         };

@@ -2,21 +2,49 @@ package com.bumppo109.firma_compat.block;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.item.FirmaLampItem;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.materials.RockMaterial;
+import com.bumppo109.firma_compat.materials.RockSet;
+import com.bumppo109.firma_compat.materials.SoilMaterial;
+import com.google.common.base.Suppliers;
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.OreDeposit;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
+import net.dries007.tfc.common.blocks.devices.LampBlock;
+import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Ore;
+import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
+import net.dries007.tfc.common.blocks.wood.TFCTrappedChestBlock;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
@@ -28,10 +56,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+import static com.bumppo109.firma_compat.block.CompatRock.BlockType.COBBLESTONE;
+import static com.bumppo109.firma_compat.block.CompatRock.BlockType.MOSSY_COBBLESTONE;
+
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
     public static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
 
+    //Wood
     public static final Map<CompatWood, Map<CompatWood.BlockType, Id<Block>>> WOODS = Helpers.mapOf(CompatWood.class,
             wood -> Helpers.mapOf(
                     CompatWood.BlockType.class,
@@ -44,8 +76,179 @@ public class ModBlocks {
             )
     );
 
+    public static final Id<Block> COMPAT_CHEST = register("compat_chest",
+            () -> new TFCChestBlock(ExtendedProperties.of().strength(2.5F).flammableLikeLogs()
+                    .blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick),
+                    "compat_chest"
+            ),
+            block -> new ChestBlockItem(
+                    block,
+                    new Item.Properties(),
+                    ResourceLocation.withDefaultNamespace("textures/entity/chest_boat/oak.png")
+            )
+    );
+
+    public static final Id<Block> COMPAT_TRAPPED_CHEST = register("compat_trapped_chest",
+            () -> new TFCTrappedChestBlock(ExtendedProperties.of().strength(2.5F).flammableLikeLogs()
+                    .blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick),
+                    "compat_trapped_chest"
+            ),
+            block -> new ChestBlockItem(
+                    block,
+                    new Item.Properties(),
+                    ResourceLocation.withDefaultNamespace("textures/entity/chest_boat/oak.png")
+            )
+    );
+
+    //Rock
+    public static final Map<CompatRock, Map<CompatRock.BlockType, Id<Block>>> ROCK_BLOCKS = Helpers.mapOf(CompatRock.class,
+            (rock) -> Helpers.mapOf(CompatRock.BlockType.class,
+                    (type) -> type.needsItem() ? register(type.typeName(rock),
+                            () -> type.create(rock), rock.createItemProperties()) : registerNoItem(type.typeName(rock), () -> type.create(rock))));
+
+    public static final Map<CompatRock, Map<CompatRock.BlockType, ModDecorationBlockHolder>> ROCK_DECORATIONS = Helpers.mapOf(CompatRock.class, (rock) ->
+            Helpers.mapOf(CompatRock.BlockType.class, CompatRock.BlockType::hasVariants, (type) ->
+                    registerDecorations(type.typeName(rock), () -> type.createSlab(rock), () -> type.createStairs(rock), () -> type.createWall(rock), rock.createItemProperties())));
+
+    public static final Map<RockMaterial, Id<Block>> AQUEDUCTS = Helpers.mapOf(RockMaterial.class, material ->
+                    material.brick() != null,material -> { RockSet brick = Objects.requireNonNull(material.brick());
+                return register(getAqueductPath(brick.base().get()), () -> new AqueductBlock(BlockBehaviour.Properties.ofFullCopy(brick.base().get())));
+            }
+    );
+    public static final Id<Block> BRICK_AQUEDUCT = register("brick_aqueduct",
+            () -> new AqueductBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
+    public static final Id<Block> PRISMARINE_BRICK_AQUEDUCT = register("prismarine_brick_aqueduct",
+            () -> new AqueductBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PRISMARINE_BRICKS)));
+    public static final Id<Block> RED_NETHER_BRICK_AQUEDUCT = register("red_nether_brick_aqueduct",
+            () -> new AqueductBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_NETHER_BRICKS)));
+    public static final Id<Block> QUARTZ_BRICK_AQUEDUCT = register("quartz_brick_aqueduct",
+            () -> new AqueductBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS)));
+
+    public static final Map<CompatRock, Id<Block>> ROCK_ANVILS = Helpers.mapOf(CompatRock.class, (rock) ->
+            register(rock.name() + "_anvil", () ->
+                    new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE)
+                                    .strength(2.0F, 10.0F)
+                                    .requiresCorrectToolForDrops().cloneItem((ItemLike)rock.base())
+                                    .blockEntity(TFCBlockEntities.ANVIL)), (Function)((b) -> new BlockItem((Block) b, rock.createItemProperties())
+                    )
+            )
+    );
+
+    public static final Id<BrushableBlock> SUSPICIOUS_RED_SAND = register("suspicious_red_sand",
+            () -> new BrushableBlock(
+                    Blocks.RED_SAND,
+                    SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_ORANGE)
+                            .instrument(NoteBlockInstrument.SNARE)
+                            .strength(0.25F)
+                            .sound(SoundType.SUSPICIOUS_SAND)
+                            .pushReaction(PushReaction.DESTROY)));
+
+    //Ore
+    public static final Map<CompatRock, Map<Ore, Id<Block>>> ORES = Helpers.mapOf(CompatRock.class, (rock) ->
+            Helpers.mapOf(Ore.class, (ore) -> !ore.isGraded() && ore.hasBlock() && !skippedOre(ore), (ore) ->
+                    register(rock.name() + "_" + ore.name() + "_ore", () -> new Block(BlockBehaviour.Properties.ofFullCopy(rock.rockMaterial().raw().base().get())))));
+
+    public static final Map<CompatRock, Map<Ore, Map<Ore.Grade, Id<Block>>>> GRADED_ORES = Helpers.mapOf(CompatRock.class, (rock) ->
+            Helpers.mapOf(Ore.class, Ore::isGraded, (ore) ->
+                    Helpers.mapOf(Ore.Grade.class, (grade) ->
+                            register(grade.name() + "_" + rock.name() + "_" + ore.name() + "_ore", () -> new Block(BlockBehaviour.Properties.ofFullCopy(rock.rockMaterial().raw().base().get()))))));
+
+
+    //Metal
     public static final Map<CompatMetal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOf(CompatMetal.class, metal ->
             registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(ModFluids.METALS.get(metal).source().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
+    );
+
+    public static final Id<LampBlock> LANTERN = register("lantern",
+            () -> new LampBlock(
+                    ExtendedProperties.of().mapColor(MapColor.COLOR_BLACK)
+                            .noOcclusion().sound(SoundType.LANTERN)
+                            .strength(4.0F, 10.0F)
+                            .randomTicks().pushReaction(PushReaction.DESTROY)
+                            .lightLevel((state) -> (Boolean)state.getValue(LampBlock.LIT) ? 15 : 0)
+                            .blockEntity(TFCBlockEntities.LAMP)),
+            block -> new FirmaLampItem(block, new Item.Properties().stacksTo(1))
+    );
+
+    public static final Map<Metal, Id<LampBlock>> COMPAT_LANTERNS = Helpers.mapOf(Metal.class, Metal::allParts, metal ->
+            register(metal.getSerializedName() + "_lantern",
+                    () -> new LampBlock(
+                            ExtendedProperties.of()
+                                    .mapColor(metal.mapColor())
+                                    .noOcclusion().sound(SoundType.LANTERN)
+                                    .strength(4.0F, 10.0F)
+                                    .randomTicks()
+                                    .pushReaction(PushReaction.DESTROY)
+                                    .lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0)
+                                    .blockEntity(TFCBlockEntities.LAMP)
+                    ),
+                    block -> new FirmaLampItem(block, new Item.Properties().stacksTo(1))
+            )
+    );
+
+    //Natural
+    public static final Map<SoilMaterial, Map<SoilMaterial.SoilBlockType, Id<Block>>> CLAY_BLOCKS = Helpers.mapOf(SoilMaterial.class, soilMaterial ->
+            Helpers.mapOf(SoilMaterial.SoilBlockType.class, (soilBlockType ->
+                    register("clay_" + soilBlockType.typeName(soilMaterial), () -> new Block(BlockBehaviour.Properties.ofFullCopy(soilBlockType.baseBlock(soilMaterial).get()))))
+            )
+    );
+    public static final Map<SoilMaterial, Map<SoilMaterial.SoilBlockType, Id<Block>>> KAOLIN_CLAY_BLOCKS = Helpers.mapOf(SoilMaterial.class, soilMaterial ->
+            Helpers.mapOf(SoilMaterial.SoilBlockType.class, (soilBlockType ->
+                    register("kaolin_clay_" + soilBlockType.typeName(soilMaterial), () -> new Block(BlockBehaviour.Properties.ofFullCopy(soilBlockType.baseBlock(soilMaterial).get()))))
+            )
+    );
+
+    public static final Map<OreDeposit, Id<Block>> ORE_DEPOSITS = Helpers.mapOf(OreDeposit.class, oreDeposit ->
+            register(oreDeposit.name().toLowerCase(Locale.ROOT) + "_deposit", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL))));
+
+    public static final Id<Block> DRYING_MUD_BRICK = register("drying_mud_brick",
+            () -> new DryingBricksBlock(ExtendedProperties.of(MapColor.DIRT).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER), ModItems.MUD_BRICK));
+    public static final Id<Block> COMPAT_FARMLAND = register("compat_farmland",
+            () -> new FarmlandBlock(ExtendedProperties.of(MapColor.DIRT).requiresCorrectToolForDrops().strength(1.3F).sound(SoundType.GRAVEL).randomTicks().isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND).serverTicks(FarmlandBlockEntity::serverTick), Suppliers.ofInstance(Blocks.DIRT)));
+
+    //TFC blocks
+    public static final Map<Rock, Map<CompatRock.BlockType, Id<Block>>> TFC_ROCK_BLOCKS = Helpers.mapOf(Rock.class, rock ->
+            Helpers.mapOf(CompatRock.BlockType.class, CompatRock.BlockType::hasTFCVariants,type -> {
+                final String name = switch (type) {
+                    case COBBLESTONE -> "tfc_" + rock.getSerializedName() + "_cobblestone";
+                    case MOSSY_COBBLESTONE -> "tfc_mossy_" + rock.getSerializedName() + "_cobblestone";
+                    default -> rock.getSerializedName() + "_" + type.name();
+                };
+                return register(name, () -> new Block(BlockBehaviour.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(rock.category().hardness(5.5F), 10.0F).requiresCorrectToolForDrops()));
+            })
+    );
+
+    public static final Map<Rock, Id<BrushableBlock>> TFC_SUSPICIOUS_GRAVEL = Helpers.mapOf(Rock.class, rock ->
+            register("tfc_suspicious_" + rock.getSerializedName() + "_gravel",
+                    () -> new ModBrushableBlock(
+                            TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.GRAVEL),
+                            SoundEvents.BRUSH_GRAVEL, SoundEvents.BRUSH_GRAVEL_COMPLETED,
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(rock.color())
+                                    .instrument(NoteBlockInstrument.SNARE)
+                                    .strength(0.25F)
+                                    .sound(SoundType.SUSPICIOUS_GRAVEL)
+                                    .pushReaction(PushReaction.DESTROY)))
+    );
+
+    public static final Map<SandBlockType, Id<BrushableBlock>> TFC_SUSPICIOUS_SAND = Helpers.mapOf(SandBlockType.class, sand ->
+            register("tfc_suspicious_" + sand.name().toLowerCase(Locale.ROOT) + "_sand",
+                    () -> new ModBrushableBlock(
+                            TFCBlocks.SAND.get(sand),
+                            SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED,
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(sand.getMaterialColor())
+                                    .instrument(NoteBlockInstrument.SNARE)
+                                    .strength(0.25F)
+                                    .sound(SoundType.SUSPICIOUS_SAND)
+                                    .pushReaction(PushReaction.DESTROY)))
+    );
+
+    public static final Map<SandBlockType, Id<Block>> TFC_CHISELED_SANDSTONE = Helpers.mapOf(SandBlockType.class, sand ->
+            register("tfc_chiseled_" + sand.name().toLowerCase(Locale.ROOT) + "_sandstone",
+                    () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_SANDSTONE)))
     );
 
 
@@ -56,8 +259,21 @@ public class ModBlocks {
         };
     }
 
+    private static String getAqueductPath(Block block) {
+        String path = BuiltInRegistries.BLOCK.getKey(block).getPath();
+        if (path.endsWith("s")) {
+            path = path.substring(0, path.length() - 1);
+        }
+        return path + "_aqueduct";
+    }
+
     public static ToIntFunction<BlockState> lavaLoggedBlockEmission() {
         return (state) -> ((FluidProperty.FluidKey)state.getValue(((IFluidLoggable)state.getBlock()).getFluidProperty())).is(Fluids.LAVA) ? 15 : 0;
+    }
+
+    private static <T1 extends SlabBlock, T2 extends StairBlock, T3 extends WallBlock> ModDecorationBlockHolder registerDecorations(String baseName, Supplier<T1> slab, Supplier<T2> stair, Supplier<T3> wall, Item.Properties properties) {
+
+        return new ModDecorationBlockHolder(register(baseName + "_slab", slab, (Function)((b) -> new BlockItem((Block) b, properties))), register(baseName + "_stairs", stair, (Function)((b) -> new BlockItem((Block) b, properties))), register(baseName + "_wall", wall, (Function)((b) -> new BlockItem((Block) b, properties))));
     }
 
     private static <T extends Block> Id<T> register(String name, Supplier<T> blockSupplier, @Nullable Function<T, ? extends BlockItem> blockItemFactory)

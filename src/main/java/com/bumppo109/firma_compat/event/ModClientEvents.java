@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat.event;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -176,7 +177,6 @@ public class ModClientEvents {
                 event
         );
 
-        /*
         for (Rock rock : Rock.values()) {
             event.modify(BlockEntityType.BRUSHABLE_BLOCK, ModBlocks.TFC_SUSPICIOUS_GRAVEL.get(rock).get());
         }
@@ -188,8 +188,8 @@ public class ModClientEvents {
         modifyBlockEntityType(TFCBlockEntities.FARMLAND.get(), Stream.of(ModBlocks.COMPAT_FARMLAND.get()), event);
         modifyBlockEntityType(TFCBlockEntities.TICK_COUNTER.get(), Stream.of(ModBlocks.DRYING_MUD_BRICK.get()), event);
 
-        modifyBlockEntityType(TFCBlockEntities.CHEST.get(), Stream.of(ModBlocks.COMPAT_CHEST.get()), event);
-        modifyBlockEntityType(TFCBlockEntities.TRAPPED_CHEST.get(), Stream.of(ModBlocks.COMPAT_TRAPPED_CHEST.get()), event);
+        //modifyBlockEntityType(TFCBlockEntities.CHEST.get(), Stream.of(ModBlocks.COMPAT_CHEST.get()), event);
+        //modifyBlockEntityType(TFCBlockEntities.TRAPPED_CHEST.get(), Stream.of(ModBlocks.COMPAT_TRAPPED_CHEST.get()), event);
 
         for (CompatRock rock : CompatRock.VALUES) {
             modifyBlockEntityType(TFCBlockEntities.ANVIL.get(), Stream.of(ModBlocks.ROCK_ANVILS.get(rock).get()), event);
@@ -202,8 +202,6 @@ public class ModClientEvents {
                 modifyBlockEntityType(TFCBlockEntities.LAMP.get(), Stream.of(ModBlocks.COMPAT_LANTERNS.get(metal).get()), event);
             }
         }
-
-         */
     }
 
     private static void modifyWood(BlockEntityType<?> type, CompatWood.BlockType blockType, BlockEntityTypeAddBlocksEvent event)
@@ -228,12 +226,7 @@ public class ModClientEvents {
         if (event.getPackType() != PackType.CLIENT_RESOURCES) {
             return;
         }
-
-        //System.out.println(ModClientEvents.class.getResource("/builtin_resource_packs/excalibur_addon/pack.mcmeta"));
-        //System.out.println(ModClientEvents.class.getResource("/builtin_resource_packs/vexxed_visuals_addon/pack.mcmeta"));
-
         ResourceLocation punchyAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/punchy_addon");
-        ResourceLocation excaliburAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/excalibur_addon");
         ResourceLocation vexxedAddon = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"builtin_resource_packs/vexxed_visuals_addon");
 
         event.addPackFinders(punchyAddon, PackType.CLIENT_RESOURCES,
@@ -242,16 +235,6 @@ public class ModClientEvents {
                 false,
                 Pack.Position.TOP
         );
-
-        /*
-        event.addPackFinders(excaliburAddon, PackType.CLIENT_RESOURCES,
-                Component.literal("Excalibur Support"),
-                PackSource.DEFAULT,
-                false,
-                Pack.Position.TOP
-        );
-
-         */
 
         event.addPackFinders(vexxedAddon, PackType.CLIENT_RESOURCES,
                 Component.literal("Vexxed Visuals Support"),

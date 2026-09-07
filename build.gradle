@@ -157,7 +157,7 @@ dependencies {
     implementation "curse.maven:selene-499980:8460169"
 
     //Polytone
-    compileOnly "curse.maven:polytone-958094:8466918"
+    compileOnly "curse.maven:polytone-958094:8813469"
 
     //TFC 4.2.6
     //implementation "curse.maven:terrafirmacraft-302973:8467670"

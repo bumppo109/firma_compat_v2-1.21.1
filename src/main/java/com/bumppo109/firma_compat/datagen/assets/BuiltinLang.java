@@ -7,8 +7,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+
+import static com.bumppo109.firma_compat.block.ModBlocks.GRADED_ORES;
+import static com.bumppo109.firma_compat.block.ModBlocks.ORES;
 
 public class BuiltinLang extends LanguageProvider {
     public BuiltinLang(PackOutput output) {
@@ -19,6 +23,7 @@ public class BuiltinLang extends LanguageProvider {
     protected void addTranslations() {
 
         add("firma_compat.creative_tab.firma_compat", "Firma Compat");
+        add("firma_compat.creative_tab.firma_compat_tfc_additions", "Firma Compat: TFC");
 
         add("fluid.firma_compat.metal.netherite", "Molten Netherite");
         add("fluid.firma_compat.metal.scrap_netherite", "Molten Scrap Netherite");
@@ -73,6 +78,17 @@ public class BuiltinLang extends LanguageProvider {
         add("block_type.firma_compat.shingles_stairs", "%s Shingle Stairs");
         add("block_type.firma_compat.shingles_slab", "%s Shingle Slab");
 
+        //Food
+        ModItems.JAM.forEach((ingredient, itemId) -> {
+            add(itemId.get(), nestedName(itemId.get()));
+        });
+        ModItems.FRUIT_PRESERVES.forEach((ingredient, itemId) -> {
+            add(itemId.get(), nestedName(itemId.get()));
+        });
+        ModItems.UNSEALED_FRUIT_PRESERVES.forEach((ingredient, itemId) -> {
+            add(itemId.get(), nestedName(itemId.get()));
+        });
+
         //Wood
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
@@ -89,7 +105,7 @@ public class BuiltinLang extends LanguageProvider {
             add(itemId.asItem(), getItemDisplayName(itemId.get()));
         });
 
-        /*
+
         //Rock
         ModBlocks.ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
@@ -103,20 +119,13 @@ public class BuiltinLang extends LanguageProvider {
                 add(decoration.wall().get(), getBlockDisplayName(decoration.wall().get()));
             });
         });
-        ModItems.BRICK.forEach((rock, itemId) -> add(itemId.get(), getItemDisplayName(itemId.get())));
-
-        add(ModItems.QUARTZ_BRICK.get(), getItemDisplayName(ModItems.QUARTZ_BRICK.get()));
-        add(ModItems.PRISMARINE_BRICK.get(), getItemDisplayName(ModItems.PRISMARINE_BRICK.get()));
-
-        ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
-            blockTypeIdMap.forEach((blockType, blockId) -> {
-                add(blockId.get(), getTFCname(blockId.get()));
-            });
-        });
-
         ModBlocks.AQUEDUCTS.forEach((compatRockSets, blockId) -> {
             add(blockId.get(), getBlockDisplayName(blockId.get()));
         });
+        ModItems.BRICK.forEach((rock, itemId) -> add(itemId.get(), getItemDisplayName(itemId.get())));
+        add(ModItems.QUARTZ_BRICK.get(), getItemDisplayName(ModItems.QUARTZ_BRICK.get()));
+        add(ModItems.PRISMARINE_BRICK.get(), getItemDisplayName(ModItems.PRISMARINE_BRICK.get()));
+
         Block brickAqueduct = ModBlocks.BRICK_AQUEDUCT.get();
         Block prismarineBrickAqueduct = ModBlocks.PRISMARINE_BRICK_AQUEDUCT.get();
         Block quartzBrickAqueduct = ModBlocks.QUARTZ_BRICK_AQUEDUCT.get();
@@ -147,36 +156,42 @@ public class BuiltinLang extends LanguageProvider {
         //Metal
         add(ModItems.SCRAP_NETHERITE_INGOT.get(), getItemDisplayName(ModItems.SCRAP_NETHERITE_INGOT.get()));
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
-            if (compatMetal.isDummy()) return;
             itemTypeItemIdMap.forEach((itemType, itemId) -> {
                 add(itemId.get(), getItemDisplayName(itemId.get()));
             });
         });
-
         ModBlocks.COMPAT_LANTERNS.forEach((metal, lampBlockId) -> {
             add(lampBlockId.get(), getBlockDisplayName(lampBlockId.get()));
         });
         add(ModBlocks.LANTERN.get(), getBlockDisplayName(ModBlocks.LANTERN.get()));
+        add(ModItems.UNFINISHED_LANTERN.get(),"Unfinished Lantern");
 
         //Earthen
-        add(ModBlocks.CLAY_DIRT.get(), getBlockDisplayName(ModBlocks.CLAY_DIRT.get()));
-        add(ModBlocks.CLAY_GRASS_BLOCK.get(), getBlockDisplayName(ModBlocks.CLAY_GRASS_BLOCK.get()));
-        add(ModBlocks.CLAY_PODZOL.get(), getBlockDisplayName(ModBlocks.CLAY_PODZOL.get()));
-        add(ModBlocks.KAOLIN_CLAY_DIRT.get(), getBlockDisplayName(ModBlocks.KAOLIN_CLAY_DIRT.get()));
-        add(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get(), getBlockDisplayName(ModBlocks.KAOLIN_CLAY_GRASS_BLOCK.get()));
-        add(ModBlocks.KAOLIN_CLAY_PODZOL.get(), getBlockDisplayName(ModBlocks.KAOLIN_CLAY_PODZOL.get()));
-        add(ModBlocks.COMPAT_FARMLAND.get(), getBlockDisplayName(ModBlocks.COMPAT_FARMLAND.get()));
-
-        add(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get(), getBlockDisplayName(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get()));
-        add(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get(), getBlockDisplayName(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get()));
-        add(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get(), getBlockDisplayName(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get()));
-        add(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get(), getBlockDisplayName(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get()));
-
+        ModBlocks.CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                add(blockId.get(), getBlockDisplayName(blockId.get()));
+            });
+        });
+        ModBlocks.KAOLIN_CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                add(blockId.get(), getBlockDisplayName(blockId.get()));
+            });
+        });
+        ModBlocks.ORE_DEPOSITS.forEach((oreDeposit, blockId) -> {
+            add(blockId.get(), getBlockDisplayName(blockId.get()));
+        });
+        add(ModBlocks.COMPAT_FARMLAND.get(),"Farmland");
         add(ModBlocks.DRYING_MUD_BRICK.get(), getBlockDisplayName(ModBlocks.DRYING_MUD_BRICK.get()));
         add(ModItems.MUD_BRICK.get(), getItemDisplayName(ModItems.MUD_BRICK.get()));
 
         add(ModItems.UNFIRED_POT.get(), getItemDisplayName(ModItems.UNFIRED_POT.get()));
 
+        //TFC blocks
+        ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
+            blockTypeIdMap.forEach((blockType, blockId) -> {
+                add(blockId.get(), getTFCname(blockId.get()));
+            });
+        });
         ModBlocks.TFC_SUSPICIOUS_GRAVEL.forEach((rock, brushableBlockId) -> {
             add(brushableBlockId.get(), getTFCname(brushableBlockId.get()));
         });
@@ -188,6 +203,7 @@ public class BuiltinLang extends LanguageProvider {
         ModBlocks.TFC_CHISELED_SANDSTONE.forEach((sand, block) -> {
             add(block.get(), getTFCname(block.get()));
         });
+         /*
 
         //Misc
         add(ModBlocks.COMPAT_CHEST.get(), "Chest");
@@ -250,6 +266,16 @@ public class BuiltinLang extends LanguageProvider {
         add(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_SLAB.get()));
 
          */
+    }
+
+    private String nestedName(Item item) {
+        ResourceLocation itemRes = BuiltInRegistries.ITEM.getKey(item);
+        return processIdString(lastPath(itemRes.getPath()));
+    }
+
+    private static String lastPath(String value) {
+        int index = value.lastIndexOf('/');
+        return index >= 0 ? value.substring(index + 1) : value;
     }
 
     private String getTFCname(Block block) {

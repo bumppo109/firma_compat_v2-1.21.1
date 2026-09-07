@@ -6,6 +6,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.FirmaCompatHelpers;
 import com.bumppo109.firma_compat.materials.WoodMaterial;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
@@ -212,11 +214,11 @@ public enum CompatWood implements ModRegistryWood {
         }
 
         private ResourceLocation waterWheelTexture(ModRegistryWood wood) {
-            return Helpers.identifier("textures/entity/water_wheel/" + wood.getSerializedName() + ".png");
+            return FirmaCompatHelpers.modIdentifier("textures/entity/water_wheel/" + wood.getSerializedName() + ".png");
         }
 
         private static ResourceLocation chestBoatRes(ModRegistryWood wood) {
-            return Helpers.identifier("textures/entity/chest_boat/" + wood.getSerializedName() + ".png");
+            return FirmaCompatHelpers.modIdentifier("textures/entity/chest_boat/" + wood.getSerializedName() + ".png");
         }
 
         private CompatWood.BlockType twig() {

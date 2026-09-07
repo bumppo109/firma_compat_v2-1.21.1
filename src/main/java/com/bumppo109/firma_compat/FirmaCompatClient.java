@@ -1,11 +1,18 @@
 package com.bumppo109.firma_compat;
 
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.data.ModDataComponents;
+import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.materials.SoilMaterial;
 import com.therighthon.afc.common.blocks.AFCBlocks;
+import net.dries007.tfc.client.ClientEventHandler;
+import net.dries007.tfc.client.extensions.FluidRendererExtension;
 import net.dries007.tfc.client.extensions.ItemRendererExtension;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -87,6 +94,39 @@ public class FirmaCompatClient {
                     );
         });
 
+        ModBlocks.CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                if (!soilBlockType.equals(SoilMaterial.SoilBlockType.DIRT)) {
+                    ItemBlockRenderTypes.setRenderLayer(blockId.get(), cutout);
+                }
+            });
+        });
+        ModBlocks.KAOLIN_CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                if (!soilBlockType.equals(SoilMaterial.SoilBlockType.DIRT)) {
+                    ItemBlockRenderTypes.setRenderLayer(blockId.get(), cutout);
+                }
+            });
+        });
+
+        ModBlocks.ORE_DEPOSITS.forEach((oreDeposit, blockId) -> {
+            ItemBlockRenderTypes.setRenderLayer(blockId.get(), cutout);
+        });
+
+        ModBlocks.ORES.forEach((rock, oreMap) ->
+                oreMap.forEach((ore, blockId) ->
+                        ItemBlockRenderTypes.setRenderLayer(blockId.get(), RenderType.cutout())
+                )
+        );
+
+        ModBlocks.GRADED_ORES.forEach((rock, oreMap) ->
+                oreMap.forEach((ore, gradeMap) ->
+                        gradeMap.forEach((grade, blockId) ->
+                                ItemBlockRenderTypes.setRenderLayer(blockId.get(), RenderType.cutout())
+                        )
+                )
+        );
+
 
         event.enqueueWork(() -> {
 
@@ -123,7 +163,6 @@ public class FirmaCompatClient {
 
         ModBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
 
-        /*
         registerLampLitProperty(ModBlocks.LANTERN.get());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.LANTERN.get(), cutout);
 
@@ -133,18 +172,13 @@ public class FirmaCompatClient {
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.COMPAT_LANTERNS.get(metal).get(), cutout);
             }
         }
-
-         */
     }
 
     public static void registerExtensions(RegisterClientExtensionsEvent event) {
-        /*
         ModFluids.METALS.forEach((metal, holder) -> event.registerFluidType(
                 new FluidRendererExtension(TFCFluids.ALPHA_MASK | metal.getColor(), ClientEventHandler.MOLTEN_STILL, ClientEventHandler.MOLTEN_FLOW, null, null),
                 holder.getType()
         ));
-
-         */
         // Chest item renderers
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
             //registerCustomItemRenderer(event, blockTypeIdMap.get(CHEST), ChestItemRenderer::new);
@@ -156,15 +190,12 @@ public class FirmaCompatClient {
         ItemProperties.register(item.asItem(), SEALED, (stack, level, entity, unused) -> stack.has(type) ? 1.0f : 0f);
     }
 
-    /*
     private static void registerLampLitProperty(ItemLike item) {
         ItemProperties.register(item.asItem(), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "lit"),
                 (stack, level, entity, seed) ->
                         stack.getOrDefault(ModDataComponents.LIT, false) ? 1.0F : 0.0F
         );
     }
-
-     */
 
     private static <T> void registerCustomItemRenderer(RegisterClientExtensionsEvent event, @Nullable Supplier<? extends ItemLike> item, Function<T, BlockEntityWithoutLevelRenderer> renderer) {
         if (item != null) {

@@ -1,9 +1,11 @@
 package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -37,34 +39,53 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
             withExistingParent(wood.getSerializedName() + "_bladed_axle", modLoc("block/bladed_axle/" + wood.getSerializedName() + "_bladed_axle"));
         }
 
-        /*
+
         for (CompatRock rock : CompatRock.VALUES) {
-            basicItem(rock.brickItem().get());
-            basicItem(ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.LOOSE).get().asItem());
-            withExistingParent("mossy_" + rock.getSerializedName() + "_loose", mcLoc("item/generated"))
-                    .texture("layer0", ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + rock.getSerializedName() + "_loose"))
+            uncheckedBasicItem(rock.brickItem().get());
+            uncheckedBasicItem(ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.LOOSE).get().asItem());
+            withExistingParent("mossy_loose_" + rock.getSerializedName(), mcLoc("item/generated"))
+                    .texture("layer0", ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/loose_" + rock.getSerializedName()))
                     .texture("layer1", ResourceLocation.fromNamespaceAndPath("tfc", "item/loose_rock/moss"));
         }
 
         basicItem(ModItems.PRISMARINE_BRICK.get());
         basicItem(ModItems.QUARTZ_BRICK.get());
-        basicItem(ModItems.MUD_BRICK.get());
-        basicItem(ModBlocks.DRYING_MUD_BRICK.get().asItem());
 
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
-            if (compatMetal.isDummy()) return;
             itemTypeItemIdMap.forEach((itemType, itemId) -> {
-                basicItem(itemId.get());
+                uncheckedBasicItem(itemId.get());
             });
         });
         basicItem(ModItems.SCRAP_NETHERITE_INGOT.get());
+        basicItem(ModItems.UNFINISHED_LANTERN.get());
 
+        basicItem(ModItems.MUD_BRICK.get());
+        basicItem(ModBlocks.DRYING_MUD_BRICK.get().asItem());
+
+        ModItems.JAM.forEach((ingredient, itemId) -> {
+            uncheckedBasicItem(itemId.get());
+        });
+        ModItems.FRUIT_PRESERVES.forEach((ingredient, itemId) -> {
+            ResourceLocation itemRes = BuiltInRegistries.ITEM.getKey(itemId.get());
+            uncheckedBasicItem("item/" + itemRes.getPath(), itemId.get());
+        });
+        ModItems.UNSEALED_FRUIT_PRESERVES.forEach((ingredient, itemId) -> {
+            ResourceLocation itemRes = BuiltInRegistries.ITEM.getKey(itemId.get());
+            uncheckedBasicItem("item/" + itemRes.getPath(), itemId.get());
+        });
+
+        /*
         // ============ RnR =============
         basicItem(CompatRnRItems.GRAVEL_FILL.get());
         CompatRnRItems.FLAGSTONE.forEach((rock, itemId) -> basicItem(itemId.get()));
         CompatRnRItems.SHINGLE.forEach((wood, itemId) -> basicItem(itemId.get()));
-
          */
+    }
+
+    private void chestItemModel(String name) {
+        getBuilder(name)
+                .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/chest")))
+                .texture("particle", ResourceLocation.fromNamespaceAndPath("tfc","block/wood/planks/acacia"));
     }
 
     private String itemPathName(Item item) {
@@ -80,6 +101,19 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
         existingFileHelper.trackGenerated(texture, PackType.CLIENT_RESOURCES,".png","textures");
 
         return getBuilder(itemRes.getPath())
+                .parent(new ModelFile.UncheckedModelFile(mcLoc("item/generated")))
+                .texture("layer0", texture);
+    }
+
+    private ItemModelBuilder uncheckedBasicItem(String output, Item item) {
+        ResourceLocation itemRes =
+                BuiltInRegistries.ITEM.getKey(item);
+
+        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + itemRes.getPath());
+
+        existingFileHelper.trackGenerated(texture, PackType.CLIENT_RESOURCES,".png","textures");
+
+        return getBuilder(output)
                 .parent(new ModelFile.UncheckedModelFile(mcLoc("item/generated")))
                 .texture("layer0", texture);
     }

@@ -1,10 +1,16 @@
 package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.CompatRock;
+import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
+import com.bumppo109.firma_compat.util.ModTags;
 import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,6 +23,8 @@ import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -27,6 +35,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import static com.bumppo109.firma_compat.util.ModTags.Blocks.PREVENT_INTERACTION;
+import static net.dries007.tfc.common.TFCTags.Blocks.*;
+import static net.dries007.tfc.common.TFCTags.Items.TWIGS;
+import static net.minecraft.tags.BlockTags.*;
 
 public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessors
 {
@@ -41,11 +54,190 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
     @Override
     protected void addTags(HolderLookup.Provider provider) {
 
-        ModBlocks.WOODS.forEach((block, blockTypeIdMap) -> {
+        //Util
+        tag(PREVENT_INTERACTION)
+                .add(Blocks.BLAST_FURNACE)
+                .add(Blocks.SMOKER)
+                .add(Blocks.COMPOSTER)
+                .add(Blocks.CAMPFIRE)
+                .add(Blocks.SOUL_CAMPFIRE)
+                .add(Blocks.FURNACE);
+
+        tag(CONSUMES_TOOL_DURABILITY)
+                .add(Blocks.TALL_GRASS)
+                .add(Blocks.SHORT_GRASS)
+                .add(Blocks.FERN)
+                .add(Blocks.LARGE_FERN)
+        ;
+
+        tag(HEAT_PASSABLE)
+                .add(Blocks.COPPER_GRATE)
+                .add(Blocks.EXPOSED_COPPER_GRATE)
+                .add(Blocks.WEATHERED_COPPER_GRATE)
+                .add(Blocks.OXIDIZED_COPPER_GRATE)
+                .add(Blocks.WAXED_COPPER_GRATE)
+                .add(Blocks.WAXED_EXPOSED_COPPER_GRATE)
+                .add(Blocks.WAXED_WEATHERED_COPPER_GRATE)
+                .add(Blocks.WAXED_OXIDIZED_COPPER_GRATE)
+        ;
+
+        tag(Tags.Blocks.CHESTS_WOODEN)
+                .add(ModBlocks.COMPAT_CHEST.get())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get());
+
+        tag(PET_SITS_ON)
+                .add(ModBlocks.COMPAT_CHEST.get())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get());
+        //Wood
+        tag(ModTags.Blocks.CHISELED_BOOKSHELVES).add(Blocks.CHISELED_BOOKSHELF);
+        for (Wood wood : Wood.VALUES) {
+            tag(ModTags.Blocks.CHISELED_BOOKSHELVES)
+                    .add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.BOOKSHELF).get());
+            tag(ModTags.Blocks.TWIGS)
+                    .add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.TWIG).get());
+        }
+
+        ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
+            blockTypeIdMap.forEach((blockType, blockId) -> tag(MINEABLE_WITH_AXE).add(blockId.get()));
+        });
+        addAllCompatWoods(CompatWood.BlockType.TWIG, ModTags.Blocks.TWIGS);
+        addAllCompatWoods(CompatWood.BlockType.LOG_FENCE, FENCES);
+        addAllCompatWoods(CompatWood.BlockType.HORIZONTAL_SUPPORT, SUPPORT_BEAMS);
+        addAllCompatWoods(CompatWood.BlockType.VERTICAL_SUPPORT, SUPPORT_BEAMS);
+
+        //Rock
+        for (CompatRock rock : CompatRock.VALUES) {
+            for (CompatRock.BlockType blockType : CompatRock.BlockType.VALUES) {
+                Block block = ModBlocks.ROCK_BLOCKS.get(rock).get(blockType).get();
+
+                tag(MINEABLE_WITH_PICKAXE).add(block);
+                if (blockType.equals(CompatRock.BlockType.HARDENED)) {
+                    tag(STONES_HARDENED).add(block);
+                }
+                if (blockType.equals(CompatRock.BlockType.SPIKE)) {
+                    tag(STONES_SPIKE).add(block);
+                }
+                if (blockType.equals(CompatRock.BlockType.LOOSE) || blockType.equals(CompatRock.BlockType.MOSSY_LOOSE)) {
+                    tag(STONES_LOOSE).add(block);
+                }
+                if(blockType.equals(CompatRock.BlockType.COBBLE) || blockType.equals(CompatRock.BlockType.MOSSY_COBBLE)) {
+                    tag(Tags.Blocks.COBBLESTONES_NORMAL).add(block);
+                    tag(CAN_LANDSLIDE).add(block);
+                }
+                if(blockType.equals(CompatRock.BlockType.COBBLESTONE) || blockType.equals(CompatRock.BlockType.MOSSY_COBBLESTONE)) {
+                    tag(Tags.Blocks.COBBLESTONES_NORMAL).add(block);
+                }
+            }
+            if (rock.canMakeAnvil()) {
+                tag(MINEABLE_WITH_PICKAXE).add(ModBlocks.ROCK_ANVILS.get(rock).get());
+                tag(ModTags.Blocks.MAKES_ROCK_ANVIL).add(rock.rockMaterial().raw().base().get());
+            }
+        }
+
+        ModBlocks.TFC_ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
             blockTypeIdMap.forEach((blockType, blockId) -> {
-                tag(BlockTags.MINEABLE_WITH_AXE).add(blockId.get());
+                tag(MINEABLE_WITH_PICKAXE).add(blockId.get());
+                tag(Tags.Blocks.COBBLESTONES_NORMAL).add(blockId.get());
             });
         });
+
+        ModBlocks.ORES.forEach((rock, oreMap) -> {
+            oreMap.forEach((ore, blockId) -> {
+                tag(MINEABLE_WITH_PICKAXE).add(blockId.get());
+                tag(Tags.Blocks.ORES).add(blockId.get());
+            });
+        });
+
+        // Graded ores
+        ModBlocks.GRADED_ORES.forEach((rock, oreMap) -> {
+            oreMap.forEach((ore, gradeMap) -> {
+                gradeMap.forEach((grade, blockId) -> {
+                    tag(MINEABLE_WITH_PICKAXE).add(blockId.get());
+                    tag(Tags.Blocks.ORES).add(blockId.get());
+                });
+            });
+        });
+
+        ModBlocks.AQUEDUCTS.forEach((compatRockSets, blockId) -> tag(MINEABLE_WITH_PICKAXE).add(blockId));
+
+        tag(MINEABLE_WITH_PICKAXE)
+                .add(ModBlocks.RED_NETHER_BRICK_AQUEDUCT)
+                .add(ModBlocks.PRISMARINE_BRICK_AQUEDUCT)
+                .add(ModBlocks.QUARTZ_BRICK_AQUEDUCT)
+                .add(ModBlocks.BRICK_AQUEDUCT)
+        ;
+
+        tag(STONES_RAW)
+                .add(Blocks.STONE)
+                .add(Blocks.DEEPSLATE)
+                .add(Blocks.ANDESITE)
+                .add(Blocks.DIORITE)
+                .add(Blocks.DRIPSTONE_BLOCK)
+                .add(Blocks.GRANITE)
+                .add(Blocks.TUFF)
+                .add(Blocks.CALCITE)
+                .add(Blocks.BLACKSTONE)
+                .add(Blocks.END_STONE)
+                .add(Blocks.NETHERRACK);
+
+        //Metal
+        tag(LAMPS).add(ModBlocks.LANTERN.get());
+        tag(MINEABLE_WITH_PICKAXE).add(ModBlocks.LANTERN.get());
+
+        for(Metal metal : Metal.values()) {
+            if(metal.allParts()){
+                tag(LAMPS).add(ModBlocks.COMPAT_LANTERNS.get(metal).get());
+                tag(MINEABLE_WITH_PICKAXE).add(ModBlocks.COMPAT_LANTERNS.get(metal).get());
+            }
+        }
+
+        //Earthen
+        tag(ModTags.Blocks.MUD).add(Blocks.MUD);
+
+        tag(CAN_LANDSLIDE)
+                .add(Blocks.GRASS_BLOCK)
+                .add(Blocks.DIRT_PATH)
+                .add(Blocks.COARSE_DIRT)
+                .add(Blocks.ROOTED_DIRT)
+                .add(Blocks.PODZOL)
+                .add(Blocks.MYCELIUM)
+                .add(Blocks.MUD)
+                .add(Blocks.PACKED_MUD)
+                .add(Blocks.RED_SAND)
+                .add(ModBlocks.COMPAT_FARMLAND.get())
+                .add(Blocks.FARMLAND)
+        ;
+
+        ModBlocks.CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                tag(BlockTags.DIRT).add(blockId);
+                tag(BlockTags.MINEABLE_WITH_SHOVEL).add(blockId);
+                tag(CAN_LANDSLIDE).add(blockId);
+            });
+        });
+        ModBlocks.KAOLIN_CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                tag(BlockTags.DIRT).add(blockId);
+                tag(BlockTags.MINEABLE_WITH_SHOVEL).add(blockId);
+                tag(CAN_LANDSLIDE).add(blockId);
+            });
+        });
+        ModBlocks.ORE_DEPOSITS.forEach((oreDeposit, blockId) -> {
+            tag(BlockTags.MINEABLE_WITH_SHOVEL).add(blockId);
+            tag(CAN_LANDSLIDE).add(blockId);
+        });
+
+        tag(BlockTags.DIRT)
+                .add(ModBlocks.COMPAT_FARMLAND.get())
+                .add(TFCBlocks.PEAT.get())
+        ;
+
+        tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(ModBlocks.COMPAT_FARMLAND.get())
+        ;
+
+        tag(FARMLANDS).add(ModBlocks.COMPAT_FARMLAND.get());
+        tag(NORMAL_FARMLAND).add(ModBlocks.COMPAT_FARMLAND.get());
     }
 
     @Override
@@ -65,6 +257,16 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements ModAccessor
             {
                 Preconditions.checkArgument(!entry.getId().equals(BuiltInRegistries.BLOCK.getDefaultKey()), "Adding air to block tag");
                 return super.add(entry);
+            }
+        });
+    }
+
+    private void addAllCompatWoods(CompatWood.BlockType type, TagKey<Block> tagKey) {
+        if (tagKey == null) return;  // Skip if no tag for this type
+
+        ModBlocks.WOODS.forEach((wood, map) -> {
+            if (map.containsKey(type)) {
+                tag(tagKey).add(map.get(type).get());
             }
         });
     }
