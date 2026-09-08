@@ -9,6 +9,8 @@ import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModCreativeModeTab;
 import com.bumppo109.firma_compat.item.ModItemCapabilities;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.loot.ModLootFunctions;
+import com.bumppo109.firma_compat.loot.ModLootModifiers;
 import com.bumppo109.firma_compat.materials.BlockAssets;
 import com.bumppo109.firma_compat.materials.food.FoodRegistryBootstrap;
 import com.mojang.logging.LogUtils;
@@ -41,6 +43,9 @@ public class FirmaCompat {
         ModFluids.FLUID_TYPES.register(modEventBus);
         ModFluids.FLUID.register(modEventBus);
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
+
+        ModLootModifiers.register(modEventBus);
+        ModLootFunctions.FUNCTIONS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

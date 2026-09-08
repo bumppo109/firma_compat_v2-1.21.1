@@ -41,9 +41,45 @@ public final class Foods {
                     () -> Items.BEETROOT_SOUP,
                     6,
                     7.2f,
-                    0.0f,
-                    1.0f,
-                    List.of(FoodIngredients.TFC_BEET, FoodIngredients.TFC_BEET, FoodIngredients.TFC_BEET, FoodIngredients.TFC_BEET, FoodIngredients.TFC_BEET, FoodIngredients.TFC_BEET)
+                    10.0f,
+                    4.5f,
+                    List.of(FoodIngredients.BEETROOT, FoodIngredients.BEETROOT, FoodIngredients.BEETROOT, FoodIngredients.BEETROOT)
+            )
+    );
+
+    public static final Food MUSHROOM_STEW = register(
+            new Food(
+                    id("mushroom_stew"),
+                    () -> Items.MUSHROOM_STEM,
+                    6,
+                    7.2f,
+                    10.0f,
+                    4.5f,
+                    List.of(FoodIngredients.RED_MUSHROOM, FoodIngredients.BROWN_MUSHROOM)
+            )
+    );
+
+    public static final Food RABBIT_STEW = register(
+            new Food(
+                    id("rabbit_stew"),
+                    () -> Items.RABBIT_STEW,
+                    6,
+                    7.2f,
+                    10.0f,
+                    4.5f,
+                    List.of(FoodIngredients.CARROT, FoodIngredients.BAKED_POTATO, FoodIngredients.RED_MUSHROOM, FoodIngredients.COOKED_RABBIT)
+            )
+    );
+
+    public static final Food SUSPICIOUS_STEW = register(
+            new Food(
+                    id("suspicious_stew"),
+                    () -> Items.SUSPICIOUS_STEW,
+                    6,
+                    7.2f,
+                    10.0f,
+                    4.5f,
+                    List.of(FoodIngredients.RED_MUSHROOM, FoodIngredients.BROWN_MUSHROOM)
             )
     );
 

@@ -3,12 +3,14 @@ package com.bumppo109.firma_compat;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.SoilMaterial;
-import com.therighthon.afc.common.blocks.AFCBlocks;
 import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.extensions.FluidRendererExtension;
 import net.dries007.tfc.client.extensions.ItemRendererExtension;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
+import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
+import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
@@ -19,12 +21,12 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -127,9 +129,14 @@ public class FirmaCompatClient {
                 )
         );
 
+        ModItems.FRUIT_PRESERVES.forEach((fruit, item) ->
+                PlacedItemBlockEntityRenderer.MODELS.put((Item)item.get(), translucent("block/jar/" + fruit.id().getPath()))
+        );
+        ModItems.UNSEALED_FRUIT_PRESERVES.forEach((fruit, item) ->
+                PlacedItemBlockEntityRenderer.MODELS.put((Item)item.get(), translucent("block/jar/" + fruit.id().getPath() + "_unsealed"))
+        );
 
         event.enqueueWork(() -> {
-
             //EveryComp barrels
             BuiltInRegistries.BLOCK.stream()
                     .filter(block -> {
@@ -159,6 +166,8 @@ public class FirmaCompatClient {
                 //HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_chest.png"));
                 //HorseChestLayer.registerChest(map.get(TRAPPED_CHEST).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_chest.png"));
             });
+            HorseChestLayer.registerChest(ModBlocks.COMPAT_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
+            HorseChestLayer.registerChest(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
         });
 
         ModBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
@@ -184,6 +193,12 @@ public class FirmaCompatClient {
             //registerCustomItemRenderer(event, blockTypeIdMap.get(CHEST), ChestItemRenderer::new);
             //registerCustomItemRenderer(event, blockTypeIdMap.get(TRAPPED_CHEST), ChestItemRenderer::new);
         });
+        registerCustomItemRenderer(event, ModBlocks.COMPAT_CHEST, ChestItemRenderer::new);
+        registerCustomItemRenderer(event, ModBlocks.COMPAT_TRAPPED_CHEST, ChestItemRenderer::new);
+    }
+
+    private static PlacedItemBlockEntityRenderer.Provider translucent(String model) {
+        return new PlacedItemBlockEntityRenderer.Provider(ModelResourceLocation.standalone(FirmaCompatHelpers.modIdentifier(model)), RenderType.translucent());
     }
 
     private static void registerSealedProperty(ItemLike item, Supplier<? extends DataComponentType<?>> type) {

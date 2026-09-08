@@ -6,6 +6,7 @@ import com.bumppo109.firma_compat.datagen.assets.BuiltinItemModelProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinLang;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinBiomeTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinBlockTags;
+import com.bumppo109.firma_compat.datagen.tags.BuiltinFluidTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinItemTags;
 import com.bumppo109.firma_compat.datagen.worldgen.ModConfiguredFeatures;
 import com.bumppo109.firma_compat.datagen.worldgen.ModPlacedFeatures;
@@ -55,21 +56,20 @@ public final class DataEntryPoint {
 
         final var fluidHeat = add(event, new BuiltinFluidHeat(packOutput, lookup)).output();
         final var itemHeat = add(event, new BuiltinItemHeat(packOutput, lookup, fluidHeat));
-        //final var drinkables = add(event, new BuiltinDrinkables(packOutput, lookup)).output();
+        final var drinkables = add(event, new BuiltinDrinkables(packOutput, lookup)).output();
 
         add(event, new BuiltinRecipes(packOutput, lookup, CompletableFuture.allOf(fluidHeat), itemHeat));
 
         final var blockTags = add(event, new BuiltinBlockTags(event, lookup)).contentsGetter();
         add(event, new BuiltinItemTags(event, lookup, blockTags));
-        //add(event, new BuiltinFluidTags(event, lookup, drinkables));
+        add(event, new BuiltinFluidTags(event, lookup, drinkables));
         //add(event, new BuiltinPlacedFeatureTags(packOutput, vanillaLookup, existingFileHelper));
         add(event, new BuiltinBiomeTags(packOutput, vanillaLookup, existingFileHelper));
 
-        //add(event, new BuiltinDeposits(packOutput, lookup));
-        //add(event, new BuiltinFoods(packOutput, lookup));
-        //add(event, new BuiltinFuels(packOutput, lookup));
-        //add(event, new BuiltinSupports(packOutput, lookup));
-        //add(event, new BuiltinFauna(packOutput, lookup));
+        add(event, new BuiltinDeposits(packOutput, lookup));
+        add(event, new BuiltinFoods(packOutput, lookup));
+        add(event, new BuiltinFuels(packOutput, lookup));
+        add(event, new BuiltinSupports(packOutput, lookup));
 
         //add(event, new BuiltinDataMaps(packOutput, lookup));
 
@@ -78,7 +78,7 @@ public final class DataEntryPoint {
         generator.addProvider(event.includeServer(), new BuiltinItemModelProvider(packOutput, existingFileHelper));
         event.getGenerator().addProvider(true, new BuiltinLang(packOutput));
         //event.getGenerator().addProvider(true, new StoneZoneLang(packOutput));
-        //event.getGenerator().addProvider(true, new BuiltinLootTableProvider(packOutput, vanillaLookup));
+        event.getGenerator().addProvider(true, new BuiltinLootTableProvider(packOutput, vanillaLookup));
         //event.getGenerator().addProvider(true, new BuiltinLootModifier(packOutput, vanillaLookup));
 
     }

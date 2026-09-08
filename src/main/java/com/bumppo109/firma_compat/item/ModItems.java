@@ -14,6 +14,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCMinecartItem;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistryHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -79,6 +80,9 @@ public class ModItems {
                     register(metal.name() + "_" + type.name(), () -> type.create(metal))
             )
     );
+
+    public static final Map<Metal, ItemId> TFC_NUGGETS = Helpers.mapOf(Metal.class,metal ->
+            register("tfc_" + metal.getSerializedName() + "_nugget"));
 
     public static final Map<CompatMetal, ItemId> METAL_FLUID_BUCKETS = Helpers.mapOf(CompatMetal.class, metal ->
             register("bucket/metal/" + metal.name(), () -> new BucketItem(ModFluids.METALS.get(metal).getSource(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))

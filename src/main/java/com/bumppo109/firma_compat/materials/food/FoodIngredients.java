@@ -98,6 +98,38 @@ public final class FoodIngredients {
     // Firma Compat ingredients
     // -------------------------------------------------------------------------
 
+    public static final FoodIngredient BROWN_MUSHROOM = register(
+            new FoodIngredient(
+                    id("brown_mushroom"),
+                    () -> Items.BROWN_MUSHROOM,
+                    false,
+                    0.0f,
+                    0.0f,
+                    3.0f,
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    0.8f,
+                    0.0f
+            )
+    );
+
+    public static final FoodIngredient RED_MUSHROOM = register(
+            new FoodIngredient(
+                    id("red_mushroom"),
+                    () -> Items.RED_MUSHROOM,
+                    false,
+                    0.0f,
+                    0.0f,
+                    3.0f,
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    0.8f,
+                    0.0f
+            )
+    );
+
     public static final FoodIngredient GLOW_BERRIES = register(
             new FoodIngredient(
                     id("glow_berries"),
@@ -164,10 +196,10 @@ public final class FoodIngredients {
     // TFC ingredients
     // -------------------------------------------------------------------------
 
-    public static final FoodIngredient RED_APPLE = register(
+    public static final FoodIngredient APPLE = register(
             new FoodIngredient(
-                    id("red_apple"),
-                    TFCItems.FOOD.get(Food.RED_APPLE),
+                    id("apple"),
+                    () -> Items.APPLE,
                     0.2f,
                     0.0f,
                     1.7f,
@@ -179,10 +211,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_BEET = register(
+    public static final FoodIngredient BEETROOT = register(
             new FoodIngredient(
-                    id("tfc_beet"),
-                    TFCItems.FOOD.get(Food.BEET),
+                    id("beetroot"),
+                    () -> Items.BEETROOT,
                     2.0f,
                     0.0f,
                     0.5f,
@@ -194,10 +226,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_CARROT = register(
+    public static final FoodIngredient CARROT = register(
             new FoodIngredient(
-                    id("tfc_carrot"),
-                    TFCItems.FOOD.get(Food.CARROT),
+                    id("carrot"),
+                    () -> Items.CARROT,
                     2.0f,
                     0.0f,
                     0.5f,
@@ -209,10 +241,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COD = register(
+    public static final FoodIngredient COD = register(
             new FoodIngredient(
-                    id("tfc_cod"),
-                    TFCItems.FOOD.get(Food.COD),
+                    id("cod"),
+                    () -> Items.COD,
                     0.0f,
                     0.0f,
                     3.0f,
@@ -224,10 +256,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COOKED_COD = register(
+    public static final FoodIngredient COOKED_COD = register(
             new FoodIngredient(
-                    id("tfc_cooked_cod"),
-                    TFCItems.FOOD.get(Food.COOKED_COD),
+                    id("cooked_cod"),
+                    () -> Items.COOKED_COD,
                     1.0f,
                     0.0f,
                     2.25f,
@@ -239,10 +271,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COOKED_PORK = register(
+    public static final FoodIngredient COOKED_PORKCHOP = register(
             new FoodIngredient(
-                    id("tfc_cooked_pork"),
-                    TFCItems.FOOD.get(Food.COOKED_PORK),
+                    id("cooked_porkchop"),
+                    () -> Items.COOKED_PORKCHOP,
                     2.0f,
                     0.0f,
                     1.5f,
@@ -254,10 +286,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_PORK = register(
+    public static final FoodIngredient PORKCHOP = register(
             new FoodIngredient(
-                    id("tfc_pork"),
-                    TFCItems.FOOD.get(Food.PORK),
+                    id("porkchop"),
+                    () -> Items.PORKCHOP,
                     0.0f,
                     0.0f,
                     2.0f,
@@ -269,10 +301,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_BEEF = register(
+    public static final FoodIngredient BEEF = register(
             new FoodIngredient(
-                    id("tfc_beef"),
-                    TFCItems.FOOD.get(Food.BEEF),
+                    id("beef"),
+                    () -> Items.BEEF,
                     0.0f,
                     0.0f,
                     2.0f,
@@ -284,10 +316,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COOKED_BEEF = register(
+    public static final FoodIngredient COOKED_BEEF = register(
             new FoodIngredient(
-                    id("tfc_cooked_beef"),
-                    TFCItems.FOOD.get(Food.COOKED_BEEF),
+                    id("cooked_beef"),
+                    () -> Items.COOKED_BEEF,
                     2.0f,
                     0.0f,
                     1.5f,
@@ -299,10 +331,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COOKED_MUTTON = register(
+    public static final FoodIngredient COOKED_MUTTON = register(
             new FoodIngredient(
-                    id("tfc_cooked_mutton"),
-                    TFCItems.FOOD.get(Food.COOKED_MUTTON),
+                    id("cooked_mutton"),
+                    () -> Items.COOKED_MUTTON,
                     2.0f,
                     0.0f,
                     2.25f,
@@ -314,10 +346,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_MUTTON = register(
+    public static final FoodIngredient MUTTON = register(
             new FoodIngredient(
-                    id("tfc_mutton"),
-                    TFCItems.FOOD.get(Food.MUTTON),
+                    id("mutton"),
+                    () -> Items.MUTTON,
                     0.0f,
                     0.0f,
                     3.0f,
@@ -329,10 +361,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_SALMON = register(
+    public static final FoodIngredient SALMON = register(
             new FoodIngredient(
-                    id("tfc_salmon"),
-                    TFCItems.FOOD.get(Food.SALMON),
+                    id("salmon"),
+                    () -> Items.SALMON,
                     0.0f,
                     0.0f,
                     3.0f,
@@ -344,10 +376,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COOKED_SALMON = register(
+    public static final FoodIngredient COOKED_SALMON = register(
             new FoodIngredient(
-                    id("tfc_cooked_salmon"),
-                    TFCItems.FOOD.get(Food.COOKED_SALMON),
+                    id("cooked_salmon"),
+                    () -> Items.COOKED_SALMON,
                     1.0f,
                     0.0f,
                     2.25f,
@@ -359,10 +391,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_WHEAT = register(
+    public static final FoodIngredient WHEAT = register(
             new FoodIngredient(
-                    id("tfc_wheat"),
-                    TFCItems.FOOD.get(Food.WHEAT),
+                    id("wheat"),
+                    () -> Items.WHEAT,
                     0.0f,
                     0.0f,
                     2.0f,
@@ -374,10 +406,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_WHEAT_BREAD = register(
+    public static final FoodIngredient BREAD = register(
             new FoodIngredient(
-                    id("tfc_wheat_bread"),
-                    TFCItems.FOOD.get(Food.WHEAT_BREAD),
+                    id("bread"),
+                    () -> Items.BREAD,
                     1.0f,
                     0.0f,
                     1.0f,
@@ -389,10 +421,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_RABBIT = register(
+    public static final FoodIngredient RABBIT = register(
             new FoodIngredient(
-                    id("tfc_rabbit"),
-                    TFCItems.FOOD.get(Food.RABBIT),
+                    id("rabbit"),
+                    () -> Items.RABBIT,
                     0.0f,
                     0.0f,
                     3.0f,
@@ -404,10 +436,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COOKED_RABBIT = register(
+    public static final FoodIngredient COOKED_RABBIT = register(
             new FoodIngredient(
-                    id("tfc_cooked_rabbit"),
-                    TFCItems.FOOD.get(Food.COOKED_RABBIT),
+                    id("cooked_rabbit"),
+                    () -> Items.COOKED_RABBIT,
                     1.0f,
                     0.0f,
                     2.25f,
@@ -419,10 +451,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_MELON_SLICE = register(
+    public static final FoodIngredient MELON_SLICE = register(
             new FoodIngredient(
-                    id("tfc_melon_slice"),
-                    TFCItems.FOOD.get(Food.MELON_SLICE),
+                    id("melon_slice"),
+                    () -> Items.MELON_SLICE,
                     0.4f,
                     10.0f,
                     2.5f,
@@ -434,10 +466,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_CHICKEN = register(
+    public static final FoodIngredient CHICKEN = register(
             new FoodIngredient(
-                    id("tfc_chicken"),
-                    TFCItems.FOOD.get(Food.CHICKEN),
+                    id("chicken"),
+                    () -> Items.CHICKEN,
                     0.0f,
                     0.0f,
                     3.0f,
@@ -449,10 +481,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_COOKED_CHICKEN = register(
+    public static final FoodIngredient COOKED_CHICKEN = register(
             new FoodIngredient(
-                    id("tfc_cooked_chicken"),
-                    TFCItems.FOOD.get(Food.COOKED_CHICKEN),
+                    id("cooked_chicken"),
+                    () -> Items.COOKED_CHICKEN,
                     2.0f,
                     0.0f,
                     2.25f,
@@ -464,10 +496,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_POTATO = register(
+    public static final FoodIngredient POTATO = register(
             new FoodIngredient(
-                    id("tfc_potato"),
-                    TFCItems.FOOD.get(Food.POTATO),
+                    id("potato"),
+                    () -> Items.POTATO,
                     0.5f,
                     0.0f,
                     0.666f,
@@ -479,10 +511,10 @@ public final class FoodIngredients {
             )
     );
 
-    public static final FoodIngredient TFC_BAKED_POTATO = register(
+    public static final FoodIngredient BAKED_POTATO = register(
             new FoodIngredient(
-                    id("tfc_baked_potato"),
-                    TFCItems.FOOD.get(Food.BAKED_POTATO),
+                    id("baked_potato"),
+                    () -> Items.BAKED_POTATO,
                     2.0f,
                     0.0f,
                     1.0f,

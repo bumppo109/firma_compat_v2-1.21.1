@@ -5,6 +5,8 @@ import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.materials.food.FoodIngredient;
+import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -43,6 +45,15 @@ public class ModCreativeModeTab {
             );
 
     private static void addItems(CreativeModeTab.Output output) {
+        FoodIngredients.preserveIngredients().forEach(ingredient -> {
+            add(output, ModItems.FRUIT_PRESERVES.get(ingredient));
+            add(output, ModItems.UNSEALED_FRUIT_PRESERVES.get(ingredient));
+            add(output, ModItems.JAM.get(ingredient));
+        });
+        add(output, ModBlocks.COMPAT_CHEST);
+        add(output, ModBlocks.COMPAT_TRAPPED_CHEST);
+        add(output, ModItems.COMPAT_CHEST_MINECART);
+
         addWood(output);
         addRocks(output);
 
@@ -117,6 +128,9 @@ public class ModCreativeModeTab {
         });
         ModBlocks.TFC_CHISELED_SANDSTONE.forEach((sand, blockId) -> {
             add(output, blockId);
+        });
+        ModItems.TFC_NUGGETS.forEach((metal, itemId) -> {
+            add(output, itemId);
         });
     }
 

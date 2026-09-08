@@ -11,6 +11,8 @@ import com.bumppo109.firma_compat.materials.SoilMaterial;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Metal;
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent;
 import net.mehvahdjukaar.moonlight.api.misc.IProgressTracker;
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicClientResourceProvider;
@@ -58,6 +60,7 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
         executor.accept(this::generateRockTextures);
         executor.accept(this::generateSoilTextures);
         executor.accept(this::generateTFCSandStoneTextures);
+        executor.accept(this::generateTFCMetalTextures);
         executor.accept(this::generateFoodTextures);
     }
 
@@ -220,6 +223,18 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
                     recolorTexture(manager, sink, baseTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, outputPath), metalColor);
                 }
             }
+        }
+    }
+
+    private void generateTFCMetalTextures(ResourceManager manager, ResourceSink sink) {
+        for (Metal metal: Metal.values()) {
+            ResourceLocation ingotRes = BuiltInRegistries.ITEM.getKey(TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.INGOT).get());
+            ResourceLocation metalColor = ResourceLocation.fromNamespaceAndPath(ingotRes.getNamespace(),"item/" + ingotRes.getPath());
+
+            ResourceLocation baseTexture = ResourceLocation.withDefaultNamespace("item/iron_nugget");
+            String outputPath = "item/tfc_" + metal.getSerializedName() + "_nugget";
+
+            recolorTexture(manager, sink, baseTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, outputPath), metalColor);
         }
     }
 

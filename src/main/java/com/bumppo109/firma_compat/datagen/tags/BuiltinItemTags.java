@@ -1,10 +1,13 @@
 package com.bumppo109.firma_compat.datagen.tags;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.CompatMetal;
+import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.util.ModTags;
 import com.eerussianguy.firmalife.common.FLTags;
 import com.google.common.base.Preconditions;
 import net.dries007.tfc.common.TFCTags;
@@ -59,19 +62,30 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+        //Food
+        ModItems.FRUIT_PRESERVES.forEach((ingredient, itemId) -> {
+            tag(SEALED_PRESERVES).add(itemId.get());
+        });
+        ModItems.UNSEALED_FRUIT_PRESERVES.forEach((ingredient, itemId) -> {
+            tag(PRESERVES).add(itemId.get());
+        });
+        ModItems.JAM.forEach((ingredient, itemId) -> {
+            tag(JAM).add(itemId.get());
+        });
+
         //Wood
         tag(Tags.Items.CHESTS_WOODEN)
-                //.add(ModBlocks.COMPAT_CHEST.get().asItem())
-                //.add(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem())
+                .add(ModBlocks.COMPAT_CHEST.get().asItem())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem())
         ;
 
         tag(MINECARTS)
-                //.add(ModItems.COMPAT_CHEST_MINECART)
+                .add(ModItems.COMPAT_CHEST_MINECART)
         ;
 
         tag(CARRIED_BY_HORSE)
-                //.add(ModBlocks.COMPAT_CHEST.get().asItem())
-                //.add(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem())
+                .add(ModBlocks.COMPAT_CHEST.get().asItem())
+                .add(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem())
         ;
 
         tag(TANNIN_LOGS)
@@ -98,8 +112,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
         ModItems.SUPPORTS.forEach((compatWood, itemId) -> tag(TFCTags.Items.SUPPORT_BEAMS).add(itemId.get()));
         ModItems.LUMBER.forEach((compatWood, itemId) -> tag(TFCTags.Items.LUMBER).add(itemId.get()));
 
-
-        /*
         for (CompatRock rock : CompatRock.VALUES) {
             for (CompatRock.BlockType blockType : CompatRock.BlockType.VALUES) {
                 Item item = ModBlocks.ROCK_BLOCKS.get(rock).get(blockType).get().asItem();
@@ -112,7 +124,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
                     tag(TFCTags.Items.STONES_LOOSE_CATEGORY.get(RockCategory.METAMORPHIC)).add(item);
                 }
                 if(blockType.equals(CompatRock.BlockType.COBBLE) || blockType.equals(CompatRock.BlockType.MOSSY_COBBLE)
-                        || blockType.equals(CompatRock.BlockType.HARDENED_COBBLE) || blockType.equals(CompatRock.BlockType.MOSSY_HARDENED_COBBLE)) {
+                        || blockType.equals(CompatRock.BlockType.COBBLESTONE) || blockType.equals(CompatRock.BlockType.MOSSY_COBBLESTONE)) {
                     tag(Tags.Items.COBBLESTONES_NORMAL).add(item);
                 }
             }
@@ -120,7 +132,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
 
         //Metal
         for (CompatMetal metal : CompatMetal.values()) {
-            if (metal.isDummy()) continue;
             metalTag(metal, CompatMetal.ItemType.DOUBLE_INGOT, TFCTags.Items.DOUBLE_INGOTS);
             metalTag(metal, CompatMetal.ItemType.SHEET, TFCTags.Items.DOUBLE_INGOTS);
             metalTag(metal, CompatMetal.ItemType.DOUBLE_SHEET, TFCTags.Items.DOUBLE_INGOTS);
@@ -165,61 +176,58 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
         }
 
         //Earthen
-        tag(ORE_DEPOSITS)
-                .add(ModBlocks.CASSITERITE_GRAVEL_DEPOSIT.get().asItem())
-                .add(ModBlocks.NATIVE_GOLD_GRAVEL_DEPOSIT.get().asItem())
-                .add(ModBlocks.NATIVE_SILVER_GRAVEL_DEPOSIT.get().asItem())
-                .add(ModBlocks.NATIVE_COPPER_GRAVEL_DEPOSIT.get().asItem())
-        ;
+        ModBlocks.ORE_DEPOSITS.forEach((oreDeposit, blockId) -> {
+            tag(ORE_DEPOSITS).add(blockId.get().asItem());
+        });
 
         tag(MUD_BRICK_ITEMS).add(ModItems.MUD_BRICK);
 
         //Dye
-        tag(MAKES_WHITE_DYE)
+        tag(ModTags.Items.MAKES_WHITE_DYE)
                 .add(Items.LILY_OF_THE_VALLEY)
                 .add(Items.WHITE_TULIP)
                 .add(Items.BONE_MEAL);
 
-        tag(MAKES_BLACK_DYE)
+        tag(ModTags.Items.MAKES_BLACK_DYE)
                 .add(Items.WITHER_ROSE);
 
-        tag(MAKES_BROWN_DYE)
+        tag(ModTags.Items.MAKES_BROWN_DYE)
                 .add(Items.COCOA_BEANS);
 
-        tag(MAKES_RED_DYE)
+        tag(ModTags.Items.MAKES_RED_DYE)
                 .add(Items.ROSE_BUSH)
                 .add(Items.BEETROOT)
                 .add(Items.RED_TULIP)
                 .add(Items.POPPY);
 
-        tag(MAKES_ORANGE_DYE)
+        tag(ModTags.Items.MAKES_ORANGE_DYE)
                 .add(Items.TORCHFLOWER)
                 .add(Items.ORANGE_TULIP);
 
-        tag(MAKES_YELLOW_DYE)
+        tag(ModTags.Items.MAKES_YELLOW_DYE)
                 .add(Items.SUNFLOWER)
                 .add(Items.DANDELION);
 
-        tag(MAKES_LIME_DYE)
+        tag(ModTags.Items.MAKES_LIME_DYE)
                 .add(Items.SEA_PICKLE);
 
-        tag(MAKES_GREEN_DYE)
+        tag(ModTags.Items.MAKES_GREEN_DYE)
                 .add(Items.CACTUS);
 
-        tag(MAKES_CYAN_DYE)
+        tag(ModTags.Items.MAKES_CYAN_DYE)
                 .add(Items.PITCHER_PLANT);
 
-        tag(MAKES_LIGHT_BLUE_DYE)
+        tag(ModTags.Items.MAKES_LIGHT_BLUE_DYE)
                 .add(Items.BLUE_ORCHID);
 
-        tag(MAKES_BLUE_DYE)
+        tag(ModTags.Items.MAKES_BLUE_DYE)
                 .add(Items.CORNFLOWER);
 
-        tag(MAKES_MAGENTA_DYE)
+        tag(ModTags.Items.MAKES_MAGENTA_DYE)
                 .add(Items.LILAC)
                 .add(Items.ALLIUM);
 
-        tag(MAKES_PINK_DYE)
+        tag(ModTags.Items.MAKES_PINK_DYE)
                 .add(Items.PEONY)
                 .add(Items.PINK_PETALS)
                 .add(Items.PINK_TULIP);
@@ -249,6 +257,44 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
         //Misc
         tag(Tags.Items.TOOLS_IGNITER).add(TFCItems.FLINT_AND_PYRITE);
 
+        //Food
+        tag(Tags.Items.FOODS_BREAD).add(Items.BREAD);
+        tag(GRAINS).add(Items.WHEAT);
+        tag(MEATS)
+                .add(Items.BROWN_MUSHROOM)
+                .add(Items.RED_MUSHROOM);
+        tag(FRUITS)
+                .add(Items.GLOW_BERRIES)
+                .add(Items.SWEET_BERRIES)
+                .add(Items.APPLE)
+                .add(Items.MELON_SLICE);
+        tag(VEGETABLES)
+                .add(Items.CARROT)
+                .add(Items.POTATO)
+                .add(Items.BEETROOT)
+                .add(Items.KELP)
+                .add(Items.DRIED_KELP)
+                .add(Items.BAKED_POTATO);
+        tag(Tags.Items.FOODS_RAW_FISH)
+                .add(Items.COD)
+                .add(Items.SALMON);
+        tag(Tags.Items.FOODS_COOKED_FISH)
+                .add(Items.COOKED_COD)
+                .add(Items.COOKED_SALMON);
+        tag(Tags.Items.FOODS_RAW_MEAT)
+                .add(Items.BEEF)
+                .add(Items.PORKCHOP)
+                .add(Items.MUTTON)
+                .add(Items.CHICKEN)
+                .add(Items.RABBIT);
+        tag(Tags.Items.FOODS_COOKED_MEAT)
+                .add(Items.COOKED_BEEF)
+                .add(Items.COOKED_PORKCHOP)
+                .add(Items.COOKED_MUTTON)
+                .add(Items.COOKED_CHICKEN)
+                .add(Items.COOKED_RABBIT);
+
+        /*
         // ============== Firmalife ============
         for (CompatWood wood : CompatWood.VALUES) {
             ResourceLocation foodShelf = BuiltInRegistries.BLOCK.getKey(CompatFLBlocks.FOOD_SHELVES.get(wood).get());
@@ -277,16 +323,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
          */
     }
 
-    /*
     private void metalTag(CompatMetal metal, CompatMetal.ItemType type, TagKey<Item> baseTag)
     {
         final TagKey<Item> commonTag = commonTagOf(metal, type);
         tag(commonTag).add(ModItems.METAL_ITEMS.get(metal).get(type));
         tag(baseTag).addTag(commonTag);
     }
-
-     */
-
 
     private void addAllCompatWoods(CompatWood.BlockType type, TagKey<Item> tagKey) {
         ModBlocks.WOODS.forEach((wood, map) -> {
@@ -295,7 +337,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
             }
         });
     }
-    /*
+
     private void addAllCompatRocks(CompatRock.BlockType type, TagKey<Item> tagKey) {
         ModBlocks.ROCK_BLOCKS.forEach((rock, map) -> {
             if (map.containsKey(type)) {
@@ -303,8 +345,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
             }
         });
     }
-
-     */
 
     @Override
     protected CompletableFuture<HolderLookup.Provider> createContentsProvider()

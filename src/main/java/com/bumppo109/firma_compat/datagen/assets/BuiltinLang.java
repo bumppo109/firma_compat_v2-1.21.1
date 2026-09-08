@@ -105,6 +105,9 @@ public class BuiltinLang extends LanguageProvider {
             add(itemId.asItem(), getItemDisplayName(itemId.get()));
         });
 
+        add(ModBlocks.COMPAT_CHEST.get(),"Chest");
+        add(ModBlocks.COMPAT_TRAPPED_CHEST.get(),"Trapped Chest");
+        add(ModItems.COMPAT_CHEST_MINECART.get(),"Chest Minecart");
 
         //Rock
         ModBlocks.ROCK_BLOCKS.forEach((rock, blockTypeIdMap) -> {
@@ -203,14 +206,11 @@ public class BuiltinLang extends LanguageProvider {
         ModBlocks.TFC_CHISELED_SANDSTONE.forEach((sand, block) -> {
             add(block.get(), getTFCname(block.get()));
         });
+        ModItems.TFC_NUGGETS.forEach((metal, itemId) -> {
+            add(itemId.get(), getTFCname(itemId.get()));
+        });
+
          /*
-
-        //Misc
-        add(ModBlocks.COMPAT_CHEST.get(), "Chest");
-        add(ModBlocks.COMPAT_TRAPPED_CHEST.get(), "Trapped Chest");
-        add(ModItems.COMPAT_CHEST_MINECART.get(), "Chest Minecart");
-
-
         // =============== Firmalife ================
         for (CompatWood wood : CompatWood.VALUES) {
             Block foodShelfBlock = CompatFLBlocks.FOOD_SHELVES.get(wood).get();
@@ -285,6 +285,25 @@ public class BuiltinLang extends LanguageProvider {
 
         ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
         if (id == null || id.equals(BuiltInRegistries.BLOCK.getDefaultKey())) {
+            return "Air";
+        }
+
+        String path = id.getPath();
+
+        if (path.startsWith("tfc_")) {
+            path = path.substring(4);
+        }
+
+        return processIdString(path);
+    }
+
+    private String getTFCname(Item item) {
+        if (item == null) {
+            return "Unknown Item";
+        }
+
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+        if (id == null || id.equals(BuiltInRegistries.ITEM.getDefaultKey())) {
             return "Air";
         }
 

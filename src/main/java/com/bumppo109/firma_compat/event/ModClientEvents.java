@@ -188,8 +188,8 @@ public class ModClientEvents {
         modifyBlockEntityType(TFCBlockEntities.FARMLAND.get(), Stream.of(ModBlocks.COMPAT_FARMLAND.get()), event);
         modifyBlockEntityType(TFCBlockEntities.TICK_COUNTER.get(), Stream.of(ModBlocks.DRYING_MUD_BRICK.get()), event);
 
-        //modifyBlockEntityType(TFCBlockEntities.CHEST.get(), Stream.of(ModBlocks.COMPAT_CHEST.get()), event);
-        //modifyBlockEntityType(TFCBlockEntities.TRAPPED_CHEST.get(), Stream.of(ModBlocks.COMPAT_TRAPPED_CHEST.get()), event);
+        modifyBlockEntityType(TFCBlockEntities.CHEST.get(), Stream.of(ModBlocks.COMPAT_CHEST.get()), event);
+        modifyBlockEntityType(TFCBlockEntities.TRAPPED_CHEST.get(), Stream.of(ModBlocks.COMPAT_TRAPPED_CHEST.get()), event);
 
         for (CompatRock rock : CompatRock.VALUES) {
             modifyBlockEntityType(TFCBlockEntities.ANVIL.get(), Stream.of(ModBlocks.ROCK_ANVILS.get(rock).get()), event);

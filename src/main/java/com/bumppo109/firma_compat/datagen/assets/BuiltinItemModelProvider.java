@@ -39,6 +39,7 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
             withExistingParent(wood.getSerializedName() + "_bladed_axle", modLoc("block/bladed_axle/" + wood.getSerializedName() + "_bladed_axle"));
         }
 
+        basicItem(ModItems.COMPAT_CHEST_MINECART.get(), ResourceLocation.withDefaultNamespace("item/chest_minecart"));
 
         for (CompatRock rock : CompatRock.VALUES) {
             uncheckedBasicItem(rock.brickItem().get());
@@ -58,6 +59,10 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
         });
         basicItem(ModItems.SCRAP_NETHERITE_INGOT.get());
         basicItem(ModItems.UNFINISHED_LANTERN.get());
+
+        ModItems.TFC_NUGGETS.forEach((metal, itemId) -> {
+            uncheckedBasicItem(itemId.get());
+        });
 
         basicItem(ModItems.MUD_BRICK.get());
         basicItem(ModBlocks.DRYING_MUD_BRICK.get().asItem());
@@ -82,10 +87,12 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
          */
     }
 
-    private void chestItemModel(String name) {
-        getBuilder(name)
-                .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/chest")))
-                .texture("particle", ResourceLocation.fromNamespaceAndPath("tfc","block/wood/planks/acacia"));
+    public ItemModelBuilder basicItem(Item item, ResourceLocation texture) {
+        ResourceLocation itemRes = BuiltInRegistries.ITEM.getKey(item);
+
+        return getBuilder(itemRes.getPath())
+                .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", texture);
     }
 
     private String itemPathName(Item item) {
