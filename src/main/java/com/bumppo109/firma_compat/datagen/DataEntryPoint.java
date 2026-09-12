@@ -70,6 +70,7 @@ public final class DataEntryPoint {
         add(event, new BuiltinFoods(packOutput, lookup));
         add(event, new BuiltinFuels(packOutput, lookup));
         add(event, new BuiltinSupports(packOutput, lookup));
+        add(event, new BuiltinDataMaps(packOutput, lookup));
 
         //add(event, new BuiltinDataMaps(packOutput, lookup));
 

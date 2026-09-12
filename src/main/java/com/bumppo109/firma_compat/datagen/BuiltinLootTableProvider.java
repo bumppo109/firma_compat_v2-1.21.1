@@ -240,6 +240,8 @@ public class BuiltinLootTableProvider extends LootTableProvider {
 
             addDryingBricksLoot(ModBlocks.DRYING_MUD_BRICK.get(), ModItems.MUD_BRICK.get());
 
+            dropSelf(ModBlocks.FLUID_BREWING_STAND.get());
+
             /*
             // ============= Firmalife ===============
             for (CompatWood wood : CompatWood.VALUES) {
@@ -534,6 +536,7 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             ModBlocks.ORE_DEPOSITS.forEach((oreDeposit, blockId) -> {
                 knownBlocks.add(blockId.get());
             });
+            knownBlocks.add(ModBlocks.FLUID_BREWING_STAND.get());
 
             return knownBlocks;
         }

@@ -1,9 +1,9 @@
 package com.bumppo109.firma_compat.datagen;
 
 import com.bumppo109.firma_compat.FirmaCompatHelpers;
-import com.bumppo109.firma_compat.datagen.recipes.ModCraftingRecipes;
-import com.bumppo109.firma_compat.datagen.recipes.ModPotionRecipes;
-import com.bumppo109.firma_compat.datagen.recipes.ModRecipes;
+import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.datagen.recipes.*;
+import com.bumppo109.firma_compat.materials.SoilMaterial;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.player.ChiselMode;
 import net.dries007.tfc.common.recipes.*;
@@ -26,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
@@ -36,10 +37,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         ModCraftingRecipes,
-        ModPotionRecipes
-        /*ModRemoveRecipes,
+        ModPotionRecipes,
+        ModRemoveRecipes,
         ModHeatRecipes,
-        ModAlloyRecipes,
         ModCastingRecipe,
         ModAnvilRecipes,
         ModBarrelRecipes,
@@ -47,7 +47,7 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         ModQuernRecipes,
         ModWeldingRecipes,
         ModKnappingRecipes,
-        ModPotRecipes*/
+        ModPotRecipes
 
 {
     final Set<ResourceLocation> removedRecipes = new HashSet<>();
@@ -94,10 +94,8 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         this.output = output;
         craftingRecipes();
         potionRecipes();
-        /*
         removeRecipes();
         heatRecipes();
-        alloyRecipes();
         castingRecipes();
         anvilRecipes();
         barrelRecipes();
@@ -106,7 +104,6 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         weldingRecipes();
         knappingRecipes();
         potRecipes();
-         */
 
         // Heat Recipes from Melting
         for (BuiltinItemHeat.MeltingRecipe melt : meltingRecipes)
@@ -119,6 +116,31 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
                     false
             ));
         }
+
+        //Landslide Recipe
+        add(new LandslideRecipe(BlockIngredient.of(Blocks.RED_SAND), Blocks.RED_SAND.defaultBlockState()));
+        add(new LandslideRecipe(BlockIngredient.of(Blocks.PACKED_MUD), Blocks.PACKED_MUD.defaultBlockState()));
+        add("grass_block", new LandslideRecipe(BlockIngredient.of(Blocks.GRASS_BLOCK), Blocks.DIRT.defaultBlockState()));
+        add("podzol", new LandslideRecipe(BlockIngredient.of(Blocks.PODZOL), Blocks.DIRT.defaultBlockState()));
+        add("mycelium", new LandslideRecipe(BlockIngredient.of(Blocks.MYCELIUM), Blocks.DIRT.defaultBlockState()));
+        add("dirt_path", new LandslideRecipe(BlockIngredient.of(Blocks.DIRT_PATH), Blocks.DIRT.defaultBlockState()));
+        add("coarse_dirt", new LandslideRecipe(BlockIngredient.of(Blocks.COARSE_DIRT), Blocks.DIRT.defaultBlockState()));
+        add("farmland", new LandslideRecipe(BlockIngredient.of(Blocks.FARMLAND), Blocks.DIRT.defaultBlockState()));
+        add("rooted_dirt", new LandslideRecipe(BlockIngredient.of(Blocks.ROOTED_DIRT), Blocks.DIRT.defaultBlockState()));
+
+        ModBlocks.CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                add("clay_" + soilBlockType.getSerializedName(), new LandslideRecipe(BlockIngredient.of(blockId.get()), soilBlockTypeIdMap.get(SoilMaterial.SoilBlockType.DIRT).get().defaultBlockState()));
+            });
+        });
+        ModBlocks.KAOLIN_CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
+            soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {
+                add("kaolin_clay_" + soilBlockType.getSerializedName(), new LandslideRecipe(BlockIngredient.of(blockId.get()), soilBlockTypeIdMap.get(SoilMaterial.SoilBlockType.DIRT).get().defaultBlockState()));
+            });
+        });
+        ModBlocks.ORE_DEPOSITS.forEach((oreDeposit, blockId) -> {
+            add(new LandslideRecipe(BlockIngredient.of(blockId.get()), blockId.get().defaultBlockState()));
+        });
     }
 
     @Override
