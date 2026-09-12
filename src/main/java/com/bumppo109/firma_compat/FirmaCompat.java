@@ -1,7 +1,8 @@
 package com.bumppo109.firma_compat;
 
-import com.bumppo109.firma_compat.addon.ModCompatHandler;
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.blockentity.ModBlockEntities;
+import com.bumppo109.firma_compat.blockentity.ModMenus;
 import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
 import com.bumppo109.firma_compat.event.ModClientEvents;
@@ -13,6 +14,8 @@ import com.bumppo109.firma_compat.loot.ModLootFunctions;
 import com.bumppo109.firma_compat.loot.ModLootModifiers;
 import com.bumppo109.firma_compat.materials.BlockAssets;
 import com.bumppo109.firma_compat.materials.food.FoodRegistryBootstrap;
+import com.bumppo109.firma_compat.recipe.ModRecipeSerializers;
+import com.bumppo109.firma_compat.recipe.ModRecipes;
 import com.mojang.logging.LogUtils;
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.neoforged.bus.api.IEventBus;
@@ -37,11 +40,15 @@ public class FirmaCompat {
 
         FoodRegistryBootstrap.bootstrap();
 
+        ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModDataComponents.COMPONENTS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        ModMenus.MENUS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModFluids.FLUID_TYPES.register(modEventBus);
         ModFluids.FLUID.register(modEventBus);
+        ModFluids.FLUID_TYPES.register(modEventBus);
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
 
         ModLootModifiers.register(modEventBus);
@@ -56,6 +63,7 @@ public class FirmaCompat {
         if (FMLEnvironment.dist.isClient()) {
             RegHelper.registerDynamicResourceProvider(new ModClientDynamicResources());
             modEventBus.addListener(ModItemCapabilities::register);
+            modEventBus.addListener(FirmaCompatClient::onItemColors);
             modEventBus.addListener(FirmaCompatClient::registerExtensions);
         }
     }

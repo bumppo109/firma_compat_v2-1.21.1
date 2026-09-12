@@ -1,0 +1,8 @@
+{
+  "type": "firma_compat:fluid_brewing",
+  "input_fluid": "minecraft:water",
+  "catalyst": {
+    "item": "minecraft:nether_wart"
+  },
+  "output_fluid": "firma_compat:potion/minecraft/night_vision"
+}

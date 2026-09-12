@@ -6,7 +6,9 @@ import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.loot.ItemRemoverLootModifier;
 import com.bumppo109.firma_compat.loot.ItemSwapModifier;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.rock.Ore;
+import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Metal;
 import net.minecraft.core.HolderLookup;
@@ -101,6 +103,22 @@ public class BuiltinLootModifier extends GlobalLootModifierProvider {
         remove(Items.DIAMOND_HOE);
         remove(Items.DIAMOND_SHOVEL);
 
+        swap(Items.PORKCHOP, TFCItems.FOOD.get(Food.PORK).get());
+        swap(Items.COOKED_PORKCHOP, TFCItems.FOOD.get(Food.COOKED_PORK).get());
+        swap(Items.BEEF, TFCItems.FOOD.get(Food.BEEF).get());
+        swap(Items.COOKED_BEEF, TFCItems.FOOD.get(Food.COOKED_BEEF).get());
+        swap(Items.CHICKEN, TFCItems.FOOD.get(Food.CHICKEN).get());
+        swap(Items.COOKED_CHICKEN, TFCItems.FOOD.get(Food.COOKED_CHICKEN).get());
+        swap(Items.MUTTON, TFCItems.FOOD.get(Food.MUTTON).get());
+        swap(Items.COOKED_MUTTON, TFCItems.FOOD.get(Food.COOKED_MUTTON).get());
+        swap(Items.RABBIT, TFCItems.FOOD.get(Food.RABBIT).get());
+        swap(Items.COOKED_RABBIT, TFCItems.FOOD.get(Food.COOKED_RABBIT).get());
+        swap(Items.BEETROOT, TFCItems.FOOD.get(Food.BEET).get());
+        swap(Items.POTATO, TFCItems.FOOD.get(Food.POTATO).get());
+        swap(Items.CARROT, TFCItems.FOOD.get(Food.CARROT).get());
+        swap(Items.BAKED_POTATO, TFCItems.FOOD.get(Food.BAKED_POTATO).get());
+        swap(Items.BREAD, TFCItems.FOOD.get(Food.WHEAT_BREAD).get());
+        swap(Items.WHEAT, TFCItems.FOOD.get(Food.WHEAT).get());
     }
     /**
      * Registers the loot modifier that adds straw drops from short/tall grass and ferns.

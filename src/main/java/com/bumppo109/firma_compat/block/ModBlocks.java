@@ -1,7 +1,9 @@
 package com.bumppo109.firma_compat.block;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.fluid.CompatFluid;
 import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.item.FirmaLampItem;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.RockMaterial;
@@ -62,6 +64,9 @@ import static com.bumppo109.firma_compat.block.CompatRock.BlockType.MOSSY_COBBLE
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
     public static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(Registries.BLOCK, FirmaCompat.MODID);
+
+    public static final Id<FluidBrewingStandBlock> FLUID_BREWING_STAND = register("fluid_brewing_stand",
+            () -> new FluidBrewingStandBlock(BlockBehaviour.Properties.of()));
 
     //Wood
     public static final Map<CompatWood, Map<CompatWood.BlockType, Id<Block>>> WOODS = Helpers.mapOf(CompatWood.class,
@@ -207,6 +212,15 @@ public class ModBlocks {
             () -> new DryingBricksBlock(ExtendedProperties.of(MapColor.DIRT).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER), ModItems.MUD_BRICK));
     public static final Id<Block> COMPAT_FARMLAND = register("compat_farmland",
             () -> new FarmlandBlock(ExtendedProperties.of(MapColor.DIRT).requiresCorrectToolForDrops().strength(1.3F).sound(SoundType.GRAVEL).randomTicks().isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND).serverTicks(FarmlandBlockEntity::serverTick), Suppliers.ofInstance(Blocks.DIRT)));
+
+    //Potion
+    public static final Map<Potion, Id<LiquidBlock>> POTIONS = Helpers.mapOf(Potion.class, potion ->
+            registerNoItem("fluid/potion/" + potion.potionNamespace() + "/" + potion.serializedName(), () -> new LiquidBlock(ModFluids.POTIONS.get(potion).source().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
+    );
+
+    public static final Map<CompatFluid, Id<LiquidBlock>> FLUIDS = Helpers.mapOf(CompatFluid.class, potion ->
+            registerNoItem("fluid/" + potion.getSerializedName(), () -> new LiquidBlock(ModFluids.FLUIDS.get(potion).source().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
+    );
 
     //TFC blocks
     public static final Map<Rock, Map<CompatRock.BlockType, Id<Block>>> TFC_ROCK_BLOCKS = Helpers.mapOf(Rock.class, rock ->

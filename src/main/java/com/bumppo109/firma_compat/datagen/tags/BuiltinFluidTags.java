@@ -48,6 +48,13 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements ModAccessor
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+        ModFluids.POTIONS.forEach((potion, baseFlowingFluidFluidHolder) -> {
+            tag(TFCTags.Fluids.USABLE_IN_JUG).add(baseFlowingFluidFluidHolder.getSource());
+        });
+        ModFluids.FLUIDS.forEach((potion, baseFlowingFluidFluidHolder) -> {
+            tag(TFCTags.Fluids.USABLE_IN_JUG).add(baseFlowingFluidFluidHolder.getSource());
+        });
+
         tag(TFCTags.Fluids.MOLTEN_METALS)
                 .add(ModFluids.METALS.get(CompatMetal.NETHERITE).getSource())
                 .add(ModFluids.METALS.get(CompatMetal.SCRAP_NETHERITE).getSource())

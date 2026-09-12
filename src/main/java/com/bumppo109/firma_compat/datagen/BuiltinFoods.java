@@ -1,5 +1,6 @@
 package com.bumppo109.firma_compat.datagen;
 
+import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.food.Food;
 import com.bumppo109.firma_compat.materials.food.FoodIngredient;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
@@ -30,28 +31,12 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
     @Override
     protected void addData(HolderLookup.Provider provider)
     {
-        for (FoodIngredient ingredient : FoodIngredients.values()) {
-            int hunger = ingredient.hunger();
-            float saturation = ingredient.saturation();
-            float water = ingredient.water();
-            float decayModifier = ingredient.decayModifier();
-            float grain = ingredient.grain();
-            float vegetables = ingredient.vegetables();
-            float protein = ingredient.protein();
-            float fruit = ingredient.fruit();
-            float dairy = ingredient.dairy();
+        add(ModItems.SWEET_BERRIES, addFood(0.5f,0.5f,0.5f,0.0f, 0.0f, 0.0f, 0.8f, 0.0f));
+        //addIngredients();
+        //addFoods();
+    }
 
-            FoodData foodData;
-
-            if (hunger != 4) {
-                foodData = addFood(saturation, water, decayModifier, grain, vegetables, protein, fruit, dairy);
-            } else {
-                foodData = addFood(hunger, saturation, water, decayModifier, grain, vegetables, protein, fruit, dairy);
-            }
-
-            add(ingredient.foodItem().get(), foodData);
-        }
-
+    private void addFoods() {
         for (Food food : Foods.values()) {
 
             int hunger = food.hunger();
@@ -89,6 +74,30 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
             );
 
             add(food.item().get(), foodData);
+        }
+    }
+
+    private void addIngredients() {
+        for (FoodIngredient ingredient : FoodIngredients.values()) {
+            int hunger = ingredient.hunger();
+            float saturation = ingredient.saturation();
+            float water = ingredient.water();
+            float decayModifier = ingredient.decayModifier();
+            float grain = ingredient.grain();
+            float vegetables = ingredient.vegetables();
+            float protein = ingredient.protein();
+            float fruit = ingredient.fruit();
+            float dairy = ingredient.dairy();
+
+            FoodData foodData;
+
+            if (hunger != 4) {
+                foodData = addFood(saturation, water, decayModifier, grain, vegetables, protein, fruit, dairy);
+            } else {
+                foodData = addFood(hunger, saturation, water, decayModifier, grain, vegetables, protein, fruit, dairy);
+            }
+
+            add(ingredient.foodItem().get(), foodData);
         }
     }
 

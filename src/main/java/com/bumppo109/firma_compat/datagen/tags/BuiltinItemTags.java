@@ -62,6 +62,15 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+        //Brewing
+        tag(ModTags.Items.BREWING_CONTAINERS)
+                .add(TFCItems.HEMATITIC_GLASS_BOTTLE)
+                .add(TFCItems.SILICA_GLASS_BOTTLE)
+                .add(TFCItems.OLIVINE_GLASS_BOTTLE)
+                .add(TFCItems.VOLCANIC_GLASS_BOTTLE)
+        ;
+        tag(ModTags.Items.BREWING_FUEL).add(Items.BLAZE_POWDER);
+
         //Food
         ModItems.FRUIT_PRESERVES.forEach((ingredient, itemId) -> {
             tag(SEALED_PRESERVES).add(itemId.get());

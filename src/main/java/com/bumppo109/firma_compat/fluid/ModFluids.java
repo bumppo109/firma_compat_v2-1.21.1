@@ -5,6 +5,7 @@ import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.item.ModItems;
 import net.dries007.tfc.common.fluids.FluidHolder;
+import net.dries007.tfc.common.fluids.MixingFluid;
 import net.dries007.tfc.common.fluids.MoltenFluid;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
@@ -23,11 +24,36 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public final class ModFluids {
     public static final DeferredRegister<Fluid> FLUID = DeferredRegister.create(Registries.FLUID, FirmaCompat.MODID);
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, FirmaCompat.MODID);
+
+    public static final Map<Potion, FluidHolder<BaseFlowingFluid>> POTIONS = Helpers.mapOf(Potion.class, potion -> register(
+            "potion/" + potion.potionNamespace() + "/" + potion.serializedName(),
+            properties -> properties
+                    .block(ModBlocks.POTIONS.get(potion))
+                    .bucket(ModItems.POTION_FLUID_BUCKETS.get(potion))
+                    .explosionResistance(100),
+            waterLike()
+                    .descriptionId("fluid.firma_compat.potion." + potion.potionNamespace() + "." + potion.serializedName())
+                    .canConvertToSource(false),
+            MixingFluid.Source::new,
+            MixingFluid.Flowing::new
+    ));
+
+    public static final Map<CompatFluid, FluidHolder<BaseFlowingFluid>> FLUIDS = Helpers.mapOf(CompatFluid.class, fluid -> register(
+            "fluid/" + fluid.getSerializedName(),
+            properties -> properties
+                    .block(ModBlocks.FLUIDS.get(fluid))
+                    .bucket(ModItems.FLUID_BUCKETS.get(fluid))
+                    .explosionResistance(100),
+            waterLike()
+                    .descriptionId("fluid.firma_compat." + fluid.getSerializedName())
+                    .canConvertToSource(false),
+            MixingFluid.Source::new,
+            MixingFluid.Flowing::new
+    ));
 
     public static final Map<CompatMetal, FluidHolder<BaseFlowingFluid>> METALS = Helpers.mapOf(CompatMetal.class, metal -> register(
             "metal/" + metal.getSerializedName(),

@@ -5,13 +5,12 @@ import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.fluid.CompatFluid;
 import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.materials.food.FoodIngredient;
-import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.dries007.tfc.common.Lore;
-import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.entities.TFCEntities;
-import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCMinecartItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -31,13 +30,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.bumppo109.firma_compat.materials.food.FoodIngredients.preserveIngredients;
 import static net.dries007.tfc.common.items.TFCItems.EMPTY_JAR;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, FirmaCompat.MODID);
+
+    public static final ItemId SWEET_BERRIES = register("sweet_berries");
 
     //Wood
     public static final Map<CompatWood, ItemId> LUMBER = Helpers.mapOf(
@@ -83,6 +83,13 @@ public class ModItems {
 
     public static final Map<Metal, ItemId> TFC_NUGGETS = Helpers.mapOf(Metal.class,metal ->
             register("tfc_" + metal.getSerializedName() + "_nugget"));
+
+    public static final Map<Potion, ItemId> POTION_FLUID_BUCKETS = Helpers.mapOf(Potion.class, potion ->
+            register("bucket/potion/" + potion.potionNamespace() + "/" + potion.serializedName(), () -> new BucketItem(ModFluids.POTIONS.get(potion).getSource(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
+    );
+    public static final Map<CompatFluid, ItemId> FLUID_BUCKETS = Helpers.mapOf(CompatFluid.class, potion ->
+            register("bucket/" + potion.getSerializedName(), () -> new BucketItem(ModFluids.FLUIDS.get(potion).getSource(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
+    );
 
     public static final Map<CompatMetal, ItemId> METAL_FLUID_BUCKETS = Helpers.mapOf(CompatMetal.class, metal ->
             register("bucket/metal/" + metal.name(), () -> new BucketItem(ModFluids.METALS.get(metal).getSource(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))

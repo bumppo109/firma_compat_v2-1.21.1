@@ -1,6 +1,8 @@
 package com.bumppo109.firma_compat;
 
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.blockentity.FluidBrewingStandScreen;
+import com.bumppo109.firma_compat.blockentity.ModMenus;
 import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModItems;
@@ -27,15 +29,20 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -62,8 +69,18 @@ public class FirmaCompatClient {
     }
 
     @SubscribeEvent
+    public static void registerScreens(
+            RegisterMenuScreensEvent event
+    ) {
+        event.register(
+                ModMenus.FLUID_BREWING_STAND.get(),
+                FluidBrewingStandScreen::new
+        );
+    }
+
+    @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-// Render Types
+    // Render Types
         final RenderType solid = RenderType.solid();
         final RenderType cutout = RenderType.cutout();
         final RenderType cutoutMipped = RenderType.cutoutMipped();
@@ -163,8 +180,6 @@ public class FirmaCompatClient {
 
             ModBlocks.WOODS.forEach((wood, map) -> {
                 HorseChestLayer.registerChest(map.get(BARREL).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_barrel.png"));
-                //HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_chest.png"));
-                //HorseChestLayer.registerChest(map.get(TRAPPED_CHEST).get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_chest.png"));
             });
             HorseChestLayer.registerChest(ModBlocks.COMPAT_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
             HorseChestLayer.registerChest(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
@@ -188,13 +203,16 @@ public class FirmaCompatClient {
                 new FluidRendererExtension(TFCFluids.ALPHA_MASK | metal.getColor(), ClientEventHandler.MOLTEN_STILL, ClientEventHandler.MOLTEN_FLOW, null, null),
                 holder.getType()
         ));
-        // Chest item renderers
-        ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
-            //registerCustomItemRenderer(event, blockTypeIdMap.get(CHEST), ChestItemRenderer::new);
-            //registerCustomItemRenderer(event, blockTypeIdMap.get(TRAPPED_CHEST), ChestItemRenderer::new);
-        });
         registerCustomItemRenderer(event, ModBlocks.COMPAT_CHEST, ChestItemRenderer::new);
         registerCustomItemRenderer(event, ModBlocks.COMPAT_TRAPPED_CHEST, ChestItemRenderer::new);
+
+        ModFluids.POTIONS.forEach((fluid, holder) -> event.registerFluidType(new FluidRendererExtension(TFCFluids.ALPHA_MASK | fluid.color(), ClientEventHandler.WATER_STILL, ClientEventHandler.WATER_FLOW, ClientEventHandler.WATER_OVERLAY, ClientEventHandler.UNDERWATER_LOCATION), new FluidType[]{holder.getType()}));
+    }
+
+    public static void onItemColors(RegisterColorHandlersEvent.Item event) {
+        ModFluids.POTIONS.forEach((potion, baseFlowingFluidFluidHolder) -> {
+            event.register(new DynamicFluidContainerModel.Colors(), new ItemLike[]{((Fluid)baseFlowingFluidFluidHolder.getSource()).getBucket()});
+        });
     }
 
     private static PlacedItemBlockEntityRenderer.Provider translucent(String model) {
