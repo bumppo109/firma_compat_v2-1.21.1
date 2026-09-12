@@ -5,6 +5,7 @@ import com.bumppo109.firma_compat.blockentity.ModBlockEntities;
 import com.bumppo109.firma_compat.blockentity.ModMenus;
 import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
+import com.bumppo109.firma_compat.entity.ModEntities;
 import com.bumppo109.firma_compat.event.ModClientEvents;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModCreativeModeTab;
@@ -49,6 +50,7 @@ public class FirmaCompat {
         ModItems.ITEMS.register(modEventBus);
         ModFluids.FLUID.register(modEventBus);
         ModFluids.FLUID_TYPES.register(modEventBus);
+        ModEntities.ENTITY_TYPES.register(modEventBus);
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
 
         ModLootModifiers.register(modEventBus);

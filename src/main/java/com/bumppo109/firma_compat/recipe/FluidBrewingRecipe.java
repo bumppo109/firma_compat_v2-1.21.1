@@ -121,13 +121,7 @@ public record FluidBrewingRecipe(
             return false;
         }
 
-        System.out.println(
-                "[FirmaCompat] Container item: " +
-                        BuiltInRegistries.ITEM.getKey(stack.getItem())
-        );
-
         if (!(stack.getItem() instanceof FluidContainerItem containerItem)) {
-            System.out.println("[FirmaCompat] NOT a FluidContainerItem");
             return false;
         }
 
@@ -135,45 +129,18 @@ public record FluidBrewingRecipe(
                 FluidHelpers.getContainedFluidInTank(stack);
 
         if (contained.isEmpty()) {
-            System.out.println("[FirmaCompat] Container has no fluid");
             return false;
         }
 
-        System.out.println(
-                "[FirmaCompat] Fluid: " +
-                        BuiltInRegistries.FLUID.getKey(contained.getFluid()) +
-                        " amount=" +
-                        contained.getAmount()
-        );
-
-        System.out.println(
-                "[FirmaCompat] Expected: " +
-                        BuiltInRegistries.FLUID.getKey(inputFluid)
-        );
-
         if (contained.getFluid() != inputFluid) {
-            System.out.println("[FirmaCompat] Wrong fluid");
             return false;
         }
 
         if (contained.getAmount() < inputAmount) {
-            System.out.println(
-                    "[FirmaCompat] Not enough fluid: " +
-                            contained.getAmount() +
-                            " < " +
-                            inputAmount
-            );
             return false;
         }
 
-        boolean canContain =
-                containerItem.containerInfo().canContainFluid(outputFluid);
-
-        System.out.println(
-                "[FirmaCompat] Can contain output: " + canContain
-        );
-
-        return canContain;
+        return containerItem.containerInfo().canContainFluid(outputFluid);
     }
 
 

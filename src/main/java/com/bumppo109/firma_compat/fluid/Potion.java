@@ -2,9 +2,14 @@ package com.bumppo109.firma_compat.fluid;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.alchemy.PotionContents;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public enum Potion {
 
@@ -201,7 +206,7 @@ public enum Potion {
     ),
 
     // ========================================================================
-    // CURRENTLY UNCRAFTABLE / SPECIAL POTIONS
+    // SPECIAL
     // ========================================================================
 
     LUCK(
@@ -230,7 +235,7 @@ public enum Potion {
     );
 
     // ========================================================================
-    // EFFECT DATA
+    // DATA
     // ========================================================================
 
     private final String serializedName;
@@ -242,6 +247,13 @@ public enum Potion {
             int duration,
             int level
     ) {
+        public MobEffectInstance createInstance() {
+            return new MobEffectInstance(
+                    effect,
+                    duration,
+                    level
+            );
+        }
     }
 
     private static EffectData effect(
@@ -252,10 +264,6 @@ public enum Potion {
         return new EffectData(effect, duration, level);
     }
 
-    // ========================================================================
-    // CONSTRUCTOR
-    // ========================================================================
-
     Potion(
             int color,
             EffectData... effects
@@ -265,10 +273,6 @@ public enum Potion {
         this.effects = effects;
     }
 
-    // ========================================================================
-    // BASIC DATA
-    // ========================================================================
-
     public String potionNamespace() {
         return "minecraft";
     }
@@ -277,66 +281,75 @@ public enum Potion {
         return serializedName;
     }
 
-    /**
-     * Returns the RGB color assigned to this potion.
-     *
-     * Alpha is added by the fluid rendering code.
-     */
     public int color() {
         return color;
     }
 
-    /**
-     * Returns all effects produced by this potion.
-     *
-     * Each effect has its own duration and level.
-     */
     public EffectData[] effects() {
         return effects;
     }
 
-    // ========================================================================
-// CORRUPTION
-// ========================================================================
+    public boolean canMakeSplash() {
+        return true;
+    }
+
+    public boolean canMakeLingering() {
+        return true;
+    }
 
     /**
-     * Returns the potion produced when this potion is corrupted
-     * with a fermented spider eye, or null if it cannot be corrupted.
+     * Creates fresh MobEffectInstances for this potion.
      *
-     * This represents the vanilla brewing corruption recipes.
+     * A new instance is returned each time so that applying a potion
+     * never mutates the enum's underlying definition.
+     */
+    public List<MobEffectInstance> effectInstances() {
+        List<MobEffectInstance> result = new ArrayList<>(effects.length);
+
+        for (EffectData effect : effects) {
+            result.add(new MobEffectInstance(
+                    effect.effect(),
+                    effect.duration(),
+                    effect.level()
+            ));
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns the potion produced by vanilla fermented-spider-eye
+     * corruption, or null when no corruption exists.
      */
     public Potion corrupted() {
         return switch (this) {
-            // Night Vision <-> Invisibility
             case NIGHT_VISION -> INVISIBILITY;
             case NIGHT_VISION_EXT, WATER_BREATHING_EXT -> INVISIBILITY_EXT;
 
             case INVISIBILITY -> NIGHT_VISION;
             case INVISIBILITY_EXT -> NIGHT_VISION_EXT;
 
-            // Leaping -> Slowness
             case LEAPING -> SLOWNESS;
-            case LEAPING_EXT, FIRE_RESISTANCE_EXT, SWIFTNESS_EXT -> SLOWNESS_EXT;
-            case LEAPING_II, SWIFTNESS_II -> SLOWNESS_II;
+            case LEAPING_EXT,
+                 FIRE_RESISTANCE_EXT,
+                 SWIFTNESS_EXT -> SLOWNESS_EXT;
 
-            // Swiftness -> Slowness
+            case LEAPING_II,
+                 SWIFTNESS_II -> SLOWNESS_II;
+
             case SWIFTNESS -> SLOWNESS;
 
-            // Fire Resistance -> Slowness
             case FIRE_RESISTANCE -> SLOWNESS;
 
-            // Water Breathing -> Invisibility
             case WATER_BREATHING -> INVISIBILITY;
 
-            // Healing -> Harming
             case HEALING -> HARMING;
-            case HEALING_II, POISON_II -> HARMING_II;
+            case HEALING_II,
+                 POISON_II -> HARMING_II;
 
-            // Poison -> Harming
-            case POISON -> HARMING;
-            case POISON_EXT -> HARMING;
+            case POISON,
+                 POISON_EXT -> HARMING;
 
-            // Strength -> Weakness
             case STRENGTH -> WEAKNESS;
             case STRENGTH_EXT -> WEAKNESS_EXT;
 

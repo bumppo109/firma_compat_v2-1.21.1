@@ -4,6 +4,7 @@ import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,7 +24,6 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-
         for (CompatWood wood : CompatWood.VALUES) {
             uncheckedBasicItem(ModItems.LUMBER.get(wood).get());
             uncheckedBasicItem(ModBlocks.WOODS.get(wood).get(CompatWood.BlockType.WATER_WHEEL).get().asItem());

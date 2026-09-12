@@ -50,6 +50,7 @@ public class ModCreativeModeTab {
             add(output, ModItems.UNSEALED_FRUIT_PRESERVES.get(ingredient));
             add(output, ModItems.JAM.get(ingredient));
         });
+        add(output, ModBlocks.FLUID_BREWING_STAND);
         add(output, ModBlocks.COMPAT_CHEST);
         add(output, ModBlocks.COMPAT_TRAPPED_CHEST);
         add(output, ModItems.COMPAT_CHEST_MINECART);

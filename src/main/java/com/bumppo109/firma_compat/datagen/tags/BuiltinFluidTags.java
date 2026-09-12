@@ -4,6 +4,7 @@ import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.datagen.ModAccessors;
 import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.util.ModTags;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidHolder;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -50,6 +51,7 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements ModAccessor
     {
         ModFluids.POTIONS.forEach((potion, baseFlowingFluidFluidHolder) -> {
             tag(TFCTags.Fluids.USABLE_IN_JUG).add(baseFlowingFluidFluidHolder.getSource());
+            tag(ModTags.Fluids.POTIONS).add(baseFlowingFluidFluidHolder.getSource());
         });
         ModFluids.FLUIDS.forEach((potion, baseFlowingFluidFluidHolder) -> {
             tag(TFCTags.Fluids.USABLE_IN_JUG).add(baseFlowingFluidFluidHolder.getSource());

@@ -2,6 +2,8 @@ package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.block.*;
+import com.bumppo109.firma_compat.fluid.ModFluids;
+import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.item.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -78,7 +80,36 @@ public class BuiltinLang extends LanguageProvider {
         add("block_type.firma_compat.shingles_stairs", "%s Shingle Stairs");
         add("block_type.firma_compat.shingles_slab", "%s Shingle Slab");
 
+        //Fluid
+        ModFluids.POTIONS.forEach((potion, potionHolder) -> {
+            add("fluid.firma_compat.potion.minecraft." + potion.serializedName(), potionName(potion));
+        });
+        ModBlocks.POTIONS.forEach((compatFluid, liquidBlockId) -> {
+            add(liquidBlockId.get(), potionName(compatFluid));
+        });
+        ModItems.POTION_FLUID_BUCKETS.forEach((compatFluid, liquidBlockId) -> {
+            add(liquidBlockId.get(), potionName(compatFluid) + "_bucket");
+        });
+
+        ModFluids.FLUIDS.forEach((potion, potionHolder) -> {
+            add("fluid.firma_compat.potion.minecraft." + potion.getSerializedName(), processIdString(potion.getSerializedName()));
+        });
+        ModBlocks.FLUIDS.forEach((compatFluid, liquidBlockId) -> {
+            add(liquidBlockId.get(), getBlockDisplayName(liquidBlockId.get()));
+        });
+        ModItems.FLUID_BUCKETS.forEach((compatFluid, liquidBlockId) -> {
+            add(liquidBlockId.get(), compatFluid.getSerializedName() + " Bucket");
+        });
+
+        add(ModBlocks.FLUID_BREWING_STAND.get(),"Brewing Stand");
+        add("container.firma_compat.fluid_brewing_stand", "Brewing Stand");
+
         //Food
+        add(ModItems.SWEET_BERRIES.get(), getItemDisplayName(ModItems.SWEET_BERRIES.get()));
+        add(ModItems.GLOW_BERRIES.get(), getItemDisplayName(ModItems.GLOW_BERRIES.get()));
+        add(ModItems.RED_MUSHROOM.get(), getItemDisplayName(ModItems.RED_MUSHROOM.get()));
+        add(ModItems.BROWN_MUSHROOM.get(), getItemDisplayName(ModItems.BROWN_MUSHROOM.get()));
+
         ModItems.JAM.forEach((ingredient, itemId) -> {
             add(itemId.get(), nestedName(itemId.get()));
         });
@@ -266,6 +297,52 @@ public class BuiltinLang extends LanguageProvider {
         add(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_SLAB.get()));
 
          */
+    }
+
+    public String potionName(Potion potion) {
+        String name = potion.serializedName();
+
+        boolean extended = name.endsWith("_ext");
+        boolean levelTwo = name.endsWith("_ii");
+
+        if (extended) {
+            name = name.substring(0, name.length() - "_ext".length());
+        } else if (levelTwo) {
+            name = name.substring(0, name.length() - "_ii".length());
+        }
+
+        String[] words = name.split("_");
+        StringBuilder formatted = new StringBuilder();
+
+        for (String word : words) {
+            if (word.isEmpty()) {
+                continue;
+            }
+
+            if (!formatted.isEmpty()) {
+                formatted.append(' ');
+            }
+
+            formatted.append(
+                    Character.toUpperCase(word.charAt(0))
+            );
+
+            if (word.length() > 1) {
+                formatted.append(word.substring(1));
+            }
+        }
+
+        String baseName = formatted.toString();
+
+        if (extended) {
+            return "Extended Potion of " + baseName;
+        }
+
+        if (levelTwo) {
+            return "Potion of " + baseName + " II";
+        }
+
+        return "Potion of " + baseName;
     }
 
     private String nestedName(Item item) {

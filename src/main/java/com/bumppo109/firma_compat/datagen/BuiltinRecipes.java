@@ -2,6 +2,7 @@ package com.bumppo109.firma_compat.datagen;
 
 import com.bumppo109.firma_compat.FirmaCompatHelpers;
 import com.bumppo109.firma_compat.datagen.recipes.ModCraftingRecipes;
+import com.bumppo109.firma_compat.datagen.recipes.ModPotionRecipes;
 import com.bumppo109.firma_compat.datagen.recipes.ModRecipes;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.player.ChiselMode;
@@ -34,7 +35,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
-        ModCraftingRecipes
+        ModCraftingRecipes,
+        ModPotionRecipes
         /*ModRemoveRecipes,
         ModHeatRecipes,
         ModAlloyRecipes,
@@ -91,6 +93,7 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
     {
         this.output = output;
         craftingRecipes();
+        potionRecipes();
         /*
         removeRecipes();
         heatRecipes();

@@ -88,6 +88,7 @@ public class ModTags {
         }
 
         public static final TagKey<Fluid> WATERLOGGING_WATER = createTag("waterlogging_water");
+        public static final TagKey<Fluid> POTIONS = createTag("potions");
 
     }
 

@@ -1,5 +1,6 @@
 package com.bumppo109.firma_compat.blockentity;
 
+import com.bumppo109.firma_compat.block.FluidBrewingStandBlock;
 import com.bumppo109.firma_compat.recipe.FluidBrewingRecipe;
 import com.bumppo109.firma_compat.recipe.FluidBrewingRecipeInput;
 import com.bumppo109.firma_compat.recipe.ModRecipes;
@@ -7,12 +8,10 @@ import com.bumppo109.firma_compat.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -169,14 +168,8 @@ public class FluidBrewingStandBlockEntity
         ItemStack catalyst = items.get(INGREDIENT);
 
         if (catalyst.isEmpty()) {
-            System.out.println("[FirmaCompat] No catalyst");
             return false;
         }
-
-        System.out.println(
-                "[FirmaCompat] Catalyst: " +
-                        BuiltInRegistries.ITEM.getKey(catalyst.getItem())
-        );
 
         for (int i = BOTTLE_0; i <= BOTTLE_2; i++) {
             ItemStack container = items.get(i);
@@ -185,17 +178,7 @@ public class FluidBrewingStandBlockEntity
                 continue;
             }
 
-            System.out.println(
-                    "[FirmaCompat] Checking container slot " + i +
-                            ": " +
-                            BuiltInRegistries.ITEM.getKey(container.getItem())
-            );
-
             Optional<FluidBrewingRecipe> recipe = findRecipe(container);
-
-            System.out.println(
-                    "[FirmaCompat] Recipe found: " + recipe.isPresent()
-            );
 
             if (recipe.isPresent()) {
                 return true;
@@ -422,6 +405,11 @@ public class FluidBrewingStandBlockEntity
                 );
 
         if (!result.isEmpty()) {
+            if (index >= BOTTLE_0
+                    && index <= BOTTLE_2) {
+                updateBottleState(index);
+            }
+
             setChanged();
         }
 
@@ -430,10 +418,18 @@ public class FluidBrewingStandBlockEntity
 
     @Override
     public ItemStack removeItemNoUpdate(int index) {
-        return net.minecraft.world.ContainerHelper.takeItem(
-                items,
-                index
-        );
+        ItemStack result =
+                net.minecraft.world.ContainerHelper.takeItem(
+                        items,
+                        index
+                );
+
+        if (index >= BOTTLE_0
+                && index <= BOTTLE_2) {
+            updateBottleState(index);
+        }
+
+        return result;
     }
 
     @Override
@@ -443,18 +439,61 @@ public class FluidBrewingStandBlockEntity
     ) {
         items.set(index, stack);
 
-        /*
-         * TFC fluid containers must remain single-item stacks while
-         * containing fluid.
-         */
         if (index >= BOTTLE_0
                 && index <= BOTTLE_2) {
 
             stack.limitSize(1);
+            updateBottleState(index);
         }
 
         setChanged();
     }
+
+
+    private void updateBottleState(int slot) {
+        if (level == null || level.isClientSide) {
+            return;
+        }
+
+        if (slot < BOTTLE_0 || slot > BOTTLE_2) {
+            return;
+        }
+
+        boolean hasBottle = !items.get(slot).isEmpty();
+
+        switch (slot) {
+            case BOTTLE_0 ->
+                    level.setBlock(
+                            worldPosition,
+                            getBlockState().setValue(
+                                    FluidBrewingStandBlock.HAS_BOTTLE_0,
+                                    hasBottle
+                            ),
+                            3
+                    );
+
+            case BOTTLE_1 ->
+                    level.setBlock(
+                            worldPosition,
+                            getBlockState().setValue(
+                                    FluidBrewingStandBlock.HAS_BOTTLE_1,
+                                    hasBottle
+                            ),
+                            3
+                    );
+
+            case BOTTLE_2 ->
+                    level.setBlock(
+                            worldPosition,
+                            getBlockState().setValue(
+                                    FluidBrewingStandBlock.HAS_BOTTLE_2,
+                                    hasBottle
+                            ),
+                            3
+                    );
+        }
+    }
+
 
     @Override
     public boolean stillValid(Player player) {
@@ -475,22 +514,16 @@ public class FluidBrewingStandBlockEntity
             int index,
             ItemStack stack
     ) {
-        if (index >= BOTTLE_0
-                && index <= BOTTLE_2) {
-
-            return stack.is(
-                    ModTags.Items.BREWING_CONTAINERS
-            );
+        if (index >= BOTTLE_0 && index <= BOTTLE_2) {
+            return stack.is(ModTags.Items.BREWING_CONTAINERS);
         }
 
         if (index == INGREDIENT) {
-            return true;
+            return !stack.is(ModTags.Items.BREWING_CONTAINERS) && !stack.is(ModTags.Items.BREWING_FUEL);
         }
 
         if (index == FUEL) {
-            return stack.is(
-                    ModTags.Items.BREWING_FUEL
-            );
+            return stack.is(ModTags.Items.BREWING_FUEL);
         }
 
         return false;
@@ -551,5 +584,26 @@ public class FluidBrewingStandBlockEntity
                 tag.getInt("Fuel"),
                 MAX_FUEL
         );
+
+        if (level != null && !level.isClientSide) {
+            level.setBlock(
+                    worldPosition,
+                    getBlockState()
+                            .setValue(
+                                    FluidBrewingStandBlock.HAS_BOTTLE_0,
+                                    !items.get(BOTTLE_0).isEmpty()
+                            )
+                            .setValue(
+                                    FluidBrewingStandBlock.HAS_BOTTLE_1,
+                                    !items.get(BOTTLE_1).isEmpty()
+                            )
+                            .setValue(
+                                    FluidBrewingStandBlock.HAS_BOTTLE_2,
+                                    !items.get(BOTTLE_2).isEmpty()
+                            ),
+                    3
+            );
+        }
+
     }
 }

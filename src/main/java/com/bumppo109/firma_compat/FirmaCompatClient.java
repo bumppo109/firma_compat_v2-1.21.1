@@ -88,6 +88,8 @@ public class FirmaCompatClient {
         final Predicate<RenderType> ghostBlock = rt -> rt == cutoutMipped || rt == Sheets.translucentCullBlockSheet();
         Predicate<RenderType> leafPredicate = (layer) -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid;
 
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLUID_BREWING_STAND.get(), cutout);
+
         ModBlocks.WOODS.values().forEach(map -> {
             Stream.of(
                             TWIG,
@@ -207,10 +209,14 @@ public class FirmaCompatClient {
         registerCustomItemRenderer(event, ModBlocks.COMPAT_TRAPPED_CHEST, ChestItemRenderer::new);
 
         ModFluids.POTIONS.forEach((fluid, holder) -> event.registerFluidType(new FluidRendererExtension(TFCFluids.ALPHA_MASK | fluid.color(), ClientEventHandler.WATER_STILL, ClientEventHandler.WATER_FLOW, ClientEventHandler.WATER_OVERLAY, ClientEventHandler.UNDERWATER_LOCATION), new FluidType[]{holder.getType()}));
+        ModFluids.FLUIDS.forEach((fluid, holder) -> event.registerFluidType(new FluidRendererExtension(TFCFluids.ALPHA_MASK | fluid.getColor(), ClientEventHandler.WATER_STILL, ClientEventHandler.WATER_FLOW, ClientEventHandler.WATER_OVERLAY, ClientEventHandler.UNDERWATER_LOCATION), new FluidType[]{holder.getType()}));
     }
 
     public static void onItemColors(RegisterColorHandlersEvent.Item event) {
         ModFluids.POTIONS.forEach((potion, baseFlowingFluidFluidHolder) -> {
+            event.register(new DynamicFluidContainerModel.Colors(), new ItemLike[]{((Fluid)baseFlowingFluidFluidHolder.getSource()).getBucket()});
+        });
+        ModFluids.FLUIDS.forEach((potion, baseFlowingFluidFluidHolder) -> {
             event.register(new DynamicFluidContainerModel.Colors(), new ItemLike[]{((Fluid)baseFlowingFluidFluidHolder.getSource()).getBucket()});
         });
     }

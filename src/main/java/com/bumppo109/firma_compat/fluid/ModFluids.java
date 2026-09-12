@@ -22,6 +22,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -100,6 +101,25 @@ public final class ModFluids {
                 .canPushEntity(true)
                 .canSwim(true)
                 .supportsBoating(true);
+    }
+
+    /**
+     * Resolves a registered potion fluid back to the Potion definition.
+     *
+     * The source fluid is used because that is what is stored in the
+     * TFC fluid container.
+     */
+    public static Optional<Potion> potionFromFluid(Fluid fluid) {
+        for (Potion potion : Potion.values()) {
+            Fluid potionFluid =
+                    POTIONS.get(potion).getSource();
+
+            if (potionFluid == fluid) {
+                return Optional.of(potion);
+            }
+        }
+
+        return Optional.empty();
     }
 
     private static <F extends FlowingFluid> FluidHolder<F> register(String name, Consumer<BaseFlowingFluid.Properties> builder, Properties typeProperties, Function<BaseFlowingFluid.Properties, F> sourceFactory, Function<BaseFlowingFluid.Properties, F> flowingFactory)

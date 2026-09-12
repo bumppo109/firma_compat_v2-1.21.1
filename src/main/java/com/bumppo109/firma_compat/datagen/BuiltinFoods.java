@@ -31,9 +31,12 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
     @Override
     protected void addData(HolderLookup.Provider provider)
     {
-        add(ModItems.SWEET_BERRIES, addFood(0.5f,0.5f,0.5f,0.0f, 0.0f, 0.0f, 0.8f, 0.0f));
+        add(ModItems.SWEET_BERRIES, addFood(0.5f,5.0f,4.9f,0.0f, 0.0f, 0.0f, 0.9f, 0.0f));
+        add(ModItems.GLOW_BERRIES, addFood(0.5f,5.0f,4.9f,0.0f, 0.0f, 0.0f, 0.9f, 0.0f));
+        add(ModItems.BROWN_MUSHROOM, addFood(0.0f,0.0f,3.0f,0.0f, 0.0f, 0.5f, 0.0f, 0.0f));
+        add(ModItems.RED_MUSHROOM, addFood(0.0f,0.0f,3.0f,0.0f, 0.0f, 0.5f, 0.0f, 0.0f));
         //addIngredients();
-        //addFoods();
+        addFoods();
     }
 
     private void addFoods() {

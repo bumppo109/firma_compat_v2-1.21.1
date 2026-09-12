@@ -1,48 +1,28 @@
-package com.bumppo109.firma_compat.datagen;
+package com.bumppo109.firma_compat.datagen.recipes;
 
 import com.bumppo109.firma_compat.fluid.CompatFluid;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.recipe.FluidBrewingRecipe;
-import com.bumppo109.firma_compat.recipe.ModRecipes;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
-import java.util.concurrent.CompletableFuture;
+public interface ModPotionRecipes extends ModRecipes {
 
-public class BuiltinPotionRecipes
-        extends DataManagerProvider<FluidBrewingRecipe>
-        implements ModAccessors
-{
-    public BuiltinPotionRecipes(
-            PackOutput output,
-            CompletableFuture<HolderLookup.Provider> lookup
-    ) {
-        super(
-                FluidBrewingRecipe.MANAGER,
-                output,
-                lookup,
-                TerraFirmaCraft.MOD_ID
-        );
-    }
+    default void potionRecipes() {
 
-    @Override
-    protected void addData(HolderLookup.Provider provider)
-    {
         /*
          * ====================================================================
          * AWKWARD POTION -> BASIC POTIONS
          * ====================================================================
          */
+
         add(
                 "water_to_awkward",
-                Fluids.WATER.getSource(),
+                Fluids.WATER,
                 Items.NETHER_WART,
                 ModFluids.FLUIDS.get(CompatFluid.AWKWARD).getSource()
         );
@@ -124,290 +104,214 @@ public class BuiltinPotionRecipes
                 ModFluids.POTIONS.get(Potion.SLOW_FALLING).getSource()
         );
 
-
         /*
          * ====================================================================
          * EXTENDED POTIONS
          * ====================================================================
          */
 
-        add(
-                "night_vision_to_extended",
+        add("night_vision_to_extended",
                 Potion.NIGHT_VISION,
                 Items.REDSTONE,
-                Potion.NIGHT_VISION_EXT
-        );
+                Potion.NIGHT_VISION_EXT);
 
-        add(
-                "fire_resistance_to_extended",
+        add("fire_resistance_to_extended",
                 Potion.FIRE_RESISTANCE,
                 Items.REDSTONE,
-                Potion.FIRE_RESISTANCE_EXT
-        );
+                Potion.FIRE_RESISTANCE_EXT);
 
-        add(
-                "swiftness_to_extended",
+        add("swiftness_to_extended",
                 Potion.SWIFTNESS,
                 Items.REDSTONE,
-                Potion.SWIFTNESS_EXT
-        );
+                Potion.SWIFTNESS_EXT);
 
-        add(
-                "water_breathing_to_extended",
+        add("water_breathing_to_extended",
                 Potion.WATER_BREATHING,
                 Items.REDSTONE,
-                Potion.WATER_BREATHING_EXT
-        );
+                Potion.WATER_BREATHING_EXT);
 
-        add(
-                "poison_to_extended",
+        add("poison_to_extended",
                 Potion.POISON,
                 Items.REDSTONE,
-                Potion.POISON_EXT
-        );
+                Potion.POISON_EXT);
 
-        add(
-                "regeneration_to_extended",
+        add("regeneration_to_extended",
                 Potion.REGENERATION,
                 Items.REDSTONE,
-                Potion.REGENERATION_EXT
-        );
+                Potion.REGENERATION_EXT);
 
-        add(
-                "strength_to_extended",
+        add("strength_to_extended",
                 Potion.STRENGTH,
                 Items.REDSTONE,
-                Potion.STRENGTH_EXT
-        );
+                Potion.STRENGTH_EXT);
 
-        add(
-                "weakness_to_extended",
+        add("weakness_to_extended",
                 Potion.WEAKNESS,
                 Items.REDSTONE,
-                Potion.WEAKNESS_EXT
-        );
+                Potion.WEAKNESS_EXT);
 
-        add(
-                "leaping_to_extended",
+        add("leaping_to_extended",
                 Potion.LEAPING,
                 Items.REDSTONE,
-                Potion.LEAPING_EXT
-        );
+                Potion.LEAPING_EXT);
 
-        add(
-                "slow_falling_to_extended",
+        add("slow_falling_to_extended",
                 Potion.SLOW_FALLING,
                 Items.REDSTONE,
-                Potion.SLOW_FALLING_EXT
-        );
+                Potion.SLOW_FALLING_EXT);
 
         /*
          * ====================================================================
-         * LEVEL II POTIONS
+         * LEVEL II
          * ====================================================================
          */
 
-        add(
-                "leaping_to_level_ii",
+        add("leaping_to_level_ii",
                 Potion.LEAPING,
                 Items.GLOWSTONE_DUST,
-                Potion.LEAPING_II
-        );
+                Potion.LEAPING_II);
 
-        add(
-                "swiftness_to_level_ii",
+        add("swiftness_to_level_ii",
                 Potion.SWIFTNESS,
                 Items.GLOWSTONE_DUST,
-                Potion.SWIFTNESS_II
-        );
+                Potion.SWIFTNESS_II);
 
-        add(
-                "slowness_to_level_ii",
+        add("slowness_to_level_ii",
                 Potion.SLOWNESS,
                 Items.GLOWSTONE_DUST,
-                Potion.SLOWNESS_II
-        );
+                Potion.SLOWNESS_II);
 
-        add(
-                "healing_to_level_ii",
+        add("healing_to_level_ii",
                 Potion.HEALING,
                 Items.GLOWSTONE_DUST,
-                Potion.HEALING_II
-        );
+                Potion.HEALING_II);
 
-        add(
-                "harming_to_level_ii",
+        add("harming_to_level_ii",
                 Potion.HARMING,
                 Items.GLOWSTONE_DUST,
-                Potion.HARMING_II
-        );
+                Potion.HARMING_II);
 
-        add(
-                "poison_to_level_ii",
+        add("poison_to_level_ii",
                 Potion.POISON,
                 Items.GLOWSTONE_DUST,
-                Potion.POISON_II
-        );
+                Potion.POISON_II);
 
-        add(
-                "regeneration_to_level_ii",
+        add("regeneration_to_level_ii",
                 Potion.REGENERATION,
                 Items.GLOWSTONE_DUST,
-                Potion.REGENERATION_II
-        );
+                Potion.REGENERATION_II);
 
-        add(
-                "strength_to_level_ii",
+        add("strength_to_level_ii",
                 Potion.STRENGTH,
                 Items.GLOWSTONE_DUST,
-                Potion.STRENGTH_II
-        );
+                Potion.STRENGTH_II);
 
         /*
          * ====================================================================
          * CORRUPTION
          * ====================================================================
-         *
-         * Vanilla uses fermented spider eye to corrupt potions.
          */
 
-        add(
-                "night_vision_to_invisibility",
+        add("night_vision_to_invisibility",
                 Potion.NIGHT_VISION,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.INVISIBILITY
-        );
+                Potion.INVISIBILITY);
 
-        add(
-                "night_vision_extended_to_invisibility_extended",
+        add("night_vision_extended_to_invisibility_extended",
                 Potion.NIGHT_VISION_EXT,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.INVISIBILITY_EXT
-        );
+                Potion.INVISIBILITY_EXT);
 
-        add(
-                "invisibility_to_night_vision",
+        add("invisibility_to_night_vision",
                 Potion.INVISIBILITY,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.NIGHT_VISION
-        );
+                Potion.NIGHT_VISION);
 
-        add(
-                "invisibility_extended_to_night_vision_extended",
+        add("invisibility_extended_to_night_vision_extended",
                 Potion.INVISIBILITY_EXT,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.NIGHT_VISION_EXT
-        );
+                Potion.NIGHT_VISION_EXT);
 
-        add(
-                "leaping_to_slowness",
+        add("leaping_to_slowness",
                 Potion.LEAPING,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.SLOWNESS
-        );
+                Potion.SLOWNESS);
 
-        add(
-                "leaping_extended_to_slowness_extended",
+        add("leaping_extended_to_slowness_extended",
                 Potion.LEAPING_EXT,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.SLOWNESS_EXT
-        );
+                Potion.SLOWNESS_EXT);
 
-        add(
-                "swiftness_to_slowness",
+        add("swiftness_to_slowness",
                 Potion.SWIFTNESS,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.SLOWNESS
-        );
+                Potion.SLOWNESS);
 
-        add(
-                "swiftness_extended_to_slowness_extended",
+        add("swiftness_extended_to_slowness_extended",
                 Potion.SWIFTNESS_EXT,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.SLOWNESS_EXT
-        );
+                Potion.SLOWNESS_EXT);
 
-        add(
-                "poison_to_harming",
+        add("poison_to_harming",
                 Potion.POISON,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.HARMING
-        );
+                Potion.HARMING);
 
-        add(
-                "poison_extended_to_harming",
+        add("poison_extended_to_harming_extended",
                 Potion.POISON_EXT,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.HARMING
-        );
+                Potion.HARMING);
 
-        add(
-                "poison_ii_to_harming_ii",
+        add("poison_ii_to_harming_ii",
                 Potion.POISON_II,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.HARMING_II
-        );
+                Potion.HARMING_II);
 
-        add(
-                "healing_to_harming",
+        add("healing_to_harming",
                 Potion.HEALING,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.HARMING
-        );
+                Potion.HARMING);
 
-        add(
-                "healing_ii_to_harming_ii",
+        add("healing_ii_to_harming_ii",
                 Potion.HEALING_II,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.HARMING_II
-        );
+                Potion.HARMING_II);
 
-        add(
-                "fire_resistance_to_slowness",
+        add("fire_resistance_to_slowness",
                 Potion.FIRE_RESISTANCE,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.SLOWNESS
-        );
+                Potion.SLOWNESS);
 
-        add(
-                "fire_resistance_extended_to_slowness_extended",
+        add("fire_resistance_extended_to_slowness_extended",
                 Potion.FIRE_RESISTANCE_EXT,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.SLOWNESS_EXT
-        );
+                Potion.SLOWNESS_EXT);
 
-        add(
-                "water_breathing_to_invisibility",
+        add("water_breathing_to_invisibility",
                 Potion.WATER_BREATHING,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.INVISIBILITY
-        );
+                Potion.INVISIBILITY);
 
-        add(
-                "water_breathing_extended_to_invisibility_extended",
+        add("water_breathing_extended_to_invisibility_extended",
                 Potion.WATER_BREATHING_EXT,
                 Items.FERMENTED_SPIDER_EYE,
-                Potion.INVISIBILITY_EXT
-        );
+                Potion.INVISIBILITY_EXT);
     }
 
     private void add(
             String name,
             Potion input,
-            net.minecraft.world.item.Item catalyst,
+            Item catalyst,
             Potion output
     ) {
         add(
+                "fluid_brewing",
                 name,
                 new FluidBrewingRecipe(
-                        ModFluids.POTIONS
-                                .get(input)
-                                .getSource(),
+                        ModFluids.POTIONS.get(input).getSource(),
                         FluidBrewingRecipe.DEFAULT_INPUT_AMOUNT,
                         Ingredient.of(catalyst),
-                        ModFluids.POTIONS
-                                .get(output)
-                                .getSource()
+                        ModFluids.POTIONS.get(output).getSource()
                 )
         );
     }
@@ -415,10 +319,11 @@ public class BuiltinPotionRecipes
     private void add(
             String name,
             Fluid input,
-            net.minecraft.world.item.Item catalyst,
+            Item catalyst,
             Fluid output
     ) {
         add(
+                "fluid_brewing",
                 name,
                 new FluidBrewingRecipe(
                         input,
