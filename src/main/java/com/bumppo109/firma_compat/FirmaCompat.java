@@ -1,9 +1,11 @@
 package com.bumppo109.firma_compat;
 
+import com.bumppo109.firma_compat.addon.ModCompatHandler;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.blockentity.ModBlockEntities;
 import com.bumppo109.firma_compat.blockentity.ModMenus;
 import com.bumppo109.firma_compat.data.ModDataComponents;
+import com.bumppo109.firma_compat.data.ModDataMaps;
 import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
 import com.bumppo109.firma_compat.entity.ModEntities;
 import com.bumppo109.firma_compat.event.ModClientEvents;
@@ -17,6 +19,10 @@ import com.bumppo109.firma_compat.materials.BlockAssets;
 import com.bumppo109.firma_compat.materials.food.FoodRegistryBootstrap;
 import com.bumppo109.firma_compat.recipe.ModRecipeSerializers;
 import com.bumppo109.firma_compat.recipe.ModRecipes;
+import com.bumppo109.firma_compat.world.ModStructureProcessors;
+import com.bumppo109.firma_compat.world.climate.ModClimateModels;
+import com.bumppo109.firma_compat.world.processor.ReplacementBootstrap;
+import com.bumppo109.firma_compat.world.processor.rock.RockRegistry;
 import com.mojang.logging.LogUtils;
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.neoforged.bus.api.IEventBus;
@@ -41,6 +47,7 @@ public class FirmaCompat {
 
         FoodRegistryBootstrap.bootstrap();
 
+        ModStructureProcessors.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModDataComponents.COMPONENTS.register(modEventBus);
@@ -55,12 +62,18 @@ public class FirmaCompat {
 
         ModLootModifiers.register(modEventBus);
         ModLootFunctions.FUNCTIONS.register(modEventBus);
+        ModClimateModels.TYPES.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
-        //ModCompatHandler.registerEveryCompatModules();
+        ModCompatHandler.registerEveryCompatModules();
+        ModCompatHandler.registerAddonClimateModels(modEventBus);
+        ModCompatHandler.registerLSOModifiers();
+        ModCompatHandler.registerAddon(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
+
+        FirmaCompatConfig.register(modContainer);
 
         if (FMLEnvironment.dist.isClient()) {
             RegHelper.registerDynamicResourceProvider(new ModClientDynamicResources());
@@ -73,8 +86,8 @@ public class FirmaCompat {
     public void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             BlockAssets.bootstrap();
-            //RockRegistry.bootstrap();
-            //ReplacementBootstrap.init();
+            RockRegistry.bootstrap();
+            ReplacementBootstrap.init();
         });
     }
 

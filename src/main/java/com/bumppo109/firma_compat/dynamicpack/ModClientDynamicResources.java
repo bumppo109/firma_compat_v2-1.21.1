@@ -125,6 +125,40 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
 
                 //simpleOverlayRecolor(manager, sink, bookshelfTexture, bookshelfEmptyOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/block/wood/bookshelf/" + wood.getSerializedName() + "_empty"), woodColor);
                 //simpleOverlayRecolor(manager, sink, bookshelfFullTexture, bookshelfOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"textures/block/wood/bookshelf/" + wood.getSerializedName() + "_occupied"), woodColor);
+
+                //RNR
+                ResourceLocation shingleTexture = ResourceLocation.fromNamespaceAndPath("rnr","item/wood/shingle/oak");
+                ResourceLocation shingleBlockTexture = ResourceLocation.fromNamespaceAndPath("rnr","block/wood/shingles/oak");
+
+                recolorTexture(manager, sink, shingleTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + wood.getSerializedName() + "_shingle"), woodColor);
+                recolorTexture(manager, sink, shingleBlockTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + wood.getSerializedName() + "_shingles"), woodColor);
+
+                //Firmalife
+                ResourceLocation bb0 = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_0");
+                ResourceLocation bb0Side = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_0_side");
+                ResourceLocation bb0Top = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_0_top");
+                ResourceLocation bb1 = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_1");
+                ResourceLocation bb1Side = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_1_side");
+                ResourceLocation bb1Top = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_1_top");
+                ResourceLocation bb2 = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_2");
+                ResourceLocation bb2Side = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_2_side");
+                ResourceLocation bb2Top = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_2_top");
+                ResourceLocation bb3 = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_3");
+                ResourceLocation bb3Side = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_3_side");
+                ResourceLocation bb3Top = ResourceLocation.fromNamespaceAndPath("firmalife","block/wood/big_barrel/oak_3_top");
+
+                recolorTexture(manager, sink, bb0, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_0"), woodColor);
+                recolorTexture(manager, sink, bb0Side, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_0_side"), woodColor);
+                recolorTexture(manager, sink, bb0Top, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_0_top"), woodColor);
+                recolorTexture(manager, sink, bb1, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_1"), woodColor);
+                recolorTexture(manager, sink, bb1Side, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_1_side"), woodColor);
+                recolorTexture(manager, sink, bb1Top, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_1_top"), woodColor);
+                recolorTexture(manager, sink, bb2, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_2"), woodColor);
+                recolorTexture(manager, sink, bb2Side, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_2_side"), woodColor);
+                recolorTexture(manager, sink, bb2Top, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_2_top"), woodColor);
+                recolorTexture(manager, sink, bb3, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_3"), woodColor);
+                recolorTexture(manager, sink, bb3Side, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_3_side"), woodColor);
+                recolorTexture(manager, sink, bb3Top, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/big_barrel/" + wood.getSerializedName() + "_3_top"), woodColor);
             }
         }
     }
@@ -192,6 +226,15 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             recolorTexture(manager, sink, looseTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "item/loose_" + rock.getSerializedName()), rockColor);
             recolorTexture(manager, sink, cobbleTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/" + rock.getSerializedName() + "_cobble"), rockColor);
             simpleOverlayRecolor(manager, sink, cobbleTexture, mossyCobbleOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/mossy_" + rock.getSerializedName() + "_cobble"), rockColor);
+
+            //RNR
+            ResourceLocation flagstoneTexture = ResourceLocation.fromNamespaceAndPath("rnr","item/flagstone/andesite");
+            ResourceLocation flagstoneBlockTexture = ResourceLocation.fromNamespaceAndPath("rnr","block/rock/flagstones/andesite");
+            ResourceLocation settBlockTexture = ResourceLocation.fromNamespaceAndPath("rnr","block/rock/sett_road/andesite");
+
+            recolorTexture(manager, sink, flagstoneTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + rock.getSerializedName() + "_flagstone"), rockColor);
+            recolorTexture(manager, sink, flagstoneBlockTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_flagstones"), rockColor);
+            recolorTexture(manager, sink, settBlockTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_sett"), rockColor);
         }
     }
 
