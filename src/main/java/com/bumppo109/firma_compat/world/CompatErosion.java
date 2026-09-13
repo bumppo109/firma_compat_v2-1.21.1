@@ -184,3 +184,4 @@ public class CompatErosion extends Feature<NoneFeatureConfiguration> {
 
     }
 }
+
