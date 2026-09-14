@@ -1,6 +1,9 @@
 package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRItems;
 import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.fluid.Potion;
@@ -76,6 +79,7 @@ public class BuiltinLang extends LanguageProvider {
         add("block_type.firma_compat.stomping_barrel", "%s Stomping Barrel");
         add("block_type.firma_compat.barrel_press", "%s Barrel Press");
 
+        add("item_type.firma_compat.shingle", "%s Shingle");
         add("block_type.firma_compat.shingles", "%s Shingles");
         add("block_type.firma_compat.shingles_stairs", "%s Shingle Stairs");
         add("block_type.firma_compat.shingles_slab", "%s Shingle Slab");
@@ -241,7 +245,6 @@ public class BuiltinLang extends LanguageProvider {
             add(itemId.get(), getTFCname(itemId.get()));
         });
 
-         /*
         // =============== Firmalife ================
         for (CompatWood wood : CompatWood.VALUES) {
             Block foodShelfBlock = CompatFLBlocks.FOOD_SHELVES.get(wood).get();
@@ -295,8 +298,6 @@ public class BuiltinLang extends LanguageProvider {
         add(CompatRnRBlocks.MACADAM_ROAD.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD.get()));
         add(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get()));
         add(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), getBlockDisplayName(CompatRnRBlocks.MACADAM_ROAD_SLAB.get()));
-
-         */
     }
 
     public String potionName(Potion potion) {

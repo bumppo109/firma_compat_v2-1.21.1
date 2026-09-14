@@ -1,11 +1,12 @@
 package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnR;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
 import com.bumppo109.firma_compat.block.*;
-import com.bumppo109.firma_compat.materials.BlockAssets;
-import com.bumppo109.firma_compat.materials.BlockTextureSlot;
-import com.bumppo109.firma_compat.materials.SoilMaterial;
-import com.bumppo109.firma_compat.materials.WoodMaterial;
+import com.bumppo109.firma_compat.datagen.assets.addon.FirmalifeCustomLoaderBuilder;
+import com.bumppo109.firma_compat.materials.*;
 import com.bumppo109.firma_compat.materials.food.FoodIngredient;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import com.eerussianguy.firmalife.common.blocks.*;
@@ -270,16 +271,14 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
             );
         });
 
-
-        /*
         //=============== Firmalife =================
 
         for (CompatWood wood : CompatWood.VALUES) {
 
-            CompatWoodMaterial material = wood.compatWoodMaterial();
-            ResourceLocation planksTexture = BlockAssets.get(material.planks()).textures().get(BlockTextureSlot.SIDE);
-            ResourceLocation strippedLogTexture = BlockAssets.get(material.strippedLog()).textures().get(BlockTextureSlot.SIDE);
-            ResourceLocation logSideTexture = BlockAssets.get(material.log()).textures().get(BlockTextureSlot.SIDE);
+            WoodMaterial material = wood.woodMaterial();
+            ResourceLocation planksTexture = BlockAssets.get(material.planks().get()).textures().get(BlockTextureSlot.SIDE);
+            ResourceLocation strippedLogTexture = BlockAssets.get(material.strippedLog().get()).textures().get(BlockTextureSlot.SIDE);
+            ResourceLocation logSideTexture = BlockAssets.get(material.log().get()).textures().get(BlockTextureSlot.SIDE);
             String woodstr = wood.getSerializedName();
 
             Block foodShelfBlock = CompatFLBlocks.FOOD_SHELVES.get(wood).get();
@@ -304,7 +303,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
             gradeIdMap.forEach((grade, blockId) -> {
                 ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(blockId.get());
                 ResourceLocation overlayTexture = ResourceLocation.fromNamespaceAndPath("firmalife", "block/ore/" + grade.name().toLowerCase(Locale.ROOT) + "_chromite");
-                CompatRockMaterial material = rock.rockMaterial();
+                RockMaterial material = rock.rockMaterial();
 
                 simpleBlockWithItem(blockId.get(),
                         models().withExistingParent(blockRes.getPath(), ResourceLocation.fromNamespaceAndPath("tfc","block/ore"))
@@ -351,8 +350,6 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         rnrPathBlockWithItem(CompatRnRBlocks.MACADAM_ROAD.get(), gravelTexture, gravelTexture);
         rnrPathStairWithItem(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get(), gravelTexture);
         rnrPathSlabWithItem(CompatRnRBlocks.MACADAM_ROAD_SLAB.get(), gravelTexture, gravelTexture);
-
-         */
     }
 
     private void fallenLeaves(Block block, Block fullLeaves) {
@@ -505,7 +502,6 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(block, pathStairsModel);
     }
 
-    /*
     private void foodShelfWithItem(Block block, ResourceLocation planksTexture) {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);
 
@@ -603,8 +599,6 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
 
         simpleBlockItem(block, wineShelfModel);
     }
-
-     */
 
     private void stompingBarrelWithItem(Block block, ResourceLocation planksTexture) {
         ResourceLocation blockRes = BuiltInRegistries.BLOCK.getKey(block);

@@ -4,6 +4,7 @@ import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinBlockStateProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinItemModelProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinLang;
+import com.bumppo109.firma_compat.datagen.assets.StoneZoneLang;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinBiomeTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinBlockTags;
 import com.bumppo109.firma_compat.datagen.tags.BuiltinFluidTags;
@@ -78,7 +79,7 @@ public final class DataEntryPoint {
         generator.addProvider(event.includeServer(), new BuiltinBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new BuiltinItemModelProvider(packOutput, existingFileHelper));
         event.getGenerator().addProvider(true, new BuiltinLang(packOutput));
-        //event.getGenerator().addProvider(true, new StoneZoneLang(packOutput));
+        event.getGenerator().addProvider(true, new StoneZoneLang(packOutput));
         event.getGenerator().addProvider(true, new BuiltinLootTableProvider(packOutput, vanillaLookup));
         //event.getGenerator().addProvider(true, new BuiltinLootModifier(packOutput, vanillaLookup));
 

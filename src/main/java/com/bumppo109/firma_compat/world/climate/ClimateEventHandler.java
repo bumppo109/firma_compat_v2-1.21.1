@@ -1,6 +1,8 @@
 package com.bumppo109.firma_compat.world.climate;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.ModCompat;
+import com.bumppo109.firma_compat.addon.eclipticseasons.EclipticSeasonsClimateModel;
 import com.bumppo109.firma_compat.world.chunkData.ClimateData;
 import com.bumppo109.firma_compat.world.chunkData.ClimateSyncPacket;
 import com.bumppo109.firma_compat.world.chunkData.ServerClimateCache;
@@ -38,8 +40,6 @@ public class ClimateEventHandler {
     public static void onSelectClimateModel(SelectClimateModelEvent event) {
 
         if (event.getModel() instanceof BiomeBasedClimateModel) {
-
-            /*
             if(ModCompat.loaded("eclipticseasons")){
                 event.setModel(EclipticSeasonsClimateModel.INSTANCE);
                 FirmaCompat.LOGGER.debug("Applied Ecliptic Seasons model for {}", event.level() != null ? event.level().dimension().location() : "unknown");
@@ -47,8 +47,6 @@ public class ClimateEventHandler {
                 event.setModel(VanillaClimateModel.INSTANCE);
                 FirmaCompat.LOGGER.debug("Applied Vanilla Firma Compat model for {}", event.level() != null ? event.level().dimension().location() : "unknown");
             }
-
-             */
         }
     }
 

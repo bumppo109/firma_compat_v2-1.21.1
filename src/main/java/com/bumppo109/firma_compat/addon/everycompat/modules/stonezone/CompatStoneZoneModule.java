@@ -301,22 +301,28 @@ public class CompatStoneZoneModule extends StoneZoneModule {
 
                 ResourceLocation rawResLoc = BuiltInRegistries.BLOCK.getKey(stoneType.block);
                 ResourceLocation looseResLoc = BuiltInRegistries.BLOCK.getKey(LOOSE.blocks.get(stoneType));
+                ResourceLocation mossyLooseResLoc = BuiltInRegistries.BLOCK.getKey(MOSSY_LOOSE.blocks.get(stoneType));
 
                 String rawPath = rawResLoc.getPath();
                 String loosePath = looseResLoc.getPath();
+                String mossyPath = mossyLooseResLoc.getPath();
                 String rawNamespace = rawResLoc.getNamespace();
 
                 // Target path: tfc:gui/knapping/granite.png (or tfc:gui/knapping/rock/granite.png – see note below)
                 ResourceLocation looseTargetLoc = ResourceLocation.fromNamespaceAndPath("tfc","gui/knapping/" + loosePath);
-                ResourceLocation mossyLooseTargetLoc = ResourceLocation.fromNamespaceAndPath("tfc","gui/knapping/mossy_" + loosePath);
+                ResourceLocation mossyLooseTargetLoc = ResourceLocation.fromNamespaceAndPath("tfc","gui/knapping/" + mossyPath);
 
                 // Source texture: minecraft:block/granite.png (add .png if missing)
                 ResourceLocation sourceLoc = ResourceLocation.fromNamespaceAndPath(rawNamespace,"block/" + rawPath + ".png");
 
                 try (TextureImage rawTexture = TextureImage.open(manager, sourceLoc)) {
-                    // Only add if not already present (prevents overwrite / spam)
                     sink.addTextureIfNotPresent(manager, looseTargetLoc, () -> rawTexture);
-                    sink.addTextureIfNotPresent(manager, mossyLooseTargetLoc, () -> rawTexture);
+                } catch (IOException e) {
+                    FirmaCompat.LOGGER.error("Failed to copy knapping texture for {} from {} : {}",
+                            rawResLoc, sourceLoc, e.getMessage());
+                }
+                try (TextureImage rawTexture = TextureImage.open(manager, sourceLoc)) {
+                    sink.addTextureIfNotPresent(manager, mossyLooseResLoc, () -> rawTexture);
                 } catch (IOException e) {
                     FirmaCompat.LOGGER.error("Failed to copy knapping texture for {} from {} : {}",
                             rawResLoc, sourceLoc, e.getMessage());

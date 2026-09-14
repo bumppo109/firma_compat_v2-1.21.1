@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat.datagen.assets;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRItems;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
@@ -79,12 +80,10 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
             uncheckedBasicItem("item/" + itemRes.getPath(), itemId.get());
         });
 
-        /*
         // ============ RnR =============
         basicItem(CompatRnRItems.GRAVEL_FILL.get());
         CompatRnRItems.FLAGSTONE.forEach((rock, itemId) -> basicItem(itemId.get()));
         CompatRnRItems.SHINGLE.forEach((wood, itemId) -> basicItem(itemId.get()));
-         */
     }
 
     public ItemModelBuilder basicItem(Item item, ResourceLocation texture) {

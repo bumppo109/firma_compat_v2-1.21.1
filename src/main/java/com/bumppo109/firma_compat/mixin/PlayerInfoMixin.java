@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat.mixin;
 
 import com.bumppo109.firma_compat.addon.ModCompat;
+import com.bumppo109.firma_compat.addon.legendarysurvivaloverhaul.LSOThirstModifier;
 import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +31,7 @@ public abstract class PlayerInfoMixin {
     private float redirectTemperatureContribution(PlayerInfo instance, Player player) {
         if (ModCompat.loaded("legendarysurvivaloverhaul")) {
             if (TFCConfig.SERVER.enableThirstOverheating.get()) {
-                return 0.0F; //LSOThirstModifier.getLsoTemperatureThirstContribution(player);
+                return LSOThirstModifier.getLsoTemperatureThirstContribution(player);
             } else {
                 return 0.0F;
             }
