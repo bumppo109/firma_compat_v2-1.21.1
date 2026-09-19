@@ -20,14 +20,14 @@ import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.collections.Weighted;
 import net.mehvahdjukaar.every_compat.EveryCompat;
-import net.mehvahdjukaar.every_compat.api.ItemOnlyEntrySet;
-import net.mehvahdjukaar.every_compat.api.RenderLayer;
-import net.mehvahdjukaar.every_compat.api.SimpleEntrySet;
+import net.mehvahdjukaar.every_compat.api.*;
 import net.mehvahdjukaar.every_compat.misc.UtilityTag;
+import net.mehvahdjukaar.moonlight.api.resources.RPUtils;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage;
+import net.mehvahdjukaar.moonlight.api.resources.textures.TextureOps;
 import net.mehvahdjukaar.moonlight.api.util.Utils;
 import net.mehvahdjukaar.stone_zone.StoneZone;
 import net.mehvahdjukaar.stone_zone.api.StoneZoneEntrySet;
@@ -64,7 +64,7 @@ import static com.bumppo109.firma_compat.block.ModBlocks.ORES;
 
 public class CompatStoneZoneModule extends StoneZoneModule {
 
-    public final SimpleEntrySet<StoneType, Block> COBBLE, MOSSY_COBBLE, HARDENED_COBBLE, MOSSY_HARDENED_COBBLE, HARDENED;
+    public final SimpleEntrySet<StoneType, Block> COBBLE, MOSSY_COBBLE, COBBLESTONE, MOSSY_COBBLESTONE, HARDENED;
     public final SimpleEntrySet<StoneType, Block> LOOSE, MOSSY_LOOSE;
     public SimpleEntrySet<StoneType, Block> ROPE_ANCHOR;
     public SimpleEntrySet<StoneType, Block> SPIKE;
@@ -135,6 +135,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                         stoneType -> new LooseRockBlock(BlockBehaviour.Properties.of().strength(0.05f, 0.0f).noCollission())
                 )
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
+                .addTextureM(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_stone"), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_raw_mask"))
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/loose"), Registries.BLOCK)
                 .addTag(ResourceLocation.fromNamespaceAndPath("c","stones/loose"), Registries.ITEM)
                 .addTag(ResourceLocation.fromNamespaceAndPath("tfc","stones/loose/metamorphic"), Registries.ITEM)
@@ -161,8 +162,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                         stoneType -> new Block(Utils.copyPropertySafe(stoneType.stone))
                 )
                 .requiresFromMap(LOOSE.blocks)
-                //.addTexture(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/stone_cobble"))
-                .addTexture(ResourceLocation.withDefaultNamespace("block/cobblestone"))
+                .addTexture(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/stone_cobble"))
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
                 .addTag(TFCTags.Blocks.CAN_LANDSLIDE, Registries.BLOCK)
                 .addTag(Tags.Blocks.COBBLESTONES_NORMAL, Registries.BLOCK)
@@ -178,8 +178,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                         stoneType -> new Block(Utils.copyPropertySafe(stoneType.stone))
                 )
                 .requiresFromMap(LOOSE.blocks)
-                .addTextureM(ResourceLocation.withDefaultNamespace("block/cobblestone"),
-                        ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "template/block/overlay/mossy_cobble_mask"))
+                .addTextureM(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_stone_cobble"), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_cobble_mask"))
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
                 .addTag(TFCTags.Blocks.CAN_LANDSLIDE, Registries.BLOCK)
                 .addTag(Tags.Blocks.COBBLESTONES_NORMAL, Registries.BLOCK)
@@ -190,13 +189,11 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 .build();
         this.addEntry(MOSSY_COBBLE);
 
-        HARDENED_COBBLE = StoneZoneEntrySet.of(StoneType.class,"cobblestone",
-                        getModBlock("stone_cobblestone", Block.class), () -> VanillaStoneTypes.STONE,
+        COBBLESTONE = StoneZoneEntrySet.of(StoneType.class,"cobblestone",
+                        getModBlock("andesite_cobblestone", Block.class), () -> VanillaStoneTypes.ANDESITE,
                         stoneType -> new Block(Utils.copyPropertySafe(stoneType.stone))
                 )
                 .requiresFromMap(LOOSE.blocks)
-                //.addTexture(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/stone_cobble"))
-                .addTexture(ResourceLocation.withDefaultNamespace("block/cobblestone"))
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
                 .addTag(Tags.Blocks.COBBLESTONES_NORMAL, Registries.BLOCK)
                 .addTag(Tags.Blocks.COBBLESTONES_NORMAL, Registries.ITEM)
@@ -204,15 +201,13 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)
                 .build();
-        this.addEntry(HARDENED_COBBLE);
+        this.addEntry(COBBLESTONE);
 
-        MOSSY_HARDENED_COBBLE = StoneZoneEntrySet.of(StoneType.class,"cobblestone", "mossy",
+        MOSSY_COBBLESTONE = StoneZoneEntrySet.of(StoneType.class,"cobblestone", "mossy",
                         getModBlock("mossy_andesite_cobblestone", Block.class), () -> VanillaStoneTypes.ANDESITE,
                         stoneType -> new Block(Utils.copyPropertySafe(stoneType.stone))
                 )
                 .requiresFromMap(LOOSE.blocks)
-                .addTextureM(ResourceLocation.withDefaultNamespace("block/cobblestone"),
-                        ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "template/block/overlay/mossy_cobble_mask"))
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE, Registries.BLOCK)
                 .addTag(Tags.Blocks.COBBLESTONES_NORMAL, Registries.BLOCK)
                 .addTag(Tags.Blocks.COBBLESTONES_NORMAL, Registries.ITEM)
@@ -220,7 +215,7 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 .excludeBlockTypes("tfc:.*")
                 .setTab(tab)
                 .build();
-        this.addEntry(MOSSY_HARDENED_COBBLE);
+        this.addEntry(MOSSY_COBBLESTONE);
 
         AQUEDUCT = StoneZoneEntrySet.of(StoneType.class,"brick_aqueduct",
                         getModBlock("stone_brick_aqueduct"), () -> VanillaStoneTypes.STONE,
@@ -313,19 +308,21 @@ public class CompatStoneZoneModule extends StoneZoneModule {
                 ResourceLocation mossyLooseTargetLoc = ResourceLocation.fromNamespaceAndPath("tfc","gui/knapping/" + mossyPath);
 
                 // Source texture: minecraft:block/granite.png (add .png if missing)
-                ResourceLocation sourceLoc = ResourceLocation.fromNamespaceAndPath(rawNamespace,"block/" + rawPath + ".png");
+                ResourceLocation rawSource = ResourceLocation.fromNamespaceAndPath(rawNamespace,"block/" + rawPath + ".png");
+                ResourceLocation mossyRawSource = ResourceLocation.fromNamespaceAndPath(StoneZone.MOD_ID,"block/tfc/" + stoneType.getNamespace() + "/mossy_" + stoneType.getTypeName() + ".png");
 
-                try (TextureImage rawTexture = TextureImage.open(manager, sourceLoc)) {
+                try (TextureImage rawTexture = TextureImage.open(manager, rawSource)) {
                     sink.addTextureIfNotPresent(manager, looseTargetLoc, () -> rawTexture);
                 } catch (IOException e) {
                     FirmaCompat.LOGGER.error("Failed to copy knapping texture for {} from {} : {}",
-                            rawResLoc, sourceLoc, e.getMessage());
+                            rawResLoc, rawSource, e.getMessage());
                 }
-                try (TextureImage rawTexture = TextureImage.open(manager, sourceLoc)) {
-                    sink.addTextureIfNotPresent(manager, mossyLooseResLoc, () -> rawTexture);
+
+                try (TextureImage rawTexture = TextureImage.open(manager, rawSource)) {
+                    sink.addTextureIfNotPresent(manager, mossyLooseTargetLoc, () -> rawTexture);
                 } catch (IOException e) {
                     FirmaCompat.LOGGER.error("Failed to copy knapping texture for {} from {} : {}",
-                            rawResLoc, sourceLoc, e.getMessage());
+                            rawResLoc, rawSource, e.getMessage());
                 }
             });
         });

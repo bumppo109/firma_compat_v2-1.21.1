@@ -105,17 +105,18 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
             ResourceLocation rawTexture = rock.blockAsset().textures().get(BlockTextureSlot.SIDE);
             ResourceLocation cobbleTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/" + rock.getSerializedName() + "_cobble");
             ResourceLocation mossyCobbleTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/" + "mossy_" + rock.getSerializedName() + "_cobble");
+            ResourceLocation mossyRawTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_" + rock.getSerializedName());
 
             for (CompatRock.BlockType blockType : CompatRock.BlockType.VALUES) {
                 Block block = rockMap.get(blockType).get();
-                ResourceLocation cobbleMossyTexture = blockType.name().startsWith("MOSSY") && !blockType.name().endsWith("LOOSE") ? mossyCobbleTexture : cobbleTexture;
+                ResourceLocation cobbleMossyTexture = blockType.name().equals("MOSSY_COBBLESTONE") || blockType.name().equals("MOSSY_COBBLE") ? mossyCobbleTexture : cobbleTexture;
 
                 switch (blockType) {
                     case HARDENED -> cubeAllWithItem(block, rawTexture);
                     case LOOSE -> looseRockWithItem(block, rawTexture, rock.category());
-                    case MOSSY_LOOSE -> looseRockWithItem(block, mossyCobbleTexture, rock.category());
+                    case MOSSY_LOOSE -> looseRockWithItem(block, mossyRawTexture, rock.category());
                     case COBBLE, COBBLESTONE -> cubeAllWithItem(block, cobbleTexture);
-                    case MOSSY_COBBLE, MOSSY_COBBLESTONE -> cubeAllWithItem(block, mossyCobbleTexture);
+                    case MOSSY_COBBLE, MOSSY_COBBLESTONE -> cubeAllWithItem(block, cobbleMossyTexture);
                     case SPIKE -> spikeWithItem(block, rawTexture);
                 }
 
@@ -220,7 +221,7 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
         ResourceLocation grassTopTexture = ResourceLocation.withDefaultNamespace("block/grass_block_top");
         ResourceLocation grassBlockOverlayTexture = ResourceLocation.withDefaultNamespace("block/grass_block_side_overlay");
         ResourceLocation podzolTopTexture = ResourceLocation.withDefaultNamespace("block/podzol_top");
-        ResourceLocation podzolBlockOverlayTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/block/overlay/podzol_mask");
+        ResourceLocation podzolBlockOverlayTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/podzol_mask");
 
         ModBlocks.CLAY_BLOCKS.forEach((material, soilBlockTypeIdMap) -> {
             soilBlockTypeIdMap.forEach((soilBlockType, blockId) -> {

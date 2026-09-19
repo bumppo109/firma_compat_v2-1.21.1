@@ -1,5 +1,6 @@
 package com.bumppo109.firma_compat.datagen;
 
+import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.food.Food;
 import com.bumppo109.firma_compat.materials.food.FoodIngredient;
@@ -31,11 +32,13 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
     @Override
     protected void addData(HolderLookup.Provider provider)
     {
-        add(ModItems.SWEET_BERRIES, addFood(0.5f,5.0f,4.9f,0.0f, 0.0f, 0.0f, 0.9f, 0.0f));
-        add(ModItems.GLOW_BERRIES, addFood(0.5f,5.0f,4.9f,0.0f, 0.0f, 0.0f, 0.9f, 0.0f));
-        add(ModItems.BROWN_MUSHROOM, addFood(0.0f,0.0f,3.0f,0.0f, 0.0f, 0.5f, 0.0f, 0.0f));
-        add(ModItems.RED_MUSHROOM, addFood(0.0f,0.0f,3.0f,0.0f, 0.0f, 0.5f, 0.0f, 0.0f));
-        //addIngredients();
+        add(ModItems.SWEET_BERRIES.get(), addFood(0.5f,5.0f,4.9f,0.0f, 0.0f, 0.0f, 0.9f, 0.0f));
+        add(ModItems.GLOW_BERRIES.get(), addFood(0.5f,5.0f,4.9f,0.0f, 0.0f, 0.0f, 0.9f, 0.0f));
+        add(ModItems.BROWN_MUSHROOM.get(), addFood(0.0f,0.0f,3.0f,0.0f, 0.0f, 0.5f, 0.0f, 0.0f));
+        add(ModItems.RED_MUSHROOM.get(), addFood(0.0f,0.0f,3.0f,0.0f, 0.0f, 0.5f, 0.0f, 0.0f));
+        add(Items.KELP, addFood(0.0f,2.5f,4.5f,0.0f, 0.5f, 0.0f, 0.0f, 0.0f));
+        add(Items.DRIED_KELP, addFood(0.0f,0.0f,2.5f,0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+
         addFoods();
     }
 

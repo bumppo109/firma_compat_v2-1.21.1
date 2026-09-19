@@ -86,9 +86,11 @@ public class BuiltinLang extends LanguageProvider {
 
         ModItems.SPLASH_POTIONS.forEach((glass, itemId) -> {
             add(itemId.get(), getItemDisplayName(itemId.get()));
+            add("item.firma_compat." + glass.getSerializedName() + "_splash_potion.filled", getItemDisplayName(itemId.get()));
         });
         ModItems.LINGERING_POTIONS.forEach((glass, itemId) -> {
             add(itemId.get(), getItemDisplayName(itemId.get()));
+            add("item.firma_compat." + glass.getSerializedName() + "_lingering_potion.filled", getItemDisplayName(itemId.get()));
         });
 
         //Fluid
@@ -102,11 +104,8 @@ public class BuiltinLang extends LanguageProvider {
             add(liquidBlockId.get(), potionName(compatFluid) + "_bucket");
         });
 
-        ModFluids.FLUIDS.forEach((potion, potionHolder) -> {
-            add("fluid.firma_compat.potion.minecraft." + potion.getSerializedName(), processIdString(potion.getSerializedName()));
-        });
         ModBlocks.FLUIDS.forEach((compatFluid, liquidBlockId) -> {
-            add(liquidBlockId.get(), getBlockDisplayName(liquidBlockId.get()));
+            add("fluid.firma_compat." + compatFluid.getSerializedName(), processIdString(compatFluid.getSerializedName()));
         });
         ModItems.FLUID_BUCKETS.forEach((compatFluid, liquidBlockId) -> {
             add(liquidBlockId.get(), compatFluid.getSerializedName() + " Bucket");

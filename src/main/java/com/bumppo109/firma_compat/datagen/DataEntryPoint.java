@@ -73,16 +73,13 @@ public final class DataEntryPoint {
         add(event, new BuiltinSupports(packOutput, lookup));
         add(event, new BuiltinDataMaps(packOutput, lookup));
 
-        //add(event, new BuiltinDataMaps(packOutput, lookup));
-
         // ── Assets & loot ──
         generator.addProvider(event.includeServer(), new BuiltinBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new BuiltinItemModelProvider(packOutput, existingFileHelper));
         event.getGenerator().addProvider(true, new BuiltinLang(packOutput));
         event.getGenerator().addProvider(true, new StoneZoneLang(packOutput));
         event.getGenerator().addProvider(true, new BuiltinLootTableProvider(packOutput, vanillaLookup));
-        //event.getGenerator().addProvider(true, new BuiltinLootModifier(packOutput, vanillaLookup));
-
+        event.getGenerator().addProvider(true, new BuiltinLootModifier(packOutput, vanillaLookup));
     }
 
     private static <T extends DataProvider> T add(GatherDataEvent event, T provider) {

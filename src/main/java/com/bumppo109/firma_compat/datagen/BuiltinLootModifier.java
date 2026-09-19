@@ -51,6 +51,7 @@ public class BuiltinLootModifier extends GlobalLootModifierProvider {
         swap(Items.GLOW_BERRIES, ModItems.GLOW_BERRIES.get());
         swap(Items.RED_MUSHROOM, ModItems.RED_MUSHROOM.get());
         swap(Items.BROWN_MUSHROOM, ModItems.BROWN_MUSHROOM.get());
+
         remove(Items.WHEAT_SEEDS);
         remove(Items.MELON_SEEDS);
         remove(Items.PUMPKIN_SEEDS);

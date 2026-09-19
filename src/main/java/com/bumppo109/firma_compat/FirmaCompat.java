@@ -4,6 +4,7 @@ import com.bumppo109.firma_compat.addon.ModCompatHandler;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.blockentity.ModBlockEntities;
 import com.bumppo109.firma_compat.blockentity.ModMenus;
+import com.bumppo109.firma_compat.blockentity.PotionContainerVariants;
 import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.data.ModDataMaps;
 import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
@@ -88,6 +89,7 @@ public class FirmaCompat {
             BlockAssets.bootstrap();
             RockRegistry.bootstrap();
             ReplacementBootstrap.init();
+            PotionContainerVariants.bootstrap();
         });
     }
 

@@ -1,10 +1,7 @@
 package com.bumppo109.firma_compat.item;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.block.CompatMetal;
-import com.bumppo109.firma_compat.block.CompatRock;
-import com.bumppo109.firma_compat.block.CompatWood;
-import com.bumppo109.firma_compat.block.ModBlocks;
+import com.bumppo109.firma_compat.block.*;
 import com.bumppo109.firma_compat.materials.food.FoodIngredient;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
@@ -51,6 +48,10 @@ public class ModCreativeModeTab {
             add(output, ModItems.JAM.get(ingredient));
         });
         add(output, ModBlocks.FLUID_BREWING_STAND);
+        for (Glass glass : Glass.values()) {
+            add(output, ModItems.SPLASH_POTIONS.get(glass));
+            add(output, ModItems.LINGERING_POTIONS.get(glass));
+        }
         add(output, ModBlocks.COMPAT_CHEST);
         add(output, ModBlocks.COMPAT_TRAPPED_CHEST);
         add(output, ModItems.COMPAT_CHEST_MINECART);

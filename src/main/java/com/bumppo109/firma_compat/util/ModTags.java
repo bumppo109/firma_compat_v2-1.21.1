@@ -30,8 +30,11 @@ public class ModTags {
 
     public static class Items {
         public static final TagKey<Item> PREVENT_INTERACTION = createTag("prevent_interaction");
+
         public static final TagKey<Item> BREWING_CONTAINERS = createTag("brewing_containers");
         public static final TagKey<Item> BREWING_FUEL = createTag("brewing_fuel");
+        public static final TagKey<Item> SPLASH_CATALYSTS = createTag("splash_catalysts");
+        public static final TagKey<Item> LINGERING_CATALYSTS = createTag("lingering_catalysts");
         //Dye
         public static final TagKey<Item> MAKES_WHITE_DYE = createTag("makes_dye/white");
         public static final TagKey<Item> MAKES_LIGHT_GRAY_DYE = createTag("makes_dye/light_gray_dye");

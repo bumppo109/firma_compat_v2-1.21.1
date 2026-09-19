@@ -88,6 +88,11 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
             uncheckedBasicItem("item/" + itemRes.getPath(), itemId.get());
         });
 
+        basicItem(ModItems.SWEET_BERRIES.get(), ResourceLocation.withDefaultNamespace("item/sweet_berries"));
+        basicItem(ModItems.GLOW_BERRIES.get(), ResourceLocation.withDefaultNamespace("item/glow_berries"));
+        basicItem(ModItems.BROWN_MUSHROOM.get(), ResourceLocation.withDefaultNamespace("block/brown_mushroom"));
+        basicItem(ModItems.RED_MUSHROOM.get(), ResourceLocation.withDefaultNamespace("block/red_mushroom"));
+
         // ============ RnR =============
         basicItem(CompatRnRItems.GRAVEL_FILL.get());
         CompatRnRItems.FLAGSTONE.forEach((rock, itemId) -> basicItem(itemId.get()));

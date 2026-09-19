@@ -16,8 +16,10 @@ import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistryHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -99,10 +101,10 @@ public class ModItems {
     public static final ItemId UNFINISHED_LANTERN = register("unfinished_lantern");
 
     //Food
-    public static final ItemId SWEET_BERRIES = register("sweet_berries");
-    public static final ItemId GLOW_BERRIES = register("glow_berries");
-    public static final ItemId BROWN_MUSHROOM = register("brown_mushroom");
-    public static final ItemId RED_MUSHROOM = register("red_mushroom");
+    public static final ItemId SWEET_BERRIES = registerItem("sweet_berries", () -> new ItemNameBlockItem(Blocks.SWEET_BERRY_BUSH, new Item.Properties()));
+    public static final ItemId GLOW_BERRIES = registerItem("glow_berries", () -> new ItemNameBlockItem(Blocks.CAVE_VINES, new Item.Properties()));
+    public static final ItemId BROWN_MUSHROOM = registerItem("brown_mushroom", () -> new ItemNameBlockItem(Blocks.BROWN_MUSHROOM, new Item.Properties()));
+    public static final ItemId RED_MUSHROOM = registerItem("red_mushroom", () -> new ItemNameBlockItem(Blocks.RED_MUSHROOM, new Item.Properties()));
 
     public static final Map<FoodIngredient, ItemId> FRUIT_PRESERVES =
             preserveIngredients()
@@ -148,6 +150,12 @@ public class ModItems {
                     ));
 
 
+    // ModItems.java
+
+    // Use Supplier so instantiation happens lazily during registry population
+    private static ItemId registerItem(String name, Supplier<Item> itemSupplier) {
+        return register(name, itemSupplier);
+    }
 
     private static ItemId register(String name)
     {

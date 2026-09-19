@@ -5,6 +5,7 @@ import com.bumppo109.firma_compat.FirmaCompatHelpers;
 import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
+import com.bumppo109.firma_compat.materials.BlockAsset;
 import com.bumppo109.firma_compat.materials.BlockAssets;
 import com.bumppo109.firma_compat.materials.BlockTextureSlot;
 import com.bumppo109.firma_compat.materials.SoilMaterial;
@@ -28,6 +29,7 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.TextureOps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Collection;
 import java.util.List;
@@ -199,14 +201,15 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
         for (SoilMaterial material : SoilMaterial.values()) {
             ResourceLocation dirtTexture = BlockAssets.get(material.getDirt().get()).textures().get(BlockTextureSlot.SIDE);
 
-            simpleOverlay(manager, sink, dirtTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/block/overlay/clay_dirt_mask"),
+            simpleOverlay(manager, sink, dirtTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/clay_dirt_mask"),
                     ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/clay_" + material.getSerializedName()));
         }
     }
 
     private void generateRockTextures(ResourceManager manager, ResourceSink sink) {
         for (CompatRock rock : CompatRock.values()) {
-            ResourceLocation rawRes = BuiltInRegistries.BLOCK.getKey(rock.rockMaterial().raw().base().get());
+            Block rawBlock = rock.rockMaterial().raw().base().get();
+            ResourceLocation rawRes = BuiltInRegistries.BLOCK.getKey(rawBlock);
             ResourceLocation rockColor = rock.blockAsset().textures().get(BlockTextureSlot.SIDE);
 
             ResourceLocation looseTexture = switch (rock.category()) {
@@ -215,9 +218,11 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
                 case FELSIC_IGNEOUS_EXTRUSIVE, INTERMEDIATE_IGNEOUS_EXTRUSIVE, MAFIC_IGNEOUS_EXTRUSIVE -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/andesite");
                 case FELSIC_IGNEOUS_INTRUSIVE, INTERMEDIATE_IGNEOUS_INTRUSIVE, MAFIC_IGNEOUS_INTRUSIVE -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/granite");
             };
+            ResourceLocation rawTexture = BlockAssets.get(rawBlock).textures().get(BlockTextureSlot.SIDE);
             ResourceLocation brickTexture = ResourceLocation.fromNamespaceAndPath("tfc","item/brick/andesite");
             ResourceLocation cobbleTexture = ResourceLocation.withDefaultNamespace("block/cobblestone");
-            ResourceLocation mossyCobbleOverlay = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/block/overlay/mossy_cobble_mask");
+            ResourceLocation mossyCobbleOverlay = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_cobble_mask");
+            ResourceLocation mossyRawOverlay = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_raw_mask");
 
             if (rock.equals(CompatRock.BLACKSTONE)) {
                 recolorTexture(manager, sink, brickTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "item/polished_" + rock.getSerializedName() + "_brick"), rockColor);
@@ -228,6 +233,7 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             recolorTexture(manager, sink, looseTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "item/loose_" + rock.getSerializedName()), rockColor);
             recolorTexture(manager, sink, cobbleTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/" + rock.getSerializedName() + "_cobble"), rockColor);
             simpleOverlayRecolor(manager, sink, cobbleTexture, mossyCobbleOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "block/mossy_" + rock.getSerializedName() + "_cobble"), rockColor);
+            simpleOverlay(manager, sink, rawTexture, mossyRawOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/mossy_" + rock.getSerializedName()));
 
             //RNR
             ResourceLocation flagstoneTexture = ResourceLocation.fromNamespaceAndPath("rnr","item/flagstone/andesite");

@@ -89,11 +89,11 @@ config="${mod_id}.mixins.json"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
-modId="tfc"
-type="required"
-versionRange="[4.2.6,)"
-ordering="AFTER"
-side="BOTH"
+    modId="tfc"
+    type="required"
+    versionRange="[4.2.6,)"
+    ordering="AFTER"
+    side="BOTH"
 
 # [[dependencies.${mod_id}]]
 # modId="firmalife"

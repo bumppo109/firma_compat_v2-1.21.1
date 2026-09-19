@@ -42,23 +42,15 @@ public class LingeringPotionContainerItem extends FluidContainerItem {
         }
 
         if (!level.isClientSide) {
-            FluidPotionThrowing.throwLingering(
-                    level,
-                    player,
-                    stack
-            );
-
-            if (!player.getAbilities().instabuild) {
-                player.setItemInHand(
-                        hand,
-                        new ItemStack(this)
-                );
-            }
+            FluidPotionThrowing.throwLingering(level, player, stack);
         }
 
-        return InteractionResultHolder.sidedSuccess(
-                player.getItemInHand(hand),
-                level.isClientSide
-        );
+        // Survival → consume the item
+        // Creative → leave the stack completely untouched (keeps the fluid)
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
+        }
+
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }
