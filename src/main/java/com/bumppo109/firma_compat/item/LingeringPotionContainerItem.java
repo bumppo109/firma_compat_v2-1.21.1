@@ -1,6 +1,6 @@
 package com.bumppo109.firma_compat.item;
-
 import com.bumppo109.firma_compat.entity.FluidPotionThrowing;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.FluidContainerItem;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -37,25 +37,28 @@ public class LingeringPotionContainerItem extends FluidContainerItem {
     ) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (!net.dries007.tfc.common.fluids.FluidHelpers
-                .getContainedFluid(stack)
-                .isEmpty()) {
-
-            if (!level.isClientSide) {
-                FluidPotionThrowing.throwLingering(level, player, stack);
-
-                if (!player.getAbilities().instabuild) {
-                    player.setItemInHand(hand, new ItemStack(this));
-                }
-            }
-
-            return InteractionResultHolder.sidedSuccess(
-                    stack,
-                    level.isClientSide
-            );
+        if (FluidHelpers.getContainedFluid(stack).isEmpty()) {
+            return super.use(level, player, hand);
         }
 
-        return super.use(level, player, hand);
-    }
+        if (!level.isClientSide) {
+            FluidPotionThrowing.throwLingering(
+                    level,
+                    player,
+                    stack
+            );
 
+            if (!player.getAbilities().instabuild) {
+                player.setItemInHand(
+                        hand,
+                        new ItemStack(this)
+                );
+            }
+        }
+
+        return InteractionResultHolder.sidedSuccess(
+                player.getItemInHand(hand),
+                level.isClientSide
+        );
+    }
 }

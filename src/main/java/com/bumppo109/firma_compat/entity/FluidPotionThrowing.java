@@ -29,7 +29,7 @@ public final class FluidPotionThrowing {
                 owner,
                 owner.getXRot(),
                 owner.getYRot(),
-                0.0F,
+                -20.0F,
                 0.5F,
                 1.0F
         );
@@ -57,7 +57,7 @@ public final class FluidPotionThrowing {
                 owner,
                 owner.getXRot(),
                 owner.getYRot(),
-                0.0F,
+                -20.0F,
                 0.5F,
                 1.0F
         );

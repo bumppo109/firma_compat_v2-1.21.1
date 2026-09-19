@@ -34,7 +34,7 @@ public abstract class AbstractThrownFluidPotion
             LivingEntity owner,
             ItemStack stack
     ) {
-        super(type, level);
+        super(type, owner, level);
 
         setOwner(owner);
         setItem(stack);
