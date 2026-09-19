@@ -1,13 +1,16 @@
 package com.bumppo109.firma_compat.item;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.block.Glass;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import net.dries007.tfc.common.component.block.Barrel;
 import net.dries007.tfc.common.component.fluid.FluidContainerHandler;
+import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.LampBlockItem;
 import net.dries007.tfc.util.Metal;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -50,5 +53,18 @@ public class ModItemCapabilities {
                 ),
                 ModBlocks.LANTERN.get().asItem()
         );
+
+        //Potions
+        for (Glass glass : Glass.values()) {
+            Item splashPotion = ModItems.SPLASH_POTIONS.get(glass).get();
+            Item lingerPotion = ModItems.LINGERING_POTIONS.get(glass).get();
+
+            event.registerItem(Capabilities.FluidHandler.ITEM,
+                    (stack, context) -> new FluidContainerHandler(stack, ((FluidContainerItem) stack.getItem()).containerInfo()),
+                    splashPotion);
+            event.registerItem(Capabilities.FluidHandler.ITEM,
+                    (stack, context) -> new FluidContainerHandler(stack, ((FluidContainerItem) stack.getItem()).containerInfo()),
+                    lingerPotion);
+        }
     }
 }

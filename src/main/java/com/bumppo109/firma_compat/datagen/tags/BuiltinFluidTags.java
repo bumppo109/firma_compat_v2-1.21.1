@@ -61,6 +61,9 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements ModAccessor
                 .add(ModFluids.FLUIDS.get(CompatFluid.AWKWARD).getSource())
                 .add(ModFluids.FLUIDS.get(CompatFluid.THICK).getSource())
                 .add(ModFluids.FLUIDS.get(CompatFluid.MUNDANE).getSource())
+                .add(Fluids.WATER.getSource())
+                .add(TFCFluids.SPRING_WATER.getSource())
+                .add(TFCFluids.SALT_WATER.getSource())
         ;
 
         tag(TFCTags.Fluids.MOLTEN_METALS)

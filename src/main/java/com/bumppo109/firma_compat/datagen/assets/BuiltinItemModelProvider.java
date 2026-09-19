@@ -8,11 +8,13 @@ import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
+import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -25,6 +27,12 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        ModItems.SPLASH_POTIONS.forEach((glass, itemId) -> {
+            fluidContainer(itemId.get(), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "item/" + glass.getSerializedName() + "_splash_potion"), ResourceLocation.fromNamespaceAndPath("tfc","item/bucket/glass_bottle_overlay"));
+        });
+        ModItems.LINGERING_POTIONS.forEach((glass, itemId) -> {
+            fluidContainer(itemId.get(), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "item/" + glass.getSerializedName() + "_lingering_potion"), ResourceLocation.fromNamespaceAndPath("tfc","item/bucket/glass_bottle_overlay"));
+        });
         for (CompatWood wood : CompatWood.VALUES) {
             uncheckedBasicItem(ModItems.LUMBER.get(wood).get());
             uncheckedBasicItem(ModBlocks.WOODS.get(wood).get(CompatWood.BlockType.WATER_WHEEL).get().asItem());
@@ -84,6 +92,23 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
         basicItem(CompatRnRItems.GRAVEL_FILL.get());
         CompatRnRItems.FLAGSTONE.forEach((rock, itemId) -> basicItem(itemId.get()));
         CompatRnRItems.SHINGLE.forEach((wood, itemId) -> basicItem(itemId.get()));
+    }
+
+    public ItemModelBuilder fluidContainer(Item item, ResourceLocation base, ResourceLocation fluid) {
+        ResourceLocation itemRes = BuiltInRegistries.ITEM.getKey(item);
+
+        return getBuilder(itemRes.getPath())
+                .parent(new ModelFile.UncheckedModelFile(
+                        ResourceLocation.fromNamespaceAndPath("neoforge", "item/default")))
+                .customLoader((parent, existingFileHelper) ->
+                        new CustomLoaderBuilder<ItemModelBuilder>(
+                                ResourceLocation.fromNamespaceAndPath("tfc", "fluid_container"),
+                                parent,
+                                existingFileHelper,
+                                false) {})   // anonymous because TFC doesn't ship a builder
+                .end()
+                .texture("base", base)
+                .texture("fluid", fluid);
     }
 
     public ItemModelBuilder basicItem(Item item, ResourceLocation texture) {

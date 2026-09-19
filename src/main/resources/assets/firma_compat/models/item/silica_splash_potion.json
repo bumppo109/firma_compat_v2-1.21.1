@@ -1,8 +1,0 @@
-{
-  "loader": "tfc:fluid_container",
-  "parent": "neoforge:item/default",
-  "textures": {
-    "base": "tfc:item/bucket/hematitic_glass_bottle",
-    "fluid": "tfc:item/bucket/glass_bottle_overlay"
-  }
-}

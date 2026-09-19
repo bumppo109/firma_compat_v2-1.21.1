@@ -18,12 +18,12 @@ public final class ModEntityRenderers {
             EntityRenderersEvent.RegisterRenderers event
     ) {
         event.registerEntityRenderer(
-                ModEntities.FLUID_SPLASH_POTION.get(),
+                ModEntities.THROWN_FLUID_SPLASH_POTION.get(),
                 ThrownItemRenderer::new
         );
 
         event.registerEntityRenderer(
-                ModEntities.FLUID_LINGERING_POTION.get(),
+                ModEntities.THROWN_FLUID_LINGERING_POTION.get(),
                 ThrownItemRenderer::new
         );
     }

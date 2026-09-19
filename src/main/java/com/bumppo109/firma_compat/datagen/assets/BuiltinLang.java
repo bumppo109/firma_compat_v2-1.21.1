@@ -84,6 +84,13 @@ public class BuiltinLang extends LanguageProvider {
         add("block_type.firma_compat.shingles_stairs", "%s Shingle Stairs");
         add("block_type.firma_compat.shingles_slab", "%s Shingle Slab");
 
+        ModItems.SPLASH_POTIONS.forEach((glass, itemId) -> {
+            add(itemId.get(), getItemDisplayName(itemId.get()));
+        });
+        ModItems.LINGERING_POTIONS.forEach((glass, itemId) -> {
+            add(itemId.get(), getItemDisplayName(itemId.get()));
+        });
+
         //Fluid
         ModFluids.POTIONS.forEach((potion, potionHolder) -> {
             add("fluid.firma_compat.potion.minecraft." + potion.serializedName(), potionName(potion));

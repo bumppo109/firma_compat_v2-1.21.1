@@ -7,6 +7,7 @@ import com.bumppo109.firma_compat.data.ModDataComponents;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.SoilMaterial;
+import com.eerussianguy.firmalife.common.items.FLItems;
 import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.extensions.FluidRendererExtension;
 import net.dries007.tfc.client.extensions.ItemRendererExtension;
@@ -218,6 +219,13 @@ public class FirmaCompatClient {
         });
         ModFluids.FLUIDS.forEach((potion, baseFlowingFluidFluidHolder) -> {
             event.register(new DynamicFluidContainerModel.Colors(), new ItemLike[]{((Fluid)baseFlowingFluidFluidHolder.getSource()).getBucket()});
+        });
+
+        ModItems.SPLASH_POTIONS.forEach((glass, itemId) -> {
+            event.register(new DynamicFluidContainerModel.Colors(), new ItemLike[]{(ItemLike) itemId.get()});
+        });
+        ModItems.LINGERING_POTIONS.forEach((glass, itemId) -> {
+            event.register(new DynamicFluidContainerModel.Colors(), new ItemLike[]{(ItemLike) itemId.get()});
         });
     }
 

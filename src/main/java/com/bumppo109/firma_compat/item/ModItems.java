@@ -2,12 +2,13 @@ package com.bumppo109.firma_compat.item;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.block.*;
-import com.bumppo109.firma_compat.entity.FluidPotionProjectile;
 import com.bumppo109.firma_compat.fluid.CompatFluid;
 import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.materials.food.FoodIngredient;
+import com.bumppo109.firma_compat.util.ModTags;
 import net.dries007.tfc.common.Lore;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.items.TFCMinecartItem;
 import net.dries007.tfc.util.Helpers;
@@ -15,7 +16,6 @@ import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistryHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -32,11 +32,6 @@ import static net.dries007.tfc.common.items.TFCItems.EMPTY_JAR;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, FirmaCompat.MODID);
-
-    public static final ItemId SWEET_BERRIES = register("sweet_berries");
-    public static final ItemId GLOW_BERRIES = register("glow_berries");
-    public static final ItemId BROWN_MUSHROOM = register("brown_mushroom");
-    public static final ItemId RED_MUSHROOM = register("red_mushroom");
 
     //Wood
     public static final Map<CompatWood, ItemId> LUMBER = Helpers.mapOf(
@@ -85,9 +80,9 @@ public class ModItems {
 
     //Fluid
     public static final Map<Glass, ItemId> SPLASH_POTIONS = Helpers.mapOf(Glass.class, glass ->
-            register(glass.getSerializedName() + "_splash_potion", () -> new ModSplashPotionItem(new Item.Properties())));
+            register(glass.getSerializedName() + "_splash_potion", () -> new SplashPotionContainerItem(new Item.Properties(), () -> 500, ModTags.Fluids.POTIONS)));
     public static final Map<Glass, ItemId> LINGERING_POTIONS = Helpers.mapOf(Glass.class, glass ->
-            register(glass.getSerializedName() + "_lingering_potion", () -> new ModLingeringPotionItem(new Item.Properties())));
+            register(glass.getSerializedName() + "_lingering_potion", () -> new LingeringPotionContainerItem(new Item.Properties(), () -> 500, ModTags.Fluids.POTIONS)));
 
     public static final Map<Potion, ItemId> POTION_FLUID_BUCKETS = Helpers.mapOf(Potion.class, potion ->
             register("bucket/potion/" + potion.potionNamespace() + "/" + potion.serializedName(), () -> new BucketItem(ModFluids.POTIONS.get(potion).getSource(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
@@ -104,6 +99,11 @@ public class ModItems {
     public static final ItemId UNFINISHED_LANTERN = register("unfinished_lantern");
 
     //Food
+    public static final ItemId SWEET_BERRIES = register("sweet_berries");
+    public static final ItemId GLOW_BERRIES = register("glow_berries");
+    public static final ItemId BROWN_MUSHROOM = register("brown_mushroom");
+    public static final ItemId RED_MUSHROOM = register("red_mushroom");
+
     public static final Map<FoodIngredient, ItemId> FRUIT_PRESERVES =
             preserveIngredients()
                     .collect(Collectors.toMap(
@@ -128,7 +128,7 @@ public class ModItems {
                                     () -> new Item(
                                             new Item.Properties()
                                                     .component(Lore.TYPE, Lore.UNSEALED)
-                                                    .craftRemainder(EMPTY_JAR.asItem())
+                                                    .craftRemainder(EMPTY_JAR.get().asItem())
                                     )
                             ),
                             (a, b) -> a,
