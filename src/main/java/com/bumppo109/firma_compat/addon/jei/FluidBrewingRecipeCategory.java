@@ -1,16 +1,15 @@
 package com.bumppo109.firma_compat.addon.jei;
 
-import com.bumppo109.firma_compat.block.Glass;
 import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.recipe.FluidBrewingRecipe;
-
 import com.bumppo109.firma_compat.util.ModTags;
+
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -20,11 +19,13 @@ import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.fluid.FluidComponent;
 import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -34,14 +35,12 @@ import java.util.List;
 public final class FluidBrewingRecipeCategory
         implements IRecipeCategory<RecipeHolder<FluidBrewingRecipe>> {
 
-    public static final int WIDTH = 116;
-    public static final int HEIGHT = 36;
+    public static final int WIDTH = 176;
+    public static final int HEIGHT = 166;
 
     private final RecipeType<RecipeHolder<FluidBrewingRecipe>> recipeType;
     private final IGuiHelper guiHelper;
-
-    private final IDrawable slot;
-    private final IDrawable arrow;
+    private final IDrawable background;
 
     public FluidBrewingRecipeCategory(
             RecipeType<RecipeHolder<FluidBrewingRecipe>> recipeType,
@@ -50,8 +49,19 @@ public final class FluidBrewingRecipeCategory
         this.recipeType = recipeType;
         this.guiHelper = guiHelper;
 
-        this.slot = guiHelper.getSlotDrawable();
-        this.arrow = guiHelper.getRecipeArrow();
+        /*
+         * Use the actual vanilla Brewing Stand GUI as the JEI
+         * category background.
+         */
+        this.background = guiHelper.createDrawable(
+                ResourceLocation.withDefaultNamespace(
+                        "textures/gui/container/brewing_stand.png"
+                ),
+                0,
+                0,
+                WIDTH,
+                HEIGHT
+        );
     }
 
     @Override
@@ -77,22 +87,20 @@ public final class FluidBrewingRecipeCategory
     }
 
     @Override
-    public IDrawable getIcon() {
-        return getBrewingContainerIcon();
+    public IDrawable getBackground() {
+        return background;
     }
 
-    private IDrawable getBrewingContainerIcon() {
-        ItemStack icon = BuiltInRegistries.ITEM
-                .getTag(ModTags.Items.BREWING_CONTAINERS)
-                .flatMap(tag -> tag.stream().findFirst())
-                .map(holder -> new ItemStack(holder.value()))
-                .orElse(ItemStack.EMPTY);
-
-        ItemStack bottle = ModItems.SPLASH_POTIONS.get(Glass.VOLCANIC).get().getDefaultInstance();
+    @Override
+    public IDrawable getIcon() {
+        ItemStack icon =
+                TFCItems.SILICA_GLASS_BOTTLE
+                        .get()
+                        .getDefaultInstance();
 
         return guiHelper.createDrawableIngredient(
                 VanillaTypes.ITEM_STACK,
-                bottle
+                icon
         );
     }
 
@@ -105,150 +113,160 @@ public final class FluidBrewingRecipeCategory
         FluidBrewingRecipe recipe = recipeHolder.value();
 
         /*
-         * ------------------------------------------------------------
-         * INPUT CONTAINER
-         * ------------------------------------------------------------
+         * ============================================================
+         * BLAZE POWDER / FUEL
+         * ============================================================
          *
-         * Show all items in BREWING_CONTAINERS.
+         * This is purely visual.
          *
-         * We use the item tag here rather than enumerating containers
-         * ourselves.
+         * FluidBrewingRecipe does not actually consume blaze powder,
+         * but the real Fluid Brewing Stand uses a fuel slot and the
+         * JEI category is intentionally styled after vanilla.
          */
-        IRecipeSlotBuilder containerSlot =
+        IRecipeSlotBuilder fuelSlot =
                 builder.addSlot(
-                        RecipeIngredientRole.INPUT,
-                        5,
-                        5
+                        RecipeIngredientRole.RENDER_ONLY,
+                        17,
+                        17
                 );
 
-        containerSlot.addItemStacks(
-                getInputContainers(recipe)
+        fuelSlot.addItemStack(
+                new ItemStack(Items.BLAZE_POWDER)
         );
 
         /*
-        containerSlot.addItemStacks(
-                BuiltInRegistries.ITEM
-                        .getTag(ModTags.Items.BREWING_CONTAINERS)
-                        .stream()
-                        .flatMap(tag -> tag.stream())
-                        .map(holder -> new ItemStack(holder.value()))
-                        .toList()
-        );
-
-         */
-
-        containerSlot.setBackground(
-                slot,
-                -1,
-                -1
-        );
-
-        /*
-         * ------------------------------------------------------------
+         * ============================================================
          * CATALYST
-         * ------------------------------------------------------------
+         * ============================================================
+         *
+         * This is the actual recipe ingredient.
+         *
+         * Position matches the vanilla Brewing Stand ingredient slot.
          */
-
         IRecipeSlotBuilder catalystSlot =
                 builder.addSlot(
                         RecipeIngredientRole.INPUT,
-                        35,
-                        5
+                        79,
+                        17
                 );
 
         catalystSlot.addIngredients(
                 recipe.catalyst()
         );
 
-        catalystSlot.setBackground(
-                slot,
-                -1,
-                -1
+        /*
+         * ============================================================
+         * INPUT FLUID
+         * ============================================================
+         *
+         * One container containing the recipe's input fluid.
+         *
+         * This is deliberately shown separately from the three
+         * output bottle slots.
+         */
+        IRecipeSlotBuilder inputSlot =
+                builder.addSlot(
+                        RecipeIngredientRole.INPUT,
+                        102,
+                        17
+                );
+
+        inputSlot.addItemStacks(
+                getInputContainers(recipe)
+        );
+
+        inputSlot.addRichTooltipCallback(
+                (view, tooltip) -> tooltip.add(
+                        Component.translatable(
+                                "jei.firma_compat.fluid_brewing.minimum",
+                                recipe.inputAmount()
+                        )
+                )
         );
 
         /*
-         * ------------------------------------------------------------
-         * OUTPUT FLUID
-         * ------------------------------------------------------------
-         *
-         * We display inputAmount as the representative amount.
-         *
-         * The actual recipe transforms the ENTIRE amount in the
-         * container, so this is a minimum/representative value rather
-         * than a fixed output quantity.
+         * ============================================================
+         * OUTPUT BOTTLE 0
+         * ============================================================
          */
-
-        FluidStack output =
-                new FluidStack(
-                        recipe.outputFluid(),
-                        recipe.inputAmount()
-                );
-
-        IRecipeSlotBuilder outputSlot =
+        IRecipeSlotBuilder output0 =
                 builder.addSlot(
                         RecipeIngredientRole.OUTPUT,
-                        95,
-                        5
+                        56,
+                        51
                 );
 
-        outputSlot.addIngredient(
-                JEIIntegration.FLUID_STACK,
-                output
-        );
-
-        outputSlot.setFluidRenderer(
-                1L,
-                false,
-                16,
-                16
-        );
-
-        outputSlot.setBackground(
-                slot,
-                -1,
-                -1
+        output0.addItemStacks(
+                getOutputContainers(recipe)
         );
 
         /*
-         * ------------------------------------------------------------
-         * INPUT CONTAINER TOOLTIP
-         * ------------------------------------------------------------
+         * ============================================================
+         * OUTPUT BOTTLE 1
+         * ============================================================
          */
+        IRecipeSlotBuilder output1 =
+                builder.addSlot(
+                        RecipeIngredientRole.OUTPUT,
+                        79,
+                        58
+                );
 
-        containerSlot.addRichTooltipCallback(
-                (view, tooltip) -> {
-                    tooltip.add(
-                            Component.translatable(
-                                    "jei.firma_compat.fluid_brewing.container"
-                            )
-                    );
-
-                    tooltip.add(
-                            Component.translatable(
-                                    "jei.firma_compat.fluid_brewing.minimum",
-                                    recipe.inputAmount()
-                            )
-                    );
-                }
+        output1.addItemStacks(
+                getOutputContainers(recipe)
         );
 
         /*
-         * ------------------------------------------------------------
-         * OUTPUT TOOLTIP
-         * ------------------------------------------------------------
+         * ============================================================
+         * OUTPUT BOTTLE 2
+         * ============================================================
          */
+        IRecipeSlotBuilder output2 =
+                builder.addSlot(
+                        RecipeIngredientRole.OUTPUT,
+                        102,
+                        51
+                );
 
-        outputSlot.addRichTooltipCallback(
-                (view, tooltip) -> {
-                    tooltip.add(
-                            Component.translatable(
-                                    "jei.firma_compat.fluid_brewing.entire_amount"
-                            )
-                    );
-                }
+        output2.addItemStacks(
+                getOutputContainers(recipe)
+        );
+
+        /*
+         * The recipe transforms the entire amount of fluid in the
+         * container rather than consuming exactly inputAmount.
+         */
+        output0.addRichTooltipCallback(
+                (view, tooltip) -> tooltip.add(
+                        Component.translatable(
+                                "jei.firma_compat.fluid_brewing.entire_amount"
+                        )
+                )
+        );
+
+        output1.addRichTooltipCallback(
+                (view, tooltip) -> tooltip.add(
+                        Component.translatable(
+                                "jei.firma_compat.fluid_brewing.entire_amount"
+                        )
+                )
+        );
+
+        output2.addRichTooltipCallback(
+                (view, tooltip) -> tooltip.add(
+                        Component.translatable(
+                                "jei.firma_compat.fluid_brewing.entire_amount"
+                        )
+                )
         );
     }
 
+    /**
+     * No custom drawing is required.
+     *
+     * The vanilla Brewing Stand texture supplies the GUI artwork,
+     * including the brewing stand, bottle outlines, fuel area, etc.
+     */
     @Override
     public void draw(
             RecipeHolder<FluidBrewingRecipe> recipeHolder,
@@ -257,28 +275,22 @@ public final class FluidBrewingRecipeCategory
             double mouseX,
             double mouseY
     ) {
-        arrow.draw(
-                graphics,
-                65,
-                5
-        );
     }
 
-    private static List<ItemStack> getInputContainers(
+    /**
+     * Gets containers capable of holding both the input and output
+     * fluids.
+     */
+    private static List<ItemStack> getCompatibleContainers(
             FluidBrewingRecipe recipe
     ) {
-        FluidStack fluid = new FluidStack(
-                recipe.inputFluid(),
-                recipe.inputAmount()
-        );
-
         return BuiltInRegistries.ITEM
                 .getTag(ModTags.Items.BREWING_CONTAINERS)
                 .stream()
                 .flatMap(tag -> tag.stream())
                 .map(holder -> new ItemStack(holder.value()))
                 .filter(stack ->
-                        stack.getItem() instanceof FluidContainerItem container
+                        stack.getItem() instanceof FluidContainerItem
                 )
                 .filter(stack -> {
                     FluidContainerItem container =
@@ -286,18 +298,72 @@ public final class FluidBrewingRecipeCategory
 
                     return container.containerInfo()
                             .canContainFluid(recipe.inputFluid())
-                            && container.containerInfo()
-                            .canContainFluid(recipe.outputFluid());
-                })
-                .map(stack -> {
-                    stack.set(
-                            TFCComponents.FLUID,
-                            new FluidComponent(fluid)
-                    );
-
-                    return stack;
+                            &&
+                            container.containerInfo()
+                                    .canContainFluid(recipe.outputFluid());
                 })
                 .toList();
     }
 
+    /**
+     * Creates the input-container representations.
+     *
+     * The item itself is preserved, but its TFC fluid component is
+     * changed to the recipe's input fluid.
+     */
+    private static List<ItemStack> getInputContainers(
+            FluidBrewingRecipe recipe
+    ) {
+        FluidStack fluid =
+                new FluidStack(
+                        recipe.inputFluid(),
+                        recipe.inputAmount()
+                );
+
+        return getCompatibleContainers(recipe)
+                .stream()
+                .map(container -> {
+                    ItemStack result = container.copy();
+
+                    result.set(
+                            TFCComponents.FLUID,
+                            new FluidComponent(fluid)
+                    );
+
+                    return result;
+                })
+                .toList();
+    }
+
+    /**
+     * Creates the output-container representations.
+     *
+     * JEI displays inputAmount as the representative amount.
+     *
+     * The actual recipe is capable of transforming the entire
+     * quantity contained by the player's container.
+     */
+    private static List<ItemStack> getOutputContainers(
+            FluidBrewingRecipe recipe
+    ) {
+        FluidStack fluid =
+                new FluidStack(
+                        recipe.outputFluid(),
+                        recipe.inputAmount()
+                );
+
+        return getCompatibleContainers(recipe)
+                .stream()
+                .map(container -> {
+                    ItemStack result = container.copy();
+
+                    result.set(
+                            TFCComponents.FLUID,
+                            new FluidComponent(fluid)
+                    );
+
+                    return result;
+                })
+                .toList();
+    }
 }
