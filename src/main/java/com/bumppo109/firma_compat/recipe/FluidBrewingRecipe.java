@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat.recipe;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.util.ModTags;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -122,6 +123,10 @@ public record FluidBrewingRecipe(
         }
 
         if (!(stack.getItem() instanceof FluidContainerItem containerItem)) {
+            return false;
+        }
+
+        if (!stack.is(ModTags.Items.BREWING_CONTAINERS)) {
             return false;
         }
 

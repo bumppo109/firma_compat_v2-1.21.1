@@ -2,9 +2,13 @@ package com.bumppo109.firma_compat.item;
 
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.block.*;
+import com.bumppo109.firma_compat.fluid.ModFluids;
 import com.bumppo109.firma_compat.materials.food.FoodIngredient;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.fluid.FluidComponent;
+import net.dries007.tfc.common.items.TFCItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -12,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -133,6 +138,19 @@ public class ModCreativeModeTab {
         });
         ModItems.TFC_NUGGETS.forEach((metal, itemId) -> {
             add(output, itemId);
+        });
+        // Filled silica glass bottles
+        ModFluids.POTIONS.forEach((potion, fluidHolder) -> {
+            ItemStack bottle = new ItemStack(TFCItems.SILICA_GLASS_BOTTLE.get());
+
+            bottle.set(
+                    TFCComponents.FLUID,
+                    new FluidComponent(
+                            new FluidStack(fluidHolder.getSource(), 250)
+                    )
+            );
+
+            output.accept(bottle);
         });
     }
 
