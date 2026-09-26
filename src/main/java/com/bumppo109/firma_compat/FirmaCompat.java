@@ -6,7 +6,6 @@ import com.bumppo109.firma_compat.blockentity.ModBlockEntities;
 import com.bumppo109.firma_compat.blockentity.ModMenus;
 import com.bumppo109.firma_compat.blockentity.PotionContainerVariants;
 import com.bumppo109.firma_compat.data.ModDataComponents;
-import com.bumppo109.firma_compat.data.ModDataMaps;
 import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
 import com.bumppo109.firma_compat.entity.ModEntities;
 import com.bumppo109.firma_compat.event.ModClientEvents;
@@ -77,7 +76,7 @@ public class FirmaCompat {
         FirmaCompatConfig.register(modContainer);
 
         if (FMLEnvironment.dist.isClient()) {
-            //RegHelper.registerDynamicResourceProvider(new ModClientDynamicResources());
+            RegHelper.registerDynamicResourceProvider(new ModClientDynamicResources());
             modEventBus.addListener(ModItemCapabilities::register);
             modEventBus.addListener(FirmaCompatClient::onItemColors);
             modEventBus.addListener(FirmaCompatClient::registerExtensions);

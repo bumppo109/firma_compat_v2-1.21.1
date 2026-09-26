@@ -324,14 +324,15 @@ public interface ModCraftingRecipes extends ModRecipes {
                     );
                 }
 
+                recipe()
+                        .input(Ingredient.of(
+                                ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.LOOSE).get().asItem(),
+                                ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.MOSSY_LOOSE).get().asItem()))
+                        .inputIsPrimary(TFCTags.Items.TOOLS_CHISEL)
+                        .damageInputs()
+                        .shapeless(brickItem);
+
                 if (material.brick() != null) {
-                    recipe()
-                            .input(Ingredient.of(
-                                    ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.LOOSE).get().asItem(),
-                                    ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.MOSSY_LOOSE).get().asItem()))
-                            .inputIsPrimary(TFCTags.Items.TOOLS_CHISEL)
-                            .damageInputs()
-                            .shapeless(brickItem);
                     recipe()
                             .input('L', brickItem)
                             .input('X', TFCItems.MORTAR)

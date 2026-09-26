@@ -1,9 +1,6 @@
 package com.bumppo109.firma_compat.addon.everycompat.modules.woodgood;
 
 import com.bumppo109.firma_compat.FirmaCompat;
-import com.bumppo109.firma_compat.addon.EveryCompatHelper;
-import com.bumppo109.firma_compat.block.CompatWood;
-import com.bumppo109.firma_compat.item.ModItems;
 import com.google.gson.*;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
@@ -21,26 +18,24 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rotation.*;
 import net.dries007.tfc.common.blocks.wood.*;
 import net.dries007.tfc.common.items.BarrelBlockItem;
-import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Metal;
 import net.mehvahdjukaar.every_compat.EveryCompat;
 import net.mehvahdjukaar.every_compat.api.ItemOnlyEntrySet;
 import net.mehvahdjukaar.every_compat.api.PaletteStrategies;
 import net.mehvahdjukaar.every_compat.api.RenderLayer;
 import net.mehvahdjukaar.every_compat.api.SimpleEntrySet;
-import net.mehvahdjukaar.every_compat.misc.UtilityTag;
 import net.mehvahdjukaar.every_compat.modules.EveryCompatModule;
 import net.mehvahdjukaar.moonlight.api.resources.RPUtils;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
+import net.mehvahdjukaar.moonlight.api.resources.StaticResource;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
-import net.mehvahdjukaar.moonlight.api.set.BlockSetAPI;
 import net.mehvahdjukaar.moonlight.api.set.wood.VanillaWoodChildKeys;
 import net.mehvahdjukaar.moonlight.api.set.wood.VanillaWoodTypes;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodType;
 import net.mehvahdjukaar.moonlight.api.set.wood.WoodTypeRegistry;
 import net.mehvahdjukaar.moonlight.api.util.Utils;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -58,8 +53,7 @@ import javax.annotation.Nullable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -89,6 +83,30 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
     public SimpleEntrySet<WoodType, Block> WINDMILL;
     public final SimpleEntrySet<WoodType, Block> WATER_WHEEL;
     public final SimpleEntrySet<WoodType, Block> CRATE;
+
+    private static final Map<String, Boolean> VANILLA_WOOD_CHILD_KEYS = Map.ofEntries(
+            Map.entry(VanillaWoodChildKeys.PLANKS, true),
+            Map.entry(VanillaWoodChildKeys.LOG, false),
+            Map.entry(VanillaWoodChildKeys.LEAVES, false),
+            Map.entry(VanillaWoodChildKeys.WOOD, false),
+            Map.entry(VanillaWoodChildKeys.STRIPPED_LOG, false),
+            Map.entry(VanillaWoodChildKeys.STRIPPED_WOOD, false),
+            Map.entry(VanillaWoodChildKeys.SAPLING, false),
+            Map.entry(VanillaWoodChildKeys.FENCE, true),
+            Map.entry(VanillaWoodChildKeys.BUTTON, false),
+            Map.entry(VanillaWoodChildKeys.PRESSURE_PLATE, true),
+            Map.entry(VanillaWoodChildKeys.DOOR, true),
+            Map.entry(VanillaWoodChildKeys.TRAPDOOR, true),
+            Map.entry(VanillaWoodChildKeys.SIGN, true),
+            Map.entry(VanillaWoodChildKeys.STAIRS, true),
+            Map.entry(VanillaWoodChildKeys.SLAB, true),
+            Map.entry(VanillaWoodChildKeys.FENCE_GATE, true),
+            Map.entry(VanillaWoodChildKeys.HANGING_SIGN, true),
+            Map.entry(VanillaWoodChildKeys.WALL_HANGING_SIGN, false),
+            Map.entry(VanillaWoodChildKeys.WALL_SIGN, false),
+            Map.entry(VanillaWoodChildKeys.BOAT, false),
+            Map.entry(VanillaWoodChildKeys.CHEST_BOAT, false)
+    );
 
     public CompatWoodGoodModule(String modId) {
         super(modId, "tfc");
@@ -406,5 +424,188 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
             FirmaCompat.LOGGER.warn("Unknown wood namespace for plank texture: {}", namespace);
             return ResourceLocation.fromNamespaceAndPath(namespace, "block/" + typeName + "_planks");
         }
+    }
+
+    public void addDynamicServerResources(Consumer<ResourceGenTask> executor) {
+        super.addDynamicServerResources(executor);
+
+        executor.accept((manager, sink) -> {
+            for (var woodType : WoodTypeRegistry.INSTANCE) {
+                if (woodType.getNamespace().equals("tfc") || woodType.getNamespace().equals("afc") || woodType.getNamespace().equals("minecraft")) continue;
+
+                Item lumber = LUMBER.items.get(woodType);
+                ResourceLocation logTag = getATagOrCreateANew("logs", "caps", woodType, sink, manager);
+                ResourceLocation lumberRes = Utils.getID(lumber);
+                ResourceLocation planksRes = getChildRes(woodType, "planks");
+                ResourceLocation stairsRes = getChildRes(woodType, "stairs");
+                ResourceLocation slabRes = getChildRes(woodType, "slab");
+                ResourceLocation axleRes = woodType.hasChild("stripped_log") ? Utils.getID(AXLE.items.get(woodType)) : ResourceLocation.fromNamespaceAndPath("","");
+                ResourceLocation strippedLogRes = getChildRes(woodType, "stripped_log");;
+                ResourceLocation logRes = getChildRes(woodType, "log");
+
+                for (WoodGoodEntry entry : WoodGoodEntry.values()) {
+                    if (!entry.isVanilla()) continue;
+
+                    ResourceLocation oakEntryRes = Utils.getID(entry.oakItem().get());
+
+                    if (entry.equals(WoodGoodEntry.LUMBER)) {
+                        try {
+                            StaticResource lumberRecipe = StaticResource.getOrThrow(manager,
+                                    ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_lumber_from_logs")));
+                            StaticResource planksRecycleRecipe = StaticResource.getOrThrow(manager,
+                                    ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_lumber_from_planks")));
+                            StaticResource stairsRecycleRecipe = StaticResource.getOrThrow(manager,
+                                    ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_lumber_from_stairs")));
+                            StaticResource slabRecycleRecipe = StaticResource.getOrThrow(manager,
+                                    ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_lumber_from_slabs")));
+
+                            sink.addSimilarJsonResource(manager, lumberRecipe,
+                                    text -> text
+                                            .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                            .replace("minecraft:oak_logs", logTag.toString()),
+                                    path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                            );
+                            sink.addSimilarJsonResource(manager, planksRecycleRecipe,
+                                    text -> text
+                                            .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                            .replace("minecraft:oak_planks", planksRes.toString()),
+                                    path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                            );
+                            sink.addSimilarJsonResource(manager, stairsRecycleRecipe,
+                                    text -> text
+                                            .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                            .replace("minecraft:oak_stairs", stairsRes.toString()),
+                                    path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                            );
+                            sink.addSimilarJsonResource(manager, slabRecycleRecipe,
+                                    text -> text
+                                            .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                            .replace("minecraft:oak_slab", slabRes.toString()),
+                                    path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                            );
+                        } catch (Exception e) {
+                            FirmaCompat.LOGGER.debug("Failed to grab recipe for lumber & lumber recycling");
+                        }
+                    } else {
+                        try {
+                            StaticResource recipeTemplate = StaticResource.getOrThrow(manager,
+                                    ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_" + entry.getSerializedName())));
+
+                            sink.addSimilarJsonResource(
+                                    manager,
+                                    recipeTemplate,
+                                    text -> text
+                                            .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                            .replace("minecraft:oak_planks", planksRes.toString())
+                                            .replace("minecraft:oak_slab", slabRes.toString())
+                                            .replace("minecraft:stripped_oak_log", strippedLogRes.toString())
+                                            .replace("minecraft:oak_logs", logTag.toString())
+                                            .replace("minecraft:oak_log", logRes.toString())
+                                            .replace("firma_compat:oak_axle", axleRes.toString())
+                                            .replace(oakEntryRes.toString(), "everycomp:tfc/" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_" + entry.getSerializedName()),
+                                    path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                            );
+                        } catch (Exception e) {
+                            FirmaCompat.LOGGER.debug("Failed to grab recipe for {}", "crafting/oak_" + entry.getSerializedName());
+                        }
+                    }
+                }
+
+                for (Map.Entry<String, Boolean> entry : VANILLA_WOOD_CHILD_KEYS.entrySet()) {
+                    String childKey = entry.getKey();
+                    boolean changeRecipe = entry.getValue();
+
+                    if (!woodType.hasChild(childKey)) continue;
+
+                    Item child = woodType.getItemOfThis(childKey);
+                    if (child == null) {
+                        FirmaCompat.LOGGER.debug("[Firma Compat] WoodGood Module: childKey {} is present but item is null", childKey);
+                        continue;
+                    }
+
+                    ResourceLocation childRes = Utils.getID(child);
+
+                    if (changeRecipe) {
+                        try {
+                            StaticResource recipeTemplate = StaticResource.getOrThrow(manager,
+                                    ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_" + childKey)));
+
+                            generateFalseRecipe(sink, childRes);
+                            sink.addSimilarJsonResource(
+                                    manager,
+                                    recipeTemplate,
+                                    text -> text
+                                            .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                            .replace("minecraft:oak_planks", planksRes.toString())
+                                            .replace("minecraft:oak_slab", slabRes.toString())
+                                            .replace("minecraft:stripped_oak_log", strippedLogRes.toString())
+                                            .replace("minecraft:oak_log", logRes.toString())
+                                            .replace("firma_compat:oak_axle", axleRes.toString())
+                                            .replace("minecraft:oak_" + childKey, childRes.toString()),
+                                    path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                            );
+                        } catch (Exception e) {
+                            FirmaCompat.LOGGER.debug("Failed to grab replacement recipe for {}", "crafting/oak_" + childKey);
+                        }
+                    }
+                }
+
+                //TFC data
+                if(woodType.canBurn()){
+                    if(!Objects.equals(woodType.getNamespace(), "minecraft")
+                            && !Objects.equals(woodType.getNamespace(), "tfc")
+                            && !Objects.equals(woodType.getNamespace(), "afc")){
+                        fuelData(woodType, sink, manager);
+                    }
+                }
+            }
+        });
+    }
+
+    public static ResourceLocation getChildRes(WoodType woodType, String child) {
+        return woodType.hasChild(child) ? Utils.getID(Objects.requireNonNull(woodType.getItemOfThis(child))) : ResourceLocation.fromNamespaceAndPath("","");
+    }
+
+    public void fuelData(WoodType woodType, ResourceSink sink, ResourceManager manager) {
+
+        ResourceLocation dataLoc = modRes("tfc/fuel/oak_logs.json");
+
+        try (InputStream dataStream = manager.getResource(dataLoc)
+                .orElseThrow(() -> new FileNotFoundException("File not found @ " + dataLoc)).open()) {
+
+            JsonObject fuelData = RPUtils.deserializeJson(dataStream);
+
+            // Editing the recipe
+            fuelData.getAsJsonObject("ingredient")
+                    .addProperty("tag", getATagOrCreateANew("logs", "caps", woodType, sink, manager).toString());
+
+            // Adding to resources
+            sink.addJson(
+                    modRes("tfc/fuel/" + woodType.getTypeName() + "_logs.json"),
+                    fuelData,
+                    ResType.GENERIC
+            );
+        }
+        catch (IOException e) {
+            EveryCompat.LOGGER.error("Failed to generate the tfc data - fuel for {} : {}", woodType.getId(), e);
+        }
+    }
+
+    public void generateFalseRecipe(ResourceSink sink, ResourceLocation resLoc) {
+        String recipePath = resLoc.getPath();
+
+        JsonObject condition = new JsonObject();
+
+        JsonArray conditions = new JsonArray();
+
+        JsonObject falseCondition = new JsonObject();
+        falseCondition.addProperty("type", "neoforge:false");
+
+        conditions.add(falseCondition);
+        condition.add("neoforge:conditions", conditions);
+
+        ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(resLoc.getNamespace(), recipePath);
+
+        sink.addJson(recipeId, condition, ResType.RECIPES);
     }
 }

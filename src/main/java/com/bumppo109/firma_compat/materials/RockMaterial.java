@@ -108,16 +108,6 @@ public enum RockMaterial implements Iterable<RockSet> {
             null, null, null, null, null, null, null, null, null, null, null
     ),
 
-    OBSIDIAN(
-            RockSet.OBSIDIAN,
-            null, null, null, null, null, null, null, null, null, null, null
-    ),
-
-    CRYING_OBSIDIAN(
-            RockSet.CRYING_OBSIDIAN,
-            null, null, null, null, null, null, null, null, null, null, null
-    ),
-
     BASALT(
             RockSet.BASALT,
             null,

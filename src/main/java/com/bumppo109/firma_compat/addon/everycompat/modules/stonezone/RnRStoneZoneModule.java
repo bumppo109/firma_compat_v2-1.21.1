@@ -16,7 +16,9 @@ import net.mehvahdjukaar.every_compat.EveryCompat;
 import net.mehvahdjukaar.every_compat.api.ItemOnlyEntrySet;
 import net.mehvahdjukaar.every_compat.api.PaletteStrategies;
 import net.mehvahdjukaar.every_compat.api.SimpleEntrySet;
+import net.mehvahdjukaar.every_compat.misc.UtilityTag;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
+import net.mehvahdjukaar.moonlight.api.resources.StaticResource;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
 import net.mehvahdjukaar.moonlight.api.set.BlockType;
@@ -204,5 +206,66 @@ public class RnRStoneZoneModule extends StoneZoneModule {
                 .excludeBlockTypes("tfc:.*")
                 .build();
         this.addEntry(SETT_ROAD_SLAB);
+    }
+
+    public void addDynamicServerResources(Consumer<ResourceGenTask> executor) {
+        super.addDynamicServerResources(executor);
+
+        executor.accept((manager, sink) -> {
+        //Recipes
+            for(StoneType stoneType : StoneTypeRegistry.INSTANCE){
+                if (stoneType.getNamespace().equals("minecraft") || stoneType.getNamespace().equals("tfc")) continue;
+
+                ResourceLocation rockTag = ResourceLocation.fromNamespaceAndPath(stoneType.getNamespace(), "stone_type/" + stoneType.getTypeName());
+                UtilityTag.createAndAddCustomTags(rockTag, sink, stoneType.stone);
+                ResourceLocation flagstoneRes = Utils.getID(FLAGSTONE.items.get(stoneType));
+                ResourceLocation rawRes = BuiltInRegistries.BLOCK.getKey(stoneType.block);
+                ResourceLocation looseRes = ResourceLocation.fromNamespaceAndPath("stonezone","tfc/" + stoneType.getNamespace() + "/loose_" + stoneType.getTypeName());
+                ResourceLocation mossyLooseRes = ResourceLocation.fromNamespaceAndPath("stonezone","tfc/" + stoneType.getNamespace() + "/mossy_loose_" + stoneType.getTypeName());
+                ResourceLocation brickRes = ResourceLocation.fromNamespaceAndPath("stonezone","tfc/" + stoneType.getNamespace() + "/" + stoneType.getTypeName() + "_brick");
+
+                for (StoneZoneEntry entry : StoneZoneEntry.values()) {
+                    if (!entry.isRnR()) continue;
+
+                    try {
+                        StaticResource recipeTemplate = StaticResource.getOrThrow(manager,
+                                ResType.RECIPES.getPath(entry.stoneRecipe()));
+
+                        sink.addSimilarJsonResource(
+                                manager,
+                                recipeTemplate,
+                                text -> text
+                                        .replace("firma_compat:mossy_loose_andesite", mossyLooseRes.toString())
+                                        .replace("firma_compat:loose_andesite", looseRes.toString())
+                                        .replace("firma_compat:andesite_brick", brickRes.toString())
+                                        .replace("firma_compat:andesite_flagstone", flagstoneRes.toString())
+                                        .replace("firma_compat:andesite_cobbled_road","stonezone:tfc/" + stoneType.getNamespace() + "/" + stoneType.getTypeName() + "_cobbled_road")
+                                        .replace("firma_compat:andesite_sett_road","stonezone:tfc/" + stoneType.getNamespace() + "/" + stoneType.getTypeName() + "_sett_road")
+                                        .replace("minecraft:andesite", rawRes.toString()),
+                                path -> path.replace("andesite", stoneType.getNamespace() + "/" + stoneType.getTypeName())
+                        );
+
+                        if (entry.equals(StoneZoneEntry.COBBLED_ROAD)) {
+                            StaticResource extraCobbledRecipe = StaticResource.getOrThrow(manager,
+                                    ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block_mod/mossy_andesite_cobbled_road")));
+
+                            sink.addSimilarJsonResource(
+                                    manager,
+                                    extraCobbledRecipe,
+                                    text -> text
+                                            .replace("firma_compat:mossy_loose_andesite", mossyLooseRes.toString())
+                                            .replace("firma_compat:andesite_cobbled_road","stonezone:tfc/" + stoneType.getNamespace() + "/" + stoneType.getTypeName() + "_cobbled_road")
+                                    ,
+                                    path -> path.replace("mossy_andesite",stoneType.getNamespace() + "/mossy_" + stoneType.getTypeName())
+                            );
+                        }
+                    } catch (Exception e) {
+                        FirmaCompat.LOGGER.debug("Failed to grab recipe for mossy {} cobbled road", stoneType);
+                    }
+                }
+            }
+
+        //Features
+        });
     }
 }

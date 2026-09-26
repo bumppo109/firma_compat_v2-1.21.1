@@ -1,16 +1,33 @@
 package com.bumppo109.firma_compat.datagen;
 
 import com.bumppo109.firma_compat.FirmaCompatHelpers;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnR;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRItems;
+import com.bumppo109.firma_compat.block.CompatRock;
+import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.datagen.recipes.*;
+import com.bumppo109.firma_compat.item.ModItems;
 import com.bumppo109.firma_compat.materials.SoilMaterial;
+import com.bumppo109.firma_compat.materials.WoodMaterial;
+import com.bumppo109.firma_compat.util.ModTags;
+import com.eerussianguy.firmalife.common.items.FLItems;
 import com.mojang.serialization.Codec;
+import com.therighthon.rnr.common.block.RNRBlocks;
+import com.therighthon.rnr.common.item.RNRItems;
+import com.therighthon.rnr.common.recipe.BlockModRecipe;
+import com.therighthon.rnr.common.recipe.MattockRecipe;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.player.ChiselMode;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.DataGenerationHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -21,13 +38,17 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -141,6 +162,106 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         ModBlocks.ORE_DEPOSITS.forEach((oreDeposit, blockId) -> {
             add(new LandslideRecipe(BlockIngredient.of(blockId.get()), blockId.get().defaultBlockState()));
         });
+
+        // =============== Firmalife ================
+        for (CompatWood wood : CompatWood.VALUES) {
+            WoodMaterial material = wood.woodMaterial();
+
+            Block foodShelfBlock = CompatFLBlocks.FOOD_SHELVES.get(wood).get();
+            Block hangerBlock = CompatFLBlocks.HANGERS.get(wood).get();
+            Block jarbnetBlock = CompatFLBlocks.JARBNETS.get(wood).get();
+            Block kegBlock = CompatFLBlocks.KEGS.get(wood).get();
+            Block stompBarrelBlock = CompatFLBlocks.STOMPING_BARRELS.get(wood).get();
+            Block barrelPressBlock = CompatFLBlocks.BARREL_PRESSES.get(wood).get();
+            Block wineShelfBlock = CompatFLBlocks.WINE_SHELVES.get(wood).get();
+
+            shapedCondition(Map.of('L', Ingredient.of(ModItems.LUMBER.get(wood).get()), 'P', Ingredient.of(material.planks().get())), List.of("PPP", "LLL", "PPP"), foodShelfBlock, flLoaded);
+            shapedCondition(Map.of('S', Ingredient.of(Tags.Items.STRINGS), 'P', Ingredient.of(material.planks().get())), List.of("PPP", " S ", " S "), hangerBlock, flLoaded);
+            shapedCondition(Map.of('B', Ingredient.of(TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.ROD).get()), 'W', Ingredient.of(material.log().get()), 'L', Ingredient.of(ModItems.LUMBER.get(wood).get())), List.of("W  ", "BLL", "W  "), jarbnetBlock, flLoaded);
+            shapedCondition(Map.of('W', Ingredient.of(material.log().get()), 'S', Ingredient.of(FLItems.BARREL_STAVE), 'G', Ingredient.of(TFCItems.GLUE)), List.of("WSW", "SGS", "WSW"), kegBlock, flLoaded);
+            shapedCondition(Map.of('L', Ingredient.of(ModItems.LUMBER.get(wood).get()), 'G', Ingredient.of(TFCItems.GLUE)), List.of("LGL", "LLL", "GGG"), stompBarrelBlock, flLoaded);
+            shapedCondition(Map.of('B', Ingredient.of(stompBarrelBlock), 'R', Ingredient.of(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.ROD).get()), 'S', Ingredient.of(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.SHEET).get()), 'M', Ingredient.of(TFCItems.BRASS_MECHANISMS)), List.of("BR ", "SM "), barrelPressBlock, flLoaded);
+            shapedCondition(Map.of('L', Ingredient.of(FLItems.TREATED_LUMBER.get()), 'W', Ingredient.of(material.log().get())), List.of("WLW", "WLW", "WLW"), wineShelfBlock, flLoaded);
+        }
+
+        // =============== RnR ================
+        Block baseBlock = RNRBlocks.BASE_COURSE.get();
+
+        for (CompatRock rock : CompatRock.VALUES) {
+            //flagstone item
+            NonNullList<Ingredient> ingredients = NonNullList.create();
+            ingredients.add(Ingredient.of(rock.rockMaterial().raw().base().get()));
+            ingredients.add(Ingredient.of(rock.rockMaterial().raw().base().get()));
+            ingredients.add(Ingredient.of(TFCTags.Items.TOOLS_CHISEL));
+
+            System.out.println(ingredients.size());
+
+            add(rock.getSerializedName() + "_flagstone", new AdvancedShapelessRecipe(
+                            ingredients,
+                            ItemStackProvider.of(new ItemStack(CompatRnRItems.FLAGSTONE.get(rock).get()).copyWithCount(16)),
+                            Optional.empty(),
+                            Optional.of(Ingredient.of(TFCTags.Items.TOOLS_CHISEL))
+                    ), rnrLoaded
+            );
+
+            for (CompatRnR compatRnR : CompatRnR.VALUES) {
+                Block block = CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get();
+                Item mossyLoose = ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.MOSSY_LOOSE).get().asItem();
+                Item item = switch (compatRnR) {
+                    case COBBLED_ROAD -> ModBlocks.ROCK_BLOCKS.get(rock).get(CompatRock.BlockType.LOOSE).get().asItem();
+                    case SETT_ROAD -> rock.equals(CompatRock.NETHERRACK) ? Items.NETHER_BRICK : ModItems.BRICK.get(rock).get();
+                    case FLAGSTONES -> CompatRnRItems.FLAGSTONE.get(rock).get();
+                };
+
+                //block mod
+                if (compatRnR.equals(CompatRnR.COBBLED_ROAD)) {
+                    add("mossy_" + rock.getSerializedName() + "_cobbled_road", new BlockModRecipe(Ingredient.of(mossyLoose), BlockIngredient.of(baseBlock), block.defaultBlockState(), true), rnrLoaded);
+                }
+                add(new BlockModRecipe(Ingredient.of(item), BlockIngredient.of(baseBlock), block.defaultBlockState(), true), rnrLoaded);
+                //mattock
+                mattock(BlockIngredient.of(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get()),
+                        CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get().defaultBlockState(),
+                        ChiselMode.STAIR, "", rnrLoaded);
+                mattock(BlockIngredient.of(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get()),
+                        CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get().defaultBlockState(),
+                        ChiselMode.SLAB, "", rnrLoaded);
+            }
+        }
+        mattock(BlockIngredient.of(BlockTags.DIRT), CompatRnRBlocks.TAMPED_DIRT.get().defaultBlockState(), ChiselMode.SMOOTH, "smooth", rnrLoaded);
+        mattock(BlockIngredient.of(ModTags.Blocks.MUD), CompatRnRBlocks.TAMPED_MUD.get().defaultBlockState(), ChiselMode.SMOOTH, "smooth", rnrLoaded);
+        add("tamped_dirt_base_course", new BlockModRecipe(Ingredient.of(RNRItems.CRUSHED_BASE_COURSE), BlockIngredient.of(CompatRnRBlocks.TAMPED_DIRT.get()), RNRBlocks.BASE_COURSE.get().defaultBlockState(), true), rnrLoaded);
+        add("tamped_mud_base_course", new BlockModRecipe(Ingredient.of(RNRItems.CRUSHED_BASE_COURSE), BlockIngredient.of(CompatRnRBlocks.TAMPED_MUD.get()), RNRBlocks.BASE_COURSE.get().defaultBlockState(), true), rnrLoaded);
+        add(new BlockModRecipe(Ingredient.of(Items.GRAVEL), BlockIngredient.of(baseBlock), CompatRnRBlocks.GRAVEL_ROAD.get().defaultBlockState(), true), rnrLoaded);
+        add(new BlockModRecipe(Ingredient.of(Items.GRAVEL), BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get().defaultBlockState(), true), rnrLoaded);
+        mattock(BlockIngredient.of(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get()), CompatRnRBlocks.MACADAM_ROAD.get().defaultBlockState(), ChiselMode.SMOOTH, "smooth", rnrLoaded);
+
+        mattock(BlockIngredient.of(CompatRnRBlocks.MACADAM_ROAD.get()), CompatRnRBlocks.MACADAM_ROAD_STAIRS.get().defaultBlockState(), ChiselMode.STAIR, "stair", rnrLoaded);
+        mattock(BlockIngredient.of(CompatRnRBlocks.MACADAM_ROAD.get()), CompatRnRBlocks.MACADAM_ROAD_SLAB.get().defaultBlockState(), ChiselMode.SLAB, "slab", rnrLoaded);
+        mattock(BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get().defaultBlockState(), ChiselMode.STAIR, "stair", rnrLoaded);
+        mattock(BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.GRAVEL_ROAD_SLAB.get().defaultBlockState(), ChiselMode.SLAB, "slab", rnrLoaded);
+
+        shapelessCondition("gravel_fill", Blocks.GRAVEL, CompatRnRItems.GRAVEL_FILL.get(), 6, rnrLoaded);
+
+        for (CompatWood wood : CompatWood.VALUES) {
+            Item shingleItem = CompatRnRItems.SHINGLE.get(wood).get();
+            WoodMaterial material = wood.woodMaterial();
+
+            assert material.log() != null;
+            add(new AdvancedShapelessRecipe(
+                            NonNullList.of(Ingredient.EMPTY, Ingredient.of(material.log().get()), Ingredient.of(TFCTags.Items.TOOLS_CHISEL)),
+                            ItemStackProvider.of(new ItemStack(shingleItem).copyWithCount(12)),
+                            Optional.empty(),
+                            Optional.of(Ingredient.of(TFCTags.Items.TOOLS_CHISEL))
+                    ), rnrLoaded
+            );
+
+            add(new BlockModRecipe(Ingredient.of(shingleItem), BlockIngredient.of(RNRBlocks.ROOF_FRAME.get()), CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get().defaultBlockState(), true), rnrLoaded);
+            add(new BlockModRecipe(Ingredient.of(shingleItem), BlockIngredient.of(RNRBlocks.ROOF_FRAME_STAIRS.get()), CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.get(wood).get().defaultBlockState(), true), rnrLoaded);
+            add(new BlockModRecipe(Ingredient.of(shingleItem), BlockIngredient.of(RNRBlocks.ROOF_FRAME_SLAB.get()), CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.get(wood).get().defaultBlockState(), true), rnrLoaded);
+
+            mattock(BlockIngredient.of(CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get()), CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.get(wood).get().defaultBlockState(), ChiselMode.STAIR,"", rnrLoaded);
+            mattock(BlockIngredient.of(CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get()), CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.get(wood).get().defaultBlockState(), ChiselMode.SLAB,"", rnrLoaded);
+        }
     }
 
     @Override
@@ -179,6 +300,17 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
     private void collapse(String suffix, BlockIngredient in, BlockState out, ICondition... conditions) {
         this.add(this.nameOf(out.getBlock().asItem()) + (Objects.equals(suffix, "") ? "" : "_") + suffix,
                 new CollapseRecipe(in, out), conditions);
+    }
+
+    private void mattock(BlockIngredient in, BlockState out, Holder<ChiselMode> mode, String suffix) {
+        this.add("mattock", this.nameOf(out.getBlock().asItem()) + (Objects.equals(suffix, "") ? "" : "_") + suffix, new MattockRecipe(in, out, (ChiselMode)mode.value(), ItemStackProvider.empty()));
+    }
+
+    private void mattock(BlockIngredient in, BlockState out, Holder<ChiselMode> mode, String suffix, ICondition... conditions) {
+        this.add("mattock",
+                this.nameOf(out.getBlock().asItem()) + (Objects.equals(suffix, "") ? "" : "_") + suffix,
+                new MattockRecipe(in, out, mode.value(), ItemStackProvider.empty()),
+                conditions);
     }
 
     private void shapedCondition(Map<Character, Ingredient> ingredientMap, List<String> pattern, ItemLike result, ICondition... conditions) {

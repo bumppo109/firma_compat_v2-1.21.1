@@ -1,10 +1,15 @@
 package com.bumppo109.firma_compat.datagen;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.addon.firmalife.modules.CompatFLBlocks;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnR;
+import com.bumppo109.firma_compat.addon.rnr.modules.CompatRnRBlocks;
 import com.bumppo109.firma_compat.block.CompatRock;
 import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.materials.WoodMaterial;
+import com.eerussianguy.firmalife.common.items.FLItems;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
@@ -242,11 +247,8 @@ public class BuiltinLootTableProvider extends LootTableProvider {
 
             dropSelf(ModBlocks.FLUID_BREWING_STAND.get());
 
-            /*
             // ============= Firmalife ===============
             for (CompatWood wood : CompatWood.VALUES) {
-                CompatWoodMaterial material = wood.compatWoodMaterial();
-
                 dropSelf(CompatFLBlocks.FOOD_SHELVES.get(wood).get());
                 dropSelf(CompatFLBlocks.HANGERS.get(wood).get());
                 dropSelf(CompatFLBlocks.JARBNETS.get(wood).get());
@@ -285,8 +287,6 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             dropSelf(CompatRnRBlocks.MACADAM_ROAD.get());
             dropSelf(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get());
             dropSelf(CompatRnRBlocks.MACADAM_ROAD_SLAB.get());
-
-             */
         }
 
         private void sluiceBlockLoot(Block block) {
@@ -537,6 +537,47 @@ public class BuiltinLootTableProvider extends LootTableProvider {
                 knownBlocks.add(blockId.get());
             });
             knownBlocks.add(ModBlocks.FLUID_BREWING_STAND.get());
+
+            // ============= Firmalife ===============
+            for (CompatWood wood : CompatWood.VALUES) {
+                knownBlocks.add(CompatFLBlocks.FOOD_SHELVES.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.HANGERS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.JARBNETS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.KEGS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.STOMPING_BARRELS.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.BARREL_PRESSES.get(wood).get());
+                knownBlocks.add(CompatFLBlocks.WINE_SHELVES.get(wood).get());
+            }
+
+            CompatFLBlocks.CHROMITE_ORES.forEach((rock, gradeIdMap) -> {
+                gradeIdMap.forEach((grade, blockId) -> {
+                    knownBlocks.add(blockId.get());
+                });
+            });
+
+            // ============= RnR ===============
+            for (CompatRock rock : CompatRock.VALUES) {
+                for (CompatRnR compatRnR : CompatRnR.VALUES) {
+                    knownBlocks.add(CompatRnRBlocks.ROCK_BLOCKS.get(rock).get(compatRnR).get());
+                    knownBlocks.add(CompatRnRBlocks.ROCK_STAIRS.get(rock).get(compatRnR).get());
+                    knownBlocks.add(CompatRnRBlocks.ROCK_SLABS.get(rock).get(compatRnR).get());
+                }
+            }
+            for(CompatWood wood : CompatWood.VALUES){
+                knownBlocks.add(CompatRnRBlocks.WOOD_SHINGLE_ROOFS.get(wood).get());
+                knownBlocks.add(CompatRnRBlocks.WOOD_SHINGLE_ROOF_STAIRS.get(wood).get());
+                knownBlocks.add(CompatRnRBlocks.WOOD_SHINGLE_ROOF_SLABS.get(wood).get());
+            }
+            knownBlocks.add(CompatRnRBlocks.TAMPED_DIRT.get());
+            knownBlocks.add(CompatRnRBlocks.TAMPED_MUD.get());
+            knownBlocks.add(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get());
+            knownBlocks.add(CompatRnRBlocks.GRAVEL_ROAD.get());
+            knownBlocks.add(CompatRnRBlocks.GRAVEL_ROAD_STAIRS.get());
+            knownBlocks.add(CompatRnRBlocks.GRAVEL_ROAD_SLAB.get());
+            knownBlocks.add(CompatRnRBlocks.MACADAM_ROAD.get());
+            knownBlocks.add(CompatRnRBlocks.MACADAM_ROAD_STAIRS.get());
+            knownBlocks.add(CompatRnRBlocks.MACADAM_ROAD_SLAB.get());
+
 
             return knownBlocks;
         }

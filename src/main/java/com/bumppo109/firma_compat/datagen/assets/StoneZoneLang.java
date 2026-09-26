@@ -28,9 +28,9 @@ public class StoneZoneLang extends LanguageProvider {
         add("item_type.firma_compat.brick", "%s Brick");
 
         add("block_type.firma_compat.cobble", "%s Cobble");
-        add("block_type.firma_compat.hardened_cobble", "Hardened %s Cobble");
+        add("block_type.firma_compat.cobblestone", "%s Cobblestone");
         add("block_type.firma_compat.mossy_cobble", "Mossy %s Cobble");
-        add("block_type.firma_compat.mossy_hardened_cobble", "Mossy Hardened %s Cobble");
+        add("block_type.firma_compat.mossy_cobblestone", "Mossy %s Cobblestone");
 
         //Firmalife
         add("block_type.firma_compat.poor_chromite_ore", "Poor %s Chromite Ore");

@@ -11,6 +11,7 @@ import net.mehvahdjukaar.every_compat.api.SimpleEntrySet;
 import net.mehvahdjukaar.every_compat.api.SimpleModule;
 import net.mehvahdjukaar.every_compat.modules.EveryCompatModule;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
+import net.mehvahdjukaar.moonlight.api.resources.StaticResource;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
 import net.mehvahdjukaar.moonlight.api.set.BlockType;
@@ -34,6 +35,9 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static com.bumppo109.firma_compat.addon.everycompat.modules.woodgood.CompatWoodGoodModule.getChildRes;
+import static net.mehvahdjukaar.every_compat.misc.UtilityTag.getATagOrCreateANew;
 
 public final class RnRWoodGoodModule extends EveryCompatModule {
 
@@ -91,5 +95,50 @@ public final class RnRWoodGoodModule extends EveryCompatModule {
                 .excludeBlockTypes("tfc:.*").excludeBlockTypes("afc:.*").excludeBlockTypes("domum_ornamentum:.*")
                 .build();
         this.addEntry(SHINGLES_SLAB);
+    }
+
+    public void addDynamicServerResources(Consumer<ResourceGenTask> executor) {
+        super.addDynamicServerResources(executor);
+
+        executor.accept((manager, sink) -> {
+            for (var woodType : WoodTypeRegistry.INSTANCE) {
+                if (woodType.getNamespace().equals("tfc") || woodType.getNamespace().equals("afc") || woodType.getNamespace().equals("minecraft")) continue;
+
+                ResourceLocation logTag = getATagOrCreateANew("logs", "caps", woodType, sink, manager);
+                ResourceLocation lumberRes = ResourceLocation.fromNamespaceAndPath("everycomp","tfc/" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_lumber");
+                ResourceLocation planksRes = getChildRes(woodType, "planks");
+                ResourceLocation slabRes = getChildRes(woodType, "slab");
+                ResourceLocation strippedLogRes = getChildRes(woodType, "stripped_log");;
+                ResourceLocation logRes = getChildRes(woodType, "log");
+
+                for (WoodGoodEntry entry : WoodGoodEntry.values()) {
+                    if (!entry.isRnR()) continue;
+
+                    ResourceLocation oakEntryRes = Utils.getID(entry.oakItem().get());
+                    ResourceLocation recipeRes = entry.equals(WoodGoodEntry.SHINGLE) ? ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_shingle") : ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block_mod/oak_" + entry.getSerializedName());
+
+                    try {
+                        StaticResource recipeTemplate = StaticResource.getOrThrow(manager,
+                                ResType.RECIPES.getPath(recipeRes));
+
+                        sink.addSimilarJsonResource(
+                                manager,
+                                recipeTemplate,
+                                text -> text
+                                        .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                        .replace("minecraft:oak_planks", planksRes.toString())
+                                        .replace("minecraft:oak_slab", slabRes.toString())
+                                        .replace("minecraft:stripped_oak_log", strippedLogRes.toString())
+                                        .replace("minecraft:oak_logs", logTag.toString())
+                                        .replace("minecraft:oak_log", logRes.toString())
+                                        .replace(oakEntryRes.toString(), "everycomp:tfc/" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_" + entry.getSerializedName()),
+                                path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                        );
+                    } catch (Exception e) {
+                        FirmaCompat.LOGGER.debug("Failed to grab recipe for {}", "crafting/oak_" + entry.getSerializedName());
+                    }
+                }
+            }
+        });
     }
 }

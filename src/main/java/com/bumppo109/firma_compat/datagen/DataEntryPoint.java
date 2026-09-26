@@ -5,10 +5,8 @@ import com.bumppo109.firma_compat.datagen.assets.BuiltinBlockStateProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinItemModelProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinLang;
 import com.bumppo109.firma_compat.datagen.assets.StoneZoneLang;
-import com.bumppo109.firma_compat.datagen.tags.BuiltinBiomeTags;
-import com.bumppo109.firma_compat.datagen.tags.BuiltinBlockTags;
-import com.bumppo109.firma_compat.datagen.tags.BuiltinFluidTags;
-import com.bumppo109.firma_compat.datagen.tags.BuiltinItemTags;
+import com.bumppo109.firma_compat.datagen.tags.*;
+import com.bumppo109.firma_compat.datagen.worldgen.CompatVeinDataProvider;
 import com.bumppo109.firma_compat.datagen.worldgen.ModConfiguredFeatures;
 import com.bumppo109.firma_compat.datagen.worldgen.ModPlacedFeatures;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -55,6 +53,8 @@ public final class DataEntryPoint {
 
         final var lookup = builtinEntries.getRegistryProvider();
 
+        add(event, new CompatVeinDataProvider(packOutput));
+
         final var fluidHeat = add(event, new BuiltinFluidHeat(packOutput, lookup)).output();
         final var itemHeat = add(event, new BuiltinItemHeat(packOutput, lookup, fluidHeat));
         final var drinkables = add(event, new BuiltinDrinkables(packOutput, lookup)).output();
@@ -64,7 +64,7 @@ public final class DataEntryPoint {
         final var blockTags = add(event, new BuiltinBlockTags(event, lookup)).contentsGetter();
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
-        //add(event, new BuiltinPlacedFeatureTags(packOutput, vanillaLookup, existingFileHelper));
+        add(event, new BuiltinPlacedFeatureTags(packOutput, vanillaLookup, existingFileHelper));
         add(event, new BuiltinBiomeTags(packOutput, vanillaLookup, existingFileHelper));
 
         add(event, new BuiltinDeposits(packOutput, lookup));

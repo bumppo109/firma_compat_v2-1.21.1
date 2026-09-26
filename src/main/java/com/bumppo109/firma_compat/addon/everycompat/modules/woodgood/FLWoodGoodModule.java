@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat.addon.everycompat.modules.woodgood;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.eerussianguy.firmalife.common.FLTags;
 import com.eerussianguy.firmalife.common.blockentities.BarrelPressBlockEntity;
 import com.eerussianguy.firmalife.common.blockentities.FLBlockEntities;
 import com.eerussianguy.firmalife.common.blockentities.KegBlockEntity;
@@ -10,12 +11,14 @@ import com.google.gson.JsonObject;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Metal;
+import net.mehvahdjukaar.every_compat.EveryCompat;
 import net.mehvahdjukaar.every_compat.api.PaletteStrategies;
 import net.mehvahdjukaar.every_compat.api.RenderLayer;
 import net.mehvahdjukaar.every_compat.api.SimpleEntrySet;
 import net.mehvahdjukaar.every_compat.api.SimpleModule;
 import net.mehvahdjukaar.every_compat.modules.EveryCompatModule;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
+import net.mehvahdjukaar.moonlight.api.resources.StaticResource;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask;
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink;
 import net.mehvahdjukaar.moonlight.api.set.BlockType;
@@ -38,8 +41,12 @@ import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static com.bumppo109.firma_compat.addon.everycompat.modules.woodgood.CompatWoodGoodModule.getChildRes;
+import static net.mehvahdjukaar.every_compat.misc.UtilityTag.getATagOrCreateANew;
 
 public final class FLWoodGoodModule extends EveryCompatModule {
 
@@ -79,7 +86,8 @@ public final class FLWoodGoodModule extends EveryCompatModule {
                 )
                 .requiresFromMap(KEG_SUB.blocks)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
-                .addTag(modRes("compat_kegs"), Registries.ITEM, Registries.BLOCK)
+                .addTag(FLTags.Blocks.KEGS, Registries.BLOCK)
+                .addTag(FLTags.Items.KEGS, Registries.ITEM)
                 .dropSelf()
                 .addTexture(modRes("block/big_barrel/oak_0"), PaletteStrategies.MAIN_CHILD)
                 .addTexture(modRes("block/big_barrel/oak_0_side"), PaletteStrategies.MAIN_CHILD)
@@ -103,8 +111,9 @@ public final class FLWoodGoodModule extends EveryCompatModule {
                         w -> new FoodShelfBlock(ExtendedProperties.of().strength(0.3F).sound(SoundType.WOOD).noOcclusion().blockEntity(FLBlockEntities.FOOD_SHELF).mapColor(w.getColor()))
                 )
                 .requiresChildren("planks")
-                .addTag(modRes("compat_food_shelves"), Registries.ITEM, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
+                .addTag(FLTags.Blocks.FOOD_SHELVES, Registries.BLOCK)
+                .addTag(FLTags.Items.FOOD_SHELVES, Registries.ITEM)
                 .dropSelf()
                 .setRenderType(RenderLayer.CUTOUT)
                 .setTab(tab)
@@ -117,9 +126,9 @@ public final class FLWoodGoodModule extends EveryCompatModule {
                         w -> new HangerBlock(ExtendedProperties.of().strength(0.3F).sound(SoundType.WOOD).noOcclusion().blockEntity(FLBlockEntities.HANGER).mapColor(w.getColor()))
                 )
                 .requiresChildren("planks")
-                .addTag(modRes("compat_hangers"), Registries.ITEM, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
-                .addRecipe(modRes("crafting/firmalife/hanger_oak"))
+                .addTag(FLTags.Blocks.HANGERS, Registries.BLOCK)
+                .addTag(FLTags.Items.HANGERS, Registries.ITEM)
                 .dropSelf()
                 .setRenderType(RenderLayer.CUTOUT)
                 .setTab(tab)
@@ -132,8 +141,9 @@ public final class FLWoodGoodModule extends EveryCompatModule {
                         w -> new JarbnetBlock(ExtendedProperties.of().strength(0.3F).sound(SoundType.WOOD).noOcclusion().randomTicks().lightLevel((s) -> (Boolean)s.getValue(JarbnetBlock.LIT) ? 11 : 0).blockEntity(FLBlockEntities.JARBNET).mapColor(w.getColor()))
                 )
                 .requiresChildren("planks")
-                .addTag(modRes("compat_jarbnets"), Registries.ITEM, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
+                .addTag(FLTags.Blocks.JARBNETS, Registries.BLOCK)
+                .addTag(FLTags.Items.JARBNETS, Registries.ITEM)
                 .dropSelf()
                 .setRenderType(RenderLayer.CUTOUT)
                 .setTab(tab)
@@ -146,9 +156,9 @@ public final class FLWoodGoodModule extends EveryCompatModule {
                         w -> new WineShelfBlock(ExtendedProperties.of().mapColor(w.getColor()).sound(SoundType.WOOD).noOcclusion().strength(4.0F).pushReaction(PushReaction.BLOCK).flammableLikeLogs().blockEntity(FLBlockEntities.WINE_SHELF))
                 )
                 .requiresChildren("planks")
-                .addTag(modRes("compat_wine_shelves"), Registries.ITEM, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
-                .addRecipe(modRes("crafting/firmalife/wine_shelf_oak"))
+                .addTag(FLTags.Blocks.WINE_SHELVES, Registries.BLOCK)
+                .addTag(FLTags.Items.WINE_SHELVES, Registries.ITEM)
                 .dropSelf()
                 .setRenderType(RenderLayer.CUTOUT)
                 .setTab(tab)
@@ -161,8 +171,9 @@ public final class FLWoodGoodModule extends EveryCompatModule {
                         w -> new StompingBarrelBlock(ExtendedProperties.of().mapColor(w.getColor()).sound(SoundType.WOOD).noOcclusion().strength(4.0F).pushReaction(PushReaction.BLOCK).flammableLikeLogs().blockEntity(FLBlockEntities.STOMPING_BARREL))
                 )
                 .requiresChildren("planks")
-                .addTag(modRes("compat_stomping_barrels"), Registries.ITEM, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
+                .addTag(FLTags.Blocks.STOMPING_BARRELS, Registries.BLOCK)
+                .addTag(FLTags.Items.STOMPING_BARRELS, Registries.ITEM)
                 .dropSelf()
                 .setRenderType(RenderLayer.CUTOUT)
                 .setTab(tab)
@@ -175,13 +186,60 @@ public final class FLWoodGoodModule extends EveryCompatModule {
                         w -> new BarrelPressBlock(ExtendedProperties.of().mapColor(w.getColor()).sound(SoundType.WOOD).noOcclusion().strength(4.0F).pushReaction(PushReaction.BLOCK).flammableLikeLogs().blockEntity(FLBlockEntities.BARREL_PRESS).ticks(BarrelPressBlockEntity::tick))
                 )
                 .requiresChildren("planks")
-                .addTag(modRes("compat_barrel_presses"), Registries.ITEM, Registries.BLOCK)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
+                .addTag(FLTags.Blocks.BARREL_PRESSES, Registries.BLOCK)
+                .addTag(FLTags.Items.BARREL_PRESSES, Registries.ITEM)
                 .dropSelf()
                 .setRenderType(RenderLayer.CUTOUT)
                 .setTab(tab)
                 .excludeBlockTypes("tfc:.*").excludeBlockTypes("afc:.*")
                 .build();
         this.addEntry(BARREL_PRESS);
+    }
+
+    public void addDynamicServerResources(Consumer<ResourceGenTask> executor) {
+        super.addDynamicServerResources(executor);
+
+        executor.accept((manager, sink) -> {
+            for (var woodType : WoodTypeRegistry.INSTANCE) {
+                if (woodType.getNamespace().equals("tfc") || woodType.getNamespace().equals("afc") || woodType.getNamespace().equals("minecraft")) continue;
+
+                ResourceLocation logTag = getATagOrCreateANew("logs", "caps", woodType, sink, manager);
+                ResourceLocation lumberRes = ResourceLocation.fromNamespaceAndPath("everycomp","tfc/" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_lumber");
+                ResourceLocation planksRes = getChildRes(woodType, "planks");
+                ResourceLocation slabRes = getChildRes(woodType, "slab");
+                ResourceLocation axleRes = woodType.hasChild("stripped_log") ? ResourceLocation.fromNamespaceAndPath("everycomp","tfc/" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_axle") : ResourceLocation.fromNamespaceAndPath("","");
+                ResourceLocation strippedLogRes = getChildRes(woodType, "stripped_log");;
+                ResourceLocation logRes = getChildRes(woodType, "log");
+
+                for (WoodGoodEntry entry : WoodGoodEntry.values()) {
+                    if (!entry.isFirmaLife()) continue;
+
+                    ResourceLocation oakEntryRes = Utils.getID(entry.oakItem().get());
+
+                    try {
+                        StaticResource recipeTemplate = StaticResource.getOrThrow(manager,
+                                ResType.RECIPES.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"crafting/oak_" + entry.getSerializedName())));
+
+                        sink.addSimilarJsonResource(
+                                manager,
+                                recipeTemplate,
+                                text -> text
+                                        .replace("firma_compat:oak_lumber", lumberRes.toString())
+                                        .replace("minecraft:oak_planks", planksRes.toString())
+                                        .replace("minecraft:oak_slab", slabRes.toString())
+                                        .replace("minecraft:stripped_oak_log", strippedLogRes.toString())
+                                        .replace("minecraft:oak_logs", logTag.toString())
+                                        .replace("minecraft:oak_log", logRes.toString())
+                                        .replace("firma_compat:oak_axle", axleRes.toString())
+                                        .replace(oakEntryRes.toString(), "everycomp:tfc/" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_" + entry.getSerializedName()),
+                                path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                        );
+                    } catch (Exception e) {
+                        FirmaCompat.LOGGER.debug("Failed to grab recipe for {}", "crafting/oak_" + entry.getSerializedName());
+                    }
+                }
+            }
+        });
     }
 }
