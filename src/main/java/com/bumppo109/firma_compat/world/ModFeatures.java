@@ -13,6 +13,6 @@ public class ModFeatures {
             DeferredRegister.create(Registries.FEATURE, FirmaCompat.MODID);
 
     //Compat Erosion, ore replacer
-    public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> COMPAT_EROSION =
-            FEATURES.register("compat_erosion", () -> new CompatErosion(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> EROSION =
+            FEATURES.register("erosion", () -> new CompatErosion(NoneFeatureConfiguration.CODEC));
 }

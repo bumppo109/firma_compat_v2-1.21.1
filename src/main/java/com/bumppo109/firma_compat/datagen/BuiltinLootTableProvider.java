@@ -117,6 +117,16 @@ public class BuiltinLootTableProvider extends LootTableProvider {
                     )
             );
 
+            add(Blocks.NETHER_GOLD_ORE, LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(Items.RAW_GOLD))
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 1.0F)))
+                            .apply(ApplyBonusCount.addOreBonusCount(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE))
+                            )
+                    )
+            );
+
             //Wood
             for (CompatWood wood : CompatWood.VALUES) {
                 var woodMap = ModBlocks.WOODS.get(wood);
@@ -477,7 +487,7 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             knownBlocks.add(Blocks.BOOKSHELF);
             knownBlocks.add(Blocks.CHEST);
             knownBlocks.add(Blocks.TRAPPED_CHEST);
-
+            knownBlocks.add(Blocks.NETHER_GOLD_ORE);
 
             //Wood
             ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {

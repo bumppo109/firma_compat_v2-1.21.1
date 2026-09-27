@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "firma_compat:sz_normal_copper_veins",
+      "required": false
+    },
+    {
+      "id": "firma_compat:sz_surface_copper_veins",
+      "required": false
+    },
+    {
+      "id": "firma_compat:sz_surface_iron_veins",
+      "required": false
+    }
+  ]
+}

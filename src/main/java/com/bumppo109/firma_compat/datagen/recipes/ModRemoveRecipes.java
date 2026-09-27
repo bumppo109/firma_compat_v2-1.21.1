@@ -302,17 +302,22 @@ public interface ModRemoveRecipes extends ModRecipes
                 "sandstone_stairs",
                 "sandstone_slab",
                 "red_sandstone_stairs",
-                "red_sandstone_slab"
+                "red_sandstone_slab",
+                "candle",
+                "brewing_stand",
+                "leather"
         );
 
         //Remove crafted Dye
         for(DyeColor color : DyeColor.values()){
+            String craftRecipe = color.getSerializedName() + "_dye";
             String woolRecipe = "dye_" + color.getSerializedName() + "_wool";
             String carpetRecipe = "dye_" + color.getSerializedName() + "_carpet";
             String glazedTerracottaRecipe = color.getSerializedName() + "_glazed_terracotta";
             String candleRecipe = color.getSerializedName() + "_candle";
 
             remove(
+                    craftRecipe,
                     woolRecipe,
                     carpetRecipe,
                     glazedTerracottaRecipe,
@@ -404,8 +409,10 @@ public interface ModRemoveRecipes extends ModRecipes
             removeTFC("crafting/metal/lamp/" + metal.getSerializedName());
         }
         removeTFC("crafting/metal/block/gold");
+        removeTFC("anvil/metal/trapdoor/copper");
         removeTFC("crafting/metal/block/copper");
         removeTFC("crafting/metal/grate/copper");
+
         removeTFC("landslide/cobblestone");
     }
 }

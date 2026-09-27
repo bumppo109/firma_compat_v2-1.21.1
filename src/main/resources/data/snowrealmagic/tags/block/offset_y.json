@@ -1,7 +1,7 @@
 {
   "values": [
     "#c:stones/loose",
-    "#firma_compat:twigs",
+    "#tfc:twigs",
     "tfc:ore/small_native_copper",
     "tfc:ore/small_tetrahedrite",
     "tfc:ore/small_malachite",

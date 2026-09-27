@@ -1,0 +1,19 @@
+{
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 3,
+    "max_radius": 10,
+    "height": 3,
+    "integrity": 0.9,
+    "states": [
+      {
+        "replace": "minecraft:gravel",
+        "with": "firma_compat:native_silver_deposit"
+      },
+      {
+        "replace": "minecraft:dirt",
+        "with": "firma_compat:native_silver_deposit"
+      }
+    ]
+  }
+}

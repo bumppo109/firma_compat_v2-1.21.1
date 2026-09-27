@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "#firma_compat:vegetal_features",
+  "step": "vegetal_decoration"
+}

@@ -6,9 +6,7 @@ import com.bumppo109.firma_compat.datagen.assets.BuiltinItemModelProvider;
 import com.bumppo109.firma_compat.datagen.assets.BuiltinLang;
 import com.bumppo109.firma_compat.datagen.assets.StoneZoneLang;
 import com.bumppo109.firma_compat.datagen.tags.*;
-import com.bumppo109.firma_compat.datagen.worldgen.CompatVeinDataProvider;
-import com.bumppo109.firma_compat.datagen.worldgen.ModConfiguredFeatures;
-import com.bumppo109.firma_compat.datagen.worldgen.ModPlacedFeatures;
+import com.bumppo109.firma_compat.datagen.worldgen.*;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
@@ -54,6 +52,8 @@ public final class DataEntryPoint {
         final var lookup = builtinEntries.getRegistryProvider();
 
         add(event, new CompatVeinDataProvider(packOutput));
+        add(event, new LooseRockWorldgenProvider(packOutput));
+        add(event, new TwigWorldgenProvider(packOutput));
 
         final var fluidHeat = add(event, new BuiltinFluidHeat(packOutput, lookup)).output();
         final var itemHeat = add(event, new BuiltinItemHeat(packOutput, lookup, fluidHeat));

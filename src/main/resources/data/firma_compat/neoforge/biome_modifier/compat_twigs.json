@@ -1,0 +1,17 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "firma_compat:acacia_twig_patch",
+    "firma_compat:birch_twig_patch",
+    "firma_compat:cherry_twig_patch",
+    "firma_compat:dark_oak_twig_patch",
+    "firma_compat:jungle_twig_patch",
+    "firma_compat:mangrove_twig_patch",
+    "firma_compat:oak_twig_patch",
+    "firma_compat:spruce_twig_patch",
+    "firma_compat:crimson_twig_patch",
+    "firma_compat:warped_twig_patch"
+  ],
+  "step": "vegetal_decoration"
+}

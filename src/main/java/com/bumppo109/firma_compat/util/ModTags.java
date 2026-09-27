@@ -64,6 +64,7 @@ public class ModTags {
 
         public static final TagKey<PlacedFeature> TWIG_PATCHES = createTag("twig_patches");
         public static final TagKey<PlacedFeature> VEINS = createTag("veins");
+        public static final TagKey<PlacedFeature> REMOVE_FEATURES = createTag("remove_features");
 
         private static TagKey<PlacedFeature> createTag(String name) {
             return TagKey.create(

@@ -3,6 +3,10 @@ package com.bumppo109.firma_compat.datagen;
 import com.bumppo109.firma_compat.FirmaCompat;
 import com.bumppo109.firma_compat.FirmaCompatHelpers;
 import com.bumppo109.firma_compat.block.CompatMetal;
+import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.materials.MetalMaterial;
+import com.bumppo109.firma_compat.materials.MetalSet;
+import com.bumppo109.firma_compat.materials.MetalWeathered;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.HeatDefinition;
@@ -11,12 +15,15 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.FluidHeat;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -56,13 +63,77 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
                 Metal.WROUGHT_IRON.getSerializedName(), new FluidHeat(TFCFluids.METALS.get(Metal.WROUGHT_IRON).getSource(), 1535, 0.008571429f),
                 Metal.STEEL.getSerializedName(), new FluidHeat(TFCFluids.METALS.get(Metal.STEEL).getSource(), 1540, 0.008571429f)
         ));
+
+        ModItems.METAL_ITEMS.forEach((metal, items) -> {
+            add(metal, CompatMetal.ItemType.DOUBLE_INGOT);
+            add(metal, CompatMetal.ItemType.SHEET);
+            add(metal, CompatMetal.ItemType.DOUBLE_SHEET);
+            add(metal, CompatMetal.ItemType.ROD);
+
+            for (int amount : new int[]{50, 100, 200, 400, 600, 800, 1200}) {
+                final ItemLike[] parts = Arrays.stream(CompatMetal.ItemType.values())
+                        .filter(type -> !type.isCommonTagPart() && units(type) == amount)
+                        .map(items::get)
+                        .filter(Objects::nonNull)
+                        .toArray(ItemLike[]::new);
+                if (parts.length > 0) {
+                    add(metal, "parts_" + amount, Ingredient.of(parts), amount);
+                }
+            }
+        });
+
+        addAndMelt(Items.NETHERITE_SCRAP, CompatMetal.SCRAP_NETHERITE, 10);
+
+        for (CompatMetal metal : CompatMetal.values()) {
+            MetalMaterial material = metal.getMetalMaterial();
+
+            this.addItemIfPresent(material.ingot(),      metal, 100);
+            this.addItemIfPresent(material.nugget(),     metal, 10);
+            this.addBlockIfPresent(material.storageBlock(), metal, 100);
+            this.addItemIfPresent(material.helmet(),     metal, 600);
+            this.addItemIfPresent(material.chestplate(), metal, 800);
+            this.addItemIfPresent(material.leggings(),   metal, 600);
+            this.addItemIfPresent(material.boots(),      metal, 400);
+            this.addItemIfPresent(material.sword(),      metal, 200);
+            this.addItemIfPresent(material.pickaxe(),    metal, 100);
+            this.addItemIfPresent(material.axe(),        metal, 100);
+            this.addItemIfPresent(material.shovel(),     metal, 100);
+            this.addItemIfPresent(material.hoe(),        metal, 100);
+        }
+
+        for (MetalWeathered weathered : MetalWeathered.values()) {
+            for (MetalSet metalSet : weathered) {
+                addItemIfPresent(metalSet.base(), Metal.COPPER, 100);
+                addItemIfPresent(metalSet.stairs(), Metal.COPPER, 75);
+                addItemIfPresent(metalSet.slab(), Metal.COPPER, 50);
+            }
+        }
     }
 
-    private void addIfPresent(Supplier<Item> supplier, CompatMetal metal, int units) {
+    private void addItemIfPresent(Supplier<Item> supplier, CompatMetal metal, int units) {
         if (supplier != null) {
             Item item = supplier.get();
             if (item != null) {
                 addAndMelt(item, metal, units);
+            }
+        }
+    }
+
+    private void addBlockIfPresent(Supplier<Block> supplier, CompatMetal metal, int units) {
+        if (supplier != null) {
+            Item item = supplier.get().asItem();
+            if (item != null) {
+                addAndMelt(item, metal, units);
+            }
+        }
+    }
+
+    private void addItemIfPresent(Supplier<Block> supplier, Metal metal, int units) {
+        if (supplier != null) {
+            Item item = supplier.get().asItem();
+            String name = BuiltInRegistries.ITEM.getKey(item).getPath();
+            if (item != null) {
+                add(name, Ingredient.of(item), metal, units);
             }
         }
     }

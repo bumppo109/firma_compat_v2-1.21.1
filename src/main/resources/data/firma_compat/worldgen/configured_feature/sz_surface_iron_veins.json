@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "stonezone"
+    }
+  ],
+  "type": "minecraft:random_selector",
+  "config": {
+    "features": [
+      {
+        "chance": 0.33,
+        "feature": "stonezone:vein/surface_limonite"
+      },
+      {
+        "chance": 0.33,
+        "feature": "stonezone:vein/surface_magnetite"
+      }
+    ],
+    "default": "stonezone:vein/surface_hematite"
+  }
+}

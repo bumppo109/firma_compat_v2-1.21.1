@@ -43,74 +43,51 @@ public interface ModHeatRecipes extends ModRecipes
 
         add(ModItems.UNFIRED_POT, Items.DECORATED_POT, 1399);
 
-        ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
-            itemTypeItemIdMap.forEach((itemType, itemId) -> {
-                if (!new ItemStack(itemId.get()).isDamageableItem()) return;
-                ResourceLocation fluid = BuiltInRegistries.FLUID.getKey(meltFluidFor(compatMetal));
-                FirmaCompat.LOGGER.debug("Fluid for {} = {}", compatMetal, fluid);
-                FirmaCompat.LOGGER.debug("ModHeatRecipe: {}", itemId);
-                switch (itemType) {
-                    case MACE, TUYERE, PROPICK, CHISEL, HAMMER, SAW, SCYTHE, JAVELIN, KNIFE -> add(compatMetal.getSerializedName() + "_" +itemType.name().toLowerCase(Locale.ROOT),
-                            new HeatingRecipe(Ingredient.of(itemId.get()),
-                                    ItemStackProvider.empty(),
-                                    new FluidStack(meltFluidFor(compatMetal), units(itemType)),
-                                    temperatureOf(compatMetal), new ItemStack(itemId.get()).isDamageableItem()));
-                }
-            });
-        });
-
-        for (CompatMetal metal : CompatMetal.values()) {
-            MetalMaterial material = metal.getMetalMaterial();
-            for (MetalMaterial.MetalPart partType : MetalMaterial.MetalPart.values()) {
-                Supplier<?> supplier = material.parts().get(partType);
-
-                if (supplier == null) continue;
-
-                int units = switch (partType) {
-                    case SWORD -> 200;
-                    case BOOTS, SHIELD -> 400;
-                    case LEGGINGS, HELMET -> 600;
-                    case CHESTPLATE -> 800;
-                    case HORSE_ARMOR -> 1200;
-                    default -> 100;
-                };
-
-                add(metal.getSerializedName() + "_" + partType.name().toLowerCase(Locale.ROOT),
-                        new HeatingRecipe(Ingredient.of((ItemLike) supplier.get()),
-                                ItemStackProvider.empty(),
-                                new FluidStack(meltFluidFor(metal), units),
-                                temperatureOf(metal), new ItemStack((ItemLike) supplier.get()).isDamageableItem()));
-            }
-        }
-
         add(Ingredient.of(ModItems.UNFINISHED_LANTERN),
                 new FluidStack(meltFluidFor(Metal.CAST_IRON),100),
                 1535
         );
 
+        ModItems.METAL_ITEMS.forEach((metal, items) -> items.forEach((type, item) -> add(nameOf(item),
+                new HeatingRecipe(
+                ingredientOf(metal, type),
+                ItemStackProvider.empty(),
+                new FluidStack(meltFluidFor(metal), units(type)),
+                temperatureOf(metal), new ItemStack(item).isDamageableItem()))));
+
         for (MetalWeathered weathered : MetalWeathered.values()) {
-            for (MetalSet set : weathered) {
-                set.parts().forEach(part ->
-                        add(Ingredient.of(part.block()),
-                                new FluidStack(meltFluidFor(Metal.COPPER), part.amount()),
-                                1060
-                        )
-                );
+            for (MetalSet metalSet : weathered) {
+                if (metalSet.base() != null) {
+                    new HeatingRecipe(Ingredient.of(metalSet.base().get()),
+                            ItemStackProvider.empty(),
+                            new FluidStack(meltFluidFor(Metal.COPPER), 100),
+                            temperatureOf(Metal.COPPER), false);
+                }
+
+                if (metalSet.stairs() != null) {
+                    new HeatingRecipe(Ingredient.of(metalSet.stairs().get()),
+                            ItemStackProvider.empty(),
+                            new FluidStack(meltFluidFor(Metal.COPPER),75),
+                            temperatureOf(Metal.COPPER),false);
+                }
+
+                if (metalSet.slab() != null) {
+                    new HeatingRecipe(Ingredient.of(metalSet.slab().get()),
+                            ItemStackProvider.empty(),
+                            new FluidStack(meltFluidFor(Metal.COPPER),50),
+                            temperatureOf(Metal.COPPER),false);
+                }
             }
         }
 
-        List.of("", "waxed").forEach(waxed -> {
-            List.of("", "exposed", "weathered", "oxidized").forEach(state -> {
-                List.of("copper_door", "copper_trapdoor").forEach(door -> {
-                    String idStr = waxed.isEmpty() ? state.isEmpty() ? door : state + "_" + door : state.isEmpty() ? waxed + "_" + door : waxed + "_" + state + "_" + door;
-                    Item item = BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(idStr));
-                    add(Ingredient.of(item),
-                            new FluidStack(meltFluidFor(Metal.COPPER),200),
-                            1060
-                    );
-                });
-            });
-        });
+        add(Ingredient.of(Items.COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
+        add(Ingredient.of(Items.EXPOSED_COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
+        add(Ingredient.of(Items.WEATHERED_COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
+        add(Ingredient.of(Items.OXIDIZED_COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
+        add(Ingredient.of(Items.WAXED_COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
+        add(Ingredient.of(Items.WAXED_EXPOSED_COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
+        add(Ingredient.of(Items.WAXED_WEATHERED_COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
+        add(Ingredient.of(Items.WAXED_OXIDIZED_COPPER_TRAPDOOR), new FluidStack(meltFluidFor(Metal.COPPER),200), temperatureOf(Metal.COPPER));
     }
 
     private void metalHeat(CompatMetal metal, Item item, int units) {

@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "firma_compat:loose_andesite_patch",
+    "firma_compat:loose_diorite_patch",
+    "firma_compat:loose_granite_patch",
+    "firma_compat:loose_deepslate_patch",
+    "firma_compat:loose_stone_patch",
+    "firma_compat:loose_dripstone_patch",
+    "firma_compat:loose_tuff_patch",
+    "firma_compat:loose_calcite_patch",
+    "firma_compat:loose_blackstone_patch",
+    "firma_compat:loose_basalt_patch",
+    "firma_compat:loose_netherrack_patch",
+    "firma_compat:loose_end_stone_patch"
+  ],
+  "step": "underground_ores"
+}

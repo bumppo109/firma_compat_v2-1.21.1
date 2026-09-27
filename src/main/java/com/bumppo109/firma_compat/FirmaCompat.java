@@ -6,6 +6,7 @@ import com.bumppo109.firma_compat.blockentity.ModBlockEntities;
 import com.bumppo109.firma_compat.blockentity.ModMenus;
 import com.bumppo109.firma_compat.blockentity.PotionContainerVariants;
 import com.bumppo109.firma_compat.data.ModDataComponents;
+import com.bumppo109.firma_compat.data.ModDataMaps;
 import com.bumppo109.firma_compat.dynamicpack.ModClientDynamicResources;
 import com.bumppo109.firma_compat.entity.ModEntities;
 import com.bumppo109.firma_compat.event.ModClientEvents;
@@ -19,6 +20,7 @@ import com.bumppo109.firma_compat.materials.BlockAssets;
 import com.bumppo109.firma_compat.materials.food.FoodRegistryBootstrap;
 import com.bumppo109.firma_compat.recipe.ModRecipeSerializers;
 import com.bumppo109.firma_compat.recipe.ModRecipes;
+import com.bumppo109.firma_compat.world.ModFeatures;
 import com.bumppo109.firma_compat.world.ModStructureProcessors;
 import com.bumppo109.firma_compat.world.climate.ModClimateModels;
 import com.bumppo109.firma_compat.world.processor.ReplacementBootstrap;
@@ -60,9 +62,11 @@ public class FirmaCompat {
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModCreativeModeTab.CREATIVE_TABS.register(modEventBus);
 
+        modEventBus.addListener(ModDataMaps::register);
         ModLootModifiers.register(modEventBus);
         ModLootFunctions.FUNCTIONS.register(modEventBus);
         ModClimateModels.TYPES.register(modEventBus);
+        ModFeatures.FEATURES.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

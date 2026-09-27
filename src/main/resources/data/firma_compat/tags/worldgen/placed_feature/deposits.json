@@ -1,0 +1,12 @@
+{
+  "values": [
+    "firma_compat:cassiterite_deep_deposit",
+    "firma_compat:cassiterite_deposit",
+    "firma_compat:native_copper_deep_deposit",
+    "firma_compat:native_copper_deposit",
+    "firma_compat:native_gold_deep_deposit",
+    "firma_compat:native_gold_deposit",
+    "firma_compat:native_silver_deep_deposit",
+    "firma_compat:native_silver_deposit"
+  ]
+}

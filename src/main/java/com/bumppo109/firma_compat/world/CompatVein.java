@@ -492,5 +492,12 @@ public enum CompatVein {
         SURFACE, NORMAL, RICH
     }
 
+    public boolean isCopper() {
+        return this.ore.equals(Ore.NATIVE_COPPER) || this.ore.equals(Ore.TETRAHEDRITE) || this.ore.equals(Ore.MALACHITE);
+    }
+
+    public boolean isIron() {
+        return this.ore.equals(Ore.LIMONITE) || this.ore.equals(Ore.MAGNETITE) || this.ore.equals(Ore.HEMATITE);
+    }
 }
 

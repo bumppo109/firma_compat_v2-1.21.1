@@ -6,6 +6,8 @@ import com.bumppo109.firma_compat.materials.MetalMaterial;
 import com.bumppo109.firma_compat.materials.RockMaterial;
 import com.bumppo109.firma_compat.materials.RockSet;
 import com.bumppo109.firma_compat.materials.WoodMaterial;
+import com.bumppo109.firma_compat.materials.food.FoodIngredient;
+import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -13,6 +15,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.AndIngredient;
@@ -44,6 +47,29 @@ import static net.dries007.tfc.util.DataGenerationHelpers.Builder;
 public interface ModCraftingRecipes extends ModRecipes {
 
     default void craftingRecipes() {
+
+        FoodIngredients.preserveIngredients().forEach(preserve -> {
+            recipe()
+                    .input(ModItems.FRUIT_PRESERVES.get(preserve))
+                    .shapeless(ModItems.UNSEALED_FRUIT_PRESERVES.get(preserve));
+            recipe()
+                    .input(ModItems.UNSEALED_FRUIT_PRESERVES.get(preserve))
+                    .shapeless(ModItems.JAM.get(preserve));
+        });
+
+        recipe()
+                .input('B', Items.BLAZE_ROD)
+                .input('S', Items.SMOOTH_STONE_SLAB)
+                .pattern(" B ")
+                .pattern("SSS")
+                .shaped(ModBlocks.FLUID_BREWING_STAND);
+
+        recipe()
+                .input('H', Items.RABBIT_HIDE)
+                .pattern("HH ")
+                .pattern("HH ")
+                .shaped(TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.SMALL), 1);
+
         for (CompatWood wood : CompatWood.values()) {
             final var blocks = ModBlocks.WOODS.get(wood);
             final var lumber = ModItems.LUMBER.get(wood);

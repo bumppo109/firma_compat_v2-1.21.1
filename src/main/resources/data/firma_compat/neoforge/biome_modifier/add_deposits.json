@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_river",
+  "features": "#firma_compat:deposits",
+  "step": "underground_decoration"
+}

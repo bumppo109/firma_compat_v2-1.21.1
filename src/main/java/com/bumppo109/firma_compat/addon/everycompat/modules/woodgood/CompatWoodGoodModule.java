@@ -430,6 +430,9 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
         super.addDynamicServerResources(executor);
 
         executor.accept((manager, sink) -> {
+            JsonObject twigPlaceTag = new JsonObject();
+            JsonArray twigValues = new JsonArray();
+
             for (var woodType : WoodTypeRegistry.INSTANCE) {
                 if (woodType.getNamespace().equals("tfc") || woodType.getNamespace().equals("afc") || woodType.getNamespace().equals("minecraft")) continue;
 
@@ -558,7 +561,72 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                         fuelData(woodType, sink, manager);
                     }
                 }
+
+            //Twig Feature
+                ResourceLocation twigRes = Utils.getID(TWIG.blocks.get(woodType));
+
+                StaticResource twigPatchPlace = StaticResource.getOrThrow(manager,
+                        ResType.GENERIC.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"worldgen/placed_feature/oak_twig_patch.json")));
+                StaticResource twigPatch = StaticResource.getOrThrow(manager,
+                        ResType.GENERIC.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"worldgen/configured_feature/oak_twig_patch.json")));
+                StaticResource twigPlace = StaticResource.getOrThrow(manager,
+                        ResType.GENERIC.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"worldgen/placed_feature/oak_twig.json")));
+                StaticResource twig = StaticResource.getOrThrow(manager,
+                        ResType.GENERIC.getPath(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"worldgen/configured_feature/oak_twig.json")));
+
+                sink.addSimilarJsonResource(manager, twigPatchPlace,
+                        text -> text
+                                .replace("\"feature\": \"firma_compat:oak_twig_patch\"", "\"feature\": \"everycomp:" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_twig_patch\"")
+                                .replace("minecraft:oak_logs", logTag.toString()),
+                        path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                );
+                sink.addSimilarJsonResource(manager, twigPatch,
+                        text -> text
+                                .replace("\"feature\": \"firma_compat:oak_twig\"", "\"feature\": \"everycomp:" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_twig\""),
+                        path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                );
+                sink.addSimilarJsonResource(manager, twigPlace,
+                        text -> text
+                                .replace("\"feature\": \"firma_compat:oak_twig\"", "\"feature\": \"everycomp:" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_twig\"")
+                                .replace("firma_compat:oak_twig", twigRes.toString()),
+                        path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                );
+                sink.addSimilarJsonResource(manager, twig,
+                        text -> text
+                                .replace("firma_compat:oak_twig", twigRes.toString()),
+                        path -> path.replace("oak",woodType.getNamespace() + "/" + woodType.getTypeName())
+                );
+
+                //Populate twig placed feature tag
+                JsonObject entry = new JsonObject();
+
+                entry.addProperty(
+                        "id",
+                        "everycomp:" + woodType.getNamespace() + "/" + woodType.getTypeName() + "_twig_patch"
+                );
+
+                entry.addProperty(
+                        "required",
+                        false
+                );
+
+                twigValues.add(entry);
             }
+
+            //Finalize Twig Placed Feature Tag
+            twigPlaceTag.add("values", twigValues);
+
+            ResourceLocation twigPlacedTagOut =
+                    ResourceLocation.fromNamespaceAndPath(
+                            FirmaCompat.MODID,
+                            "worldgen/placed_feature/woodgood_twig_patches"
+                    );
+
+            sink.addJson(
+                    twigPlacedTagOut,
+                    twigPlaceTag,
+                    ResType.TAGS
+            );
         });
     }
 
