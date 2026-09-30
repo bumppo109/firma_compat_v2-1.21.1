@@ -7,6 +7,9 @@ import com.bumppo109.firma_compat.block.CompatWood;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.fluid.Potion;
 import com.bumppo109.firma_compat.item.ModItems;
+import com.bumppo109.firma_compat.materials.BlockAsset;
+import com.bumppo109.firma_compat.materials.BlockAssets;
+import com.bumppo109.firma_compat.materials.BlockTextureSlot;
 import com.bumppo109.firma_compat.materials.food.FoodIngredients;
 import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,6 +30,35 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+    //Vexxed
+        for (CompatRock rock : CompatRock.VALUES) {
+            ResourceLocation mossyMask = switch(rock.category()) {
+                case METAMORPHIC -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/moss_metamorphic");
+                case SEDIMENTARY -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/moss_sedimentary");
+                case FELSIC_IGNEOUS_EXTRUSIVE, INTERMEDIATE_IGNEOUS_EXTRUSIVE, MAFIC_IGNEOUS_EXTRUSIVE -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/loose_rock/moss_igneous_extrusive");
+                case FELSIC_IGNEOUS_INTRUSIVE, INTERMEDIATE_IGNEOUS_INTRUSIVE, MAFIC_IGNEOUS_INTRUSIVE -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/loose_rock/moss_igneous_intrusive");
+            };
+            existingFileHelper.trackGenerated(mossyMask, PackType.CLIENT_RESOURCES,".png","textures");
+            getBuilder("vexxed/item/mossy_loose_" + rock.getSerializedName())
+                    .parent(new ModelFile.UncheckedModelFile(mcLoc("item/generated")))
+                    .texture("layer0", ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/loose_" + rock.getSerializedName()))
+                    .texture("layer1", mossyMask);
+        }
+
+        /*
+        for (CompatWood wood : CompatWood.values()) {
+            ResourceLocation twig45 = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/groundcover/twig_45");
+            if (wood.woodMaterial().log() != null) {
+                BlockAsset logAsset = BlockAssets.get(wood.woodMaterial().log().get());
+                withExistingParent("vexxed/" + wood.getSerializedName() + "_twig_45", twig45)
+                        .texture("side", logAsset.textures().get(BlockTextureSlot.SIDE))
+                        .texture("top", logAsset.textures().get(BlockTextureSlot.TOP));
+            }
+
+        }
+         */
+
+    //Firma Compat
         ModItems.SPLASH_POTIONS.forEach((glass, itemId) -> {
             fluidContainer(itemId.get(), ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "item/" + glass.getSerializedName() + "_splash_potion"), ResourceLocation.fromNamespaceAndPath("tfc","item/bucket/glass_bottle_overlay"));
         });
@@ -63,7 +95,12 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
 
         ModItems.METAL_ITEMS.forEach((compatMetal, itemTypeItemIdMap) -> {
             itemTypeItemIdMap.forEach((itemType, itemId) -> {
-                uncheckedBasicItem(itemId.get());
+                switch (itemType) {
+                    case PROPICK, SCYTHE, HAMMER, MACE -> uncheckedHandheld(itemId.get());
+                    case CHISEL, KNIFE, SAW -> uncheckedHandheldFlipped(itemId.get());
+                    case JAVELIN -> {/* done manually */}
+                    default -> uncheckedBasicItem(itemId.get());
+                }
             });
         });
         basicItem(ModItems.SCRAP_NETHERITE_INGOT.get());
@@ -126,6 +163,32 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
 
     private String itemPathName(Item item) {
         return item.builtInRegistryHolder().key().location().getPath();
+    }
+
+    private ItemModelBuilder uncheckedHandheldFlipped(Item item) {
+        ResourceLocation itemRes =
+                BuiltInRegistries.ITEM.getKey(item);
+
+        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + itemRes.getPath());
+
+        existingFileHelper.trackGenerated(texture, PackType.CLIENT_RESOURCES,".png","textures");
+
+        return getBuilder(itemRes.getPath())
+                .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("tfc","item/handheld_flipped")))
+                .texture("layer0", texture);
+    }
+
+    private ItemModelBuilder uncheckedHandheld(Item item) {
+        ResourceLocation itemRes =
+                BuiltInRegistries.ITEM.getKey(item);
+
+        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + itemRes.getPath());
+
+        existingFileHelper.trackGenerated(texture, PackType.CLIENT_RESOURCES,".png","textures");
+
+        return getBuilder(itemRes.getPath())
+                .parent(new ModelFile.UncheckedModelFile(mcLoc("item/handheld")))
+                .texture("layer0", texture);
     }
 
     private ItemModelBuilder uncheckedBasicItem(Item item) {

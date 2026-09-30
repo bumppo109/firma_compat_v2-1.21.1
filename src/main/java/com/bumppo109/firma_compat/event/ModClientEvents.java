@@ -236,11 +236,14 @@ public class ModClientEvents {
                 Pack.Position.TOP
         );
 
+        /*
         event.addPackFinders(vexxedAddon, PackType.CLIENT_RESOURCES,
                 Component.literal("Vexxed Visuals Support"),
                 PackSource.DEFAULT,
                 false,
                 Pack.Position.TOP
         );
+
+         */
     }
 }

@@ -151,7 +151,7 @@ dependencies {
     //EveryCompat - StoneZone
     implementation "curse.maven:stone-zone-1154622:7824607"
     //EveryCompat - GemsRealm
-    implementation "curse.maven:gems-realm-1289099:8020040"
+    //implementation "curse.maven:gems-realm-1289099:8020040"
 
     //Moonlight Lib
     implementation "curse.maven:selene-499980:8460169"
@@ -186,7 +186,9 @@ dependencies {
     implementation "curse.maven:lithostitched-936015:8378498"
 
     //Punchy 2.6.2
-    implementation "curse.maven:punchy-1374153:8408052"
+    //implementation "curse.maven:punchy-1374153:8408052"
+    //2.8b
+    implementation "curse.maven:punchy-1374153:8976087"
 
     //Ecliptic Seasons 0.14.2.1.1
     implementation "curse.maven:ecliptic-seasons-1118306:8525040"

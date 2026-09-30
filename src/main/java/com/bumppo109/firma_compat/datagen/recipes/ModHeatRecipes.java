@@ -58,24 +58,24 @@ public interface ModHeatRecipes extends ModRecipes
         for (MetalWeathered weathered : MetalWeathered.values()) {
             for (MetalSet metalSet : weathered) {
                 if (metalSet.base() != null) {
-                    new HeatingRecipe(Ingredient.of(metalSet.base().get()),
+                    add(nameOf(metalSet.base().get().asItem()), new HeatingRecipe(Ingredient.of(metalSet.base().get().asItem()),
                             ItemStackProvider.empty(),
                             new FluidStack(meltFluidFor(Metal.COPPER), 100),
-                            temperatureOf(Metal.COPPER), false);
+                            temperatureOf(Metal.COPPER), false));
                 }
 
                 if (metalSet.stairs() != null) {
-                    new HeatingRecipe(Ingredient.of(metalSet.stairs().get()),
+                    add(nameOf(metalSet.stairs().get().asItem()), new HeatingRecipe(Ingredient.of(metalSet.stairs().get().asItem()),
                             ItemStackProvider.empty(),
                             new FluidStack(meltFluidFor(Metal.COPPER),75),
-                            temperatureOf(Metal.COPPER),false);
+                            temperatureOf(Metal.COPPER),false));
                 }
 
                 if (metalSet.slab() != null) {
-                    new HeatingRecipe(Ingredient.of(metalSet.slab().get()),
+                    add(nameOf(metalSet.slab().get().asItem()), new HeatingRecipe(Ingredient.of(metalSet.slab().get().asItem()),
                             ItemStackProvider.empty(),
                             new FluidStack(meltFluidFor(Metal.COPPER),50),
-                            temperatureOf(Metal.COPPER),false);
+                            temperatureOf(Metal.COPPER),false));
                 }
             }
         }

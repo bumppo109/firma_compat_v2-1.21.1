@@ -518,8 +518,31 @@ public interface ModCraftingRecipes extends ModRecipes {
                         }
                     }
                 }
+
+                if ((material.nugget() != null) && (material.ingot() != null)) {
+                    recipe().useTool(
+                            TFCTags.Items.TOOLS_HAMMER,
+                            Ingredient.of(material.ingot().get()),
+                            material.nugget().get(),
+                            8
+                    );
+                }
             }
         }
+
+        recipe().useTool(
+                TFCTags.Items.TOOLS_HAMMER,
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                Items.GOLD_NUGGET,
+                8
+        );
+
+        recipe().useTool(
+                TFCTags.Items.TOOLS_HAMMER,
+                Ingredient.of(commonTagOf(Registries.ITEM, "ingots/cast_iron")),
+                Items.IRON_NUGGET,
+                8
+        );
 
         //Earthen
         recipe()

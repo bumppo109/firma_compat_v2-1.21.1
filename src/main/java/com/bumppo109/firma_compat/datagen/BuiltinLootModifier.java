@@ -75,6 +75,7 @@ public class BuiltinLootModifier extends GlobalLootModifierProvider {
         //Metal
         swap(Items.LANTERN, ModBlocks.LANTERN.get().asItem());
         swap(Items.SOUL_LANTERN, ModBlocks.LANTERN.get().asItem());
+        swap(Items.BREWING_STAND, ModBlocks.FLUID_BREWING_STAND.get().asItem());
 
         swap(Items.IRON_INGOT, TFCItems.METAL_ITEMS.get(Metal.CAST_IRON).get(Metal.ItemType.INGOT).get());
         swap(Items.IRON_BLOCK, TFCBlocks.METALS.get(Metal.CAST_IRON).get(Metal.BlockType.BLOCK).get().asItem());

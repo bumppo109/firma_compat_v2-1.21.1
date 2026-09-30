@@ -33,7 +33,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "firma_compat:stone_loose",
+              "name": "firma_compat:loose_stone",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",

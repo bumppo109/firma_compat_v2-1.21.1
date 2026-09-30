@@ -66,6 +66,11 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
         executor.accept(this::generateTFCSandStoneTextures);
         executor.accept(this::generateTFCMetalTextures);
         executor.accept(this::generateFoodTextures);
+
+        executor.accept(this::generateVexxedMetal);
+        executor.accept(this::generateVexxedWood);
+        executor.accept(this::generateVexxedRock);
+        executor.accept(this::generateVexxedFood);
     }
 
     @Override
@@ -75,6 +80,32 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
     @Override
     public void reload(ResourceManager manager, IProgressTracker reporter) {
         super.reload(manager, reporter);
+    }
+
+    private void generateVexxedWood(ResourceManager manager, ResourceSink sink) {
+        for (CompatWood wood: CompatWood.values()) {
+            if (wood.woodMaterial().leaves() != null) {
+                ResourceLocation leavesRes = BuiltInRegistries.BLOCK.getKey(wood.woodMaterial().leaves().get());
+                ResourceLocation leavesColor = ResourceLocation.fromNamespaceAndPath(leavesRes.getNamespace(),"block/" + leavesRes.getPath());
+
+                ResourceLocation fallenLeavesTexture = ResourceLocation.fromNamespaceAndPath("tfc","item/groundcover/fallen_leaves");
+
+                recolorTexture(manager, sink, fallenLeavesTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + wood.getSerializedName() + "_fallen_leaves"), leavesColor);
+            }
+
+            if (wood.woodMaterial().planks() != null) {
+                ResourceLocation planksRes = BuiltInRegistries.BLOCK.getKey(wood.woodMaterial().planks().get());
+                ResourceLocation woodColor = ResourceLocation.fromNamespaceAndPath(planksRes.getNamespace(),"block/" + planksRes.getPath());
+
+                ResourceLocation lumberTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/oak_lumber");
+                ResourceLocation twigTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/oak_twig");
+                ResourceLocation waterwheelItemTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/oak_water_wheel");
+
+                recolorTexture(manager, sink, lumberTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/" + wood.getSerializedName() + "_lumber"), woodColor);
+                recolorTexture(manager, sink, twigTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/" + wood.getSerializedName() + "_twig"), woodColor);
+                recolorTexture(manager, sink, waterwheelItemTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/" + wood.getSerializedName() + "_water_wheel"), woodColor);
+            }
+        }
     }
 
     private void generateWoodTextures(ResourceManager manager, ResourceSink sink) {
@@ -167,6 +198,25 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
         }
     }
 
+    private void generateVexxedFood(ResourceManager manager, ResourceSink sink) {
+        FoodIngredients.preserveIngredients().forEach(foodIngredient -> {
+            ResourceLocation foodRes = BuiltInRegistries.ITEM.getKey(foodIngredient.foodItem().get());
+            ResourceLocation foodTexture = ResourceLocation.withDefaultNamespace("item/" + foodRes.getPath());
+
+            ResourceLocation jar = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/jar/green_apple");
+            ResourceLocation jarOpen = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/jar/green_apple_unsealed");
+
+            ResourceLocation jarOverlay = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/empty_jar_with_lid");
+            ResourceLocation jarOpenOverlay = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/empty_jar");
+
+            ResourceLocation jarBlock = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/jar/green_apple");
+
+            recolorTexture(manager, sink, jarBlock, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/block/jar/" + foodRes.getPath()), foodTexture);
+            simpleOverlayRecolor(manager, sink, jar, jarOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/jar/" + foodRes.getPath()), foodTexture);
+            simpleOverlayRecolor(manager, sink, jarOpen, jarOpenOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/jar/" + foodRes.getPath() + "_unsealed"), foodTexture);
+        });
+    }
+
     private void generateFoodTextures(ResourceManager manager, ResourceSink sink) {
         FoodIngredients.preserveIngredients().forEach(foodIngredient -> {
             ResourceLocation foodRes = BuiltInRegistries.ITEM.getKey(foodIngredient.foodItem().get());
@@ -203,6 +253,30 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
 
             simpleOverlay(manager, sink, dirtTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/clay_dirt_mask"),
                     ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/clay_" + material.getSerializedName()));
+        }
+    }
+
+    private void generateVexxedRock(ResourceManager manager, ResourceSink sink) {
+        for (CompatRock rock : CompatRock.values()) {
+            Block rawBlock = rock.rockMaterial().raw().base().get();
+            ResourceLocation rawRes = BuiltInRegistries.BLOCK.getKey(rawBlock);
+            ResourceLocation rockColor = rock.blockAsset().textures().get(BlockTextureSlot.SIDE);
+
+            ResourceLocation looseTexture = switch (rock.category()) {
+                case METAMORPHIC -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/loose_metamorphic");
+                case SEDIMENTARY -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/loose_sedimentary");
+                case FELSIC_IGNEOUS_EXTRUSIVE, INTERMEDIATE_IGNEOUS_EXTRUSIVE, MAFIC_IGNEOUS_EXTRUSIVE -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/loose_extrusive");
+                case FELSIC_IGNEOUS_INTRUSIVE, INTERMEDIATE_IGNEOUS_INTRUSIVE, MAFIC_IGNEOUS_INTRUSIVE -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/loose_intrusive");
+            };
+            ResourceLocation brickTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/brick");
+
+            if (rock.equals(CompatRock.BLACKSTONE)) {
+                recolorTexture(manager, sink, brickTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "vexxed/item/polished_" + rock.getSerializedName() + "_brick"), rockColor);
+            } else {
+                recolorTexture(manager, sink, brickTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "vexxed/item/" + rock.getSerializedName() + "_brick"), rockColor);
+            }
+
+            recolorTexture(manager, sink, looseTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "vexxed/item/loose_" + rock.getSerializedName()), rockColor);
         }
     }
 
@@ -243,6 +317,44 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             recolorTexture(manager, sink, flagstoneTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/" + rock.getSerializedName() + "_flagstone"), rockColor);
             recolorTexture(manager, sink, flagstoneBlockTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_flagstones"), rockColor);
             recolorTexture(manager, sink, settBlockTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_sett"), rockColor);
+        }
+    }
+
+    private void generateVexxedMetal(ResourceManager manager, ResourceSink sink) {
+        for (CompatMetal metal: CompatMetal.values()) {
+            ResourceLocation ingotRes = BuiltInRegistries.ITEM.getKey(metal.getMetalMaterial().ingot().get());
+            ResourceLocation metalColor = ResourceLocation.fromNamespaceAndPath(ingotRes.getNamespace(),"item/" + ingotRes.getPath());
+
+            for (CompatMetal.ItemType itemType : CompatMetal.ItemType.values()) {
+
+                boolean requiresOverlay = switch (itemType) {
+                    case CHISEL, PROPICK, HAMMER, SCYTHE, MACE, KNIFE, SAW, TUYERE -> true;
+                    default -> false;
+                };
+
+                ResourceLocation baseTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/wrought_iron_" + itemType.getSerializedName());
+
+                String outputPath = "vexxed/item/" + metal.getSerializedName() + "_" + itemType.getSerializedName();
+
+                if (requiresOverlay) {
+                    ResourceLocation overlayTexture = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/" + itemType.getSerializedName() + "_mask");
+                    simpleOverlayRecolor(manager, sink, baseTexture, overlayTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, outputPath), metalColor);
+                } else {
+                    if (itemType.equals(CompatMetal.ItemType.JAVELIN)) {
+                        simpleOverlayRecolor(manager, sink,
+                                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/javelin/wrought_iron"),
+                                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/javelin/javelin_mask"),
+                                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/" + metal.getSerializedName() + "_javelin"), metalColor);
+
+                        simpleOverlayRecolor(manager, sink,
+                                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/javelin/held/wrought_iron"),
+                                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/javelin/held/javelin_held_mask"),
+                                ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/" + metal.getSerializedName() + "_javelin_held"), metalColor);
+                    } else {
+                        recolorTexture(manager, sink, baseTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, outputPath), metalColor);
+                    }
+                }
+            }
         }
     }
 

@@ -231,8 +231,8 @@ public class BuiltinRecipes extends RecipeProvider implements ModRecipes,
         mattock(BlockIngredient.of(ModTags.Blocks.MUD), CompatRnRBlocks.TAMPED_MUD.get().defaultBlockState(), ChiselMode.SMOOTH, "smooth", rnrLoaded);
         add("tamped_dirt_base_course", new BlockModRecipe(Ingredient.of(RNRItems.CRUSHED_BASE_COURSE), BlockIngredient.of(CompatRnRBlocks.TAMPED_DIRT.get()), RNRBlocks.BASE_COURSE.get().defaultBlockState(), true), rnrLoaded);
         add("tamped_mud_base_course", new BlockModRecipe(Ingredient.of(RNRItems.CRUSHED_BASE_COURSE), BlockIngredient.of(CompatRnRBlocks.TAMPED_MUD.get()), RNRBlocks.BASE_COURSE.get().defaultBlockState(), true), rnrLoaded);
-        add(new BlockModRecipe(Ingredient.of(Items.GRAVEL), BlockIngredient.of(baseBlock), CompatRnRBlocks.GRAVEL_ROAD.get().defaultBlockState(), true), rnrLoaded);
-        add(new BlockModRecipe(Ingredient.of(Items.GRAVEL), BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get().defaultBlockState(), true), rnrLoaded);
+        add(new BlockModRecipe(Ingredient.of(CompatRnRItems.GRAVEL_FILL), BlockIngredient.of(baseBlock), CompatRnRBlocks.GRAVEL_ROAD.get().defaultBlockState(), true), rnrLoaded);
+        add(new BlockModRecipe(Ingredient.of(CompatRnRItems.GRAVEL_FILL), BlockIngredient.of(CompatRnRBlocks.GRAVEL_ROAD.get()), CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get().defaultBlockState(), true), rnrLoaded);
         mattock(BlockIngredient.of(CompatRnRBlocks.OVER_HEIGHT_GRAVEL.get()), CompatRnRBlocks.MACADAM_ROAD.get().defaultBlockState(), ChiselMode.SMOOTH, "smooth", rnrLoaded);
 
         mattock(BlockIngredient.of(CompatRnRBlocks.MACADAM_ROAD.get()), CompatRnRBlocks.MACADAM_ROAD_STAIRS.get().defaultBlockState(), ChiselMode.STAIR, "stair", rnrLoaded);

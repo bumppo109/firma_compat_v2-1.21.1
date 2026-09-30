@@ -1,0 +1,6 @@
+{
+  "parent": "tfc:item/template_javelin_in_hand",
+  "textures": {
+	"layer0": "firma_compat:item/netherite_javelin_held"
+  }
+}

@@ -1,5 +1,6 @@
 package com.bumppo109.firma_compat;
 
+import com.bumppo109.firma_compat.block.CompatMetal;
 import com.bumppo109.firma_compat.block.ModBlocks;
 import com.bumppo109.firma_compat.blockentity.FluidBrewingStandScreen;
 import com.bumppo109.firma_compat.blockentity.ModMenus;
@@ -13,7 +14,9 @@ import net.dries007.tfc.client.extensions.FluidRendererExtension;
 import net.dries007.tfc.client.extensions.ItemRendererExtension;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
 import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
+import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
 import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
+import net.dries007.tfc.client.render.entity.ThrownJavelinRenderer;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
@@ -28,6 +31,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
@@ -186,6 +190,15 @@ public class FirmaCompatClient {
             });
             HorseChestLayer.registerChest(ModBlocks.COMPAT_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
             HorseChestLayer.registerChest(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem(), FirmaCompatHelpers.modIdentifier("textures/entity/chest/horse/compat_chest"));
+
+            for (CompatMetal metal : CompatMetal.values()) {
+                if (!metal.allParts()) continue;
+
+                Item javelin = ModItems.METAL_ITEMS.get(metal).get(CompatMetal.ItemType.JAVELIN).get();
+                ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
+                        entity != null && ((entity.isUsingItem() && entity.getUseItem() == stack) || (entity instanceof Monster monster && monster.isAggressive())) ? 1.0F : 0.0F
+                );
+            }
         });
 
         ModBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
@@ -208,6 +221,26 @@ public class FirmaCompatClient {
         ));
         registerCustomItemRenderer(event, ModBlocks.COMPAT_CHEST, ChestItemRenderer::new);
         registerCustomItemRenderer(event, ModBlocks.COMPAT_TRAPPED_CHEST, ChestItemRenderer::new);
+
+        for (CompatMetal metal : CompatMetal.values()) {
+            if (!metal.allParts()) continue;
+
+            Item javelin = ModItems.METAL_ITEMS
+                    .get(metal)
+                    .get(CompatMetal.ItemType.JAVELIN)
+                    .get();
+
+            // Held/inventory javelin renderer
+            registerCustomItemRenderer(event,
+                    ModItems.METAL_ITEMS.get(metal).get(CompatMetal.ItemType.JAVELIN),
+                    JavelinItemRenderer::new
+            );
+
+            // Thrown javelin texture
+            ThrownJavelinRenderer.JAVELIN_TEXTURES.put(javelin,
+                    FirmaCompatHelpers.modIdentifier("textures/entity/projectile/" + metal.getSerializedName() + "_javelin.png")
+            );
+        }
 
         ModFluids.POTIONS.forEach((fluid, holder) -> event.registerFluidType(new FluidRendererExtension(TFCFluids.ALPHA_MASK | fluid.color(), ClientEventHandler.WATER_STILL, ClientEventHandler.WATER_FLOW, ClientEventHandler.WATER_OVERLAY, ClientEventHandler.UNDERWATER_LOCATION), new FluidType[]{holder.getType()}));
         ModFluids.FLUIDS.forEach((fluid, holder) -> event.registerFluidType(new FluidRendererExtension(TFCFluids.ALPHA_MASK | fluid.getColor(), ClientEventHandler.WATER_STILL, ClientEventHandler.WATER_FLOW, ClientEventHandler.WATER_OVERLAY, ClientEventHandler.UNDERWATER_LOCATION), new FluidType[]{holder.getType()}));

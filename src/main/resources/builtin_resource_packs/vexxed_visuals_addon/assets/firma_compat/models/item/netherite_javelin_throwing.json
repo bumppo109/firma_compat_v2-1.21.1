@@ -1,0 +1,27 @@
+{
+  "loader": "neoforge:separate_transforms",
+  "gui_light": "front",
+  "base": {
+    "parent": "tfc:item/template_javelin_throwing",
+    "textures": {
+      "layer0": "firma_compat:item/netherite_javelin_held"
+    }
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/template_javelin_throwing",
+      "textures": {
+        "layer0": "firma_compat:item/netherite_javelin_held"
+      }
+    },
+    "fixed": {
+      "parent": "tfc:item/template_javelin_throwing",
+      "textures": {
+        "layer0": "firma_compat:item/netherite_javelin_held"
+      }
+    },
+    "gui": {
+      "parent": "firma_compat:item/netherite_javelin_gui"
+    }
+  }
+}
