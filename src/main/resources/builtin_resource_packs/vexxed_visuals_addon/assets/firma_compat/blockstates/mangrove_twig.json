@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "firma_compat:block/twig/mangrove_twig"
+      },
+      {
+        "model": "firma_compat:block/twig/mangrove_twig",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig/mangrove_twig",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig/mangrove_twig",
+        "y": 270
+      },
+      {
+        "model": "firma_compat:block/twig_45/mangrove"
+      },
+      {
+        "model": "firma_compat:block/twig_45/mangrove",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig_45/mangrove",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig_45/mangrove",
+        "y": 270
+      }
+    ]
+  }
+}

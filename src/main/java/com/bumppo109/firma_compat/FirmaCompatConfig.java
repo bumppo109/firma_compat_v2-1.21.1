@@ -151,7 +151,7 @@ public class FirmaCompatConfig {
 
             oceanDepthScale = builder
                     .comment(
-                            "Scale for ocean depth, no change by default",
+                            "Scale for TFC ocean depth, no change by default",
                             "Default: 1"
                     )
                     .defineInRange(

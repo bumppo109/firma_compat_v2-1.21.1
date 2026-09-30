@@ -1,6 +1,7 @@
 package com.bumppo109.firma_compat.addon.everycompat.modules.woodgood;
 
 import com.bumppo109.firma_compat.FirmaCompat;
+import com.bumppo109.firma_compat.util.ModTags;
 import com.google.gson.*;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
@@ -133,8 +134,8 @@ public final class CompatWoodGoodModule extends EveryCompatModule {
                 .requiresChildren("log")
                 .addTexture(modRes("item/oak_twig"), PaletteStrategies.MAIN_CHILD)
                 .addTag(ResourceLocation.fromNamespaceAndPath("tfc", "twigs"), Registries.ITEM)
-                .addTag(Tags.Items.RODS_WOODEN, Registries.ITEM)
                 .addTag(BlockTags.MINEABLE_WITH_AXE, Registries.BLOCK)
+                .addTag(ModTags.Blocks.TWIGS, Registries.BLOCK)
                 .setTab(tab)
                 .excludeBlockTypes("tfc:.*").excludeBlockTypes("afc:.*").excludeBlockTypes("domum_ornamentum:.*")
                 .build();

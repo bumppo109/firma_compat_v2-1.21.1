@@ -128,6 +128,9 @@ public class BuiltinLootModifier extends GlobalLootModifierProvider {
         swap(Items.BAKED_POTATO, TFCItems.FOOD.get(Food.BAKED_POTATO).get());
         swap(Items.BREAD, TFCItems.FOOD.get(Food.WHEAT_BREAD).get());
         swap(Items.WHEAT, TFCItems.FOOD.get(Food.WHEAT).get());
+        swap(Items.SALMON, TFCItems.FOOD.get(Food.SALMON).get());
+        swap(Items.COOKED_SALMON, TFCItems.FOOD.get(Food.COOKED_SALMON).get());
+        swap(Items.COOKED_COD, TFCItems.FOOD.get(Food.COOKED_COD).get());
     }
     /**
      * Registers the loot modifier that adds straw drops from short/tall grass and ferns.

@@ -90,6 +90,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements ModAccessors
         });
 
         //Wood
+        tag(Tags.Items.RODS_WOODEN).addTags(TWIGS);
         tag(Tags.Items.CHESTS_WOODEN)
                 .add(ModBlocks.COMPAT_CHEST.get().asItem())
                 .add(ModBlocks.COMPAT_TRAPPED_CHEST.get().asItem())

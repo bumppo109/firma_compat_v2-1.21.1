@@ -209,7 +209,7 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             ResourceLocation jarOverlay = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/empty_jar_with_lid");
             ResourceLocation jarOpenOverlay = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/empty_jar");
 
-            ResourceLocation jarBlock = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/jar/green_apple");
+            ResourceLocation jarBlock = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/block/jar/green_apple");
 
             recolorTexture(manager, sink, jarBlock, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/block/jar/" + foodRes.getPath()), foodTexture);
             simpleOverlayRecolor(manager, sink, jar, jarOverlay, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"vexxed/item/jar/" + foodRes.getPath()), foodTexture);
@@ -261,6 +261,7 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             Block rawBlock = rock.rockMaterial().raw().base().get();
             ResourceLocation rawRes = BuiltInRegistries.BLOCK.getKey(rawBlock);
             ResourceLocation rockColor = rock.blockAsset().textures().get(BlockTextureSlot.SIDE);
+            ResourceLocation anvilTop = ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/block/rock_anvil_top");
 
             ResourceLocation looseTexture = switch (rock.category()) {
                 case METAMORPHIC -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"template/vexxed/item/loose_metamorphic");
@@ -277,6 +278,7 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             }
 
             recolorTexture(manager, sink, looseTexture, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "vexxed/item/loose_" + rock.getSerializedName()), rockColor);
+            recolorTexture(manager, sink, anvilTop, ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID, "vexxed/block/" + rock.getSerializedName() + "_anvil_top"), rockColor);
         }
     }
 
@@ -326,9 +328,10 @@ public class ModClientDynamicResources extends DynamicClientResourceProvider {
             ResourceLocation metalColor = ResourceLocation.fromNamespaceAndPath(ingotRes.getNamespace(),"item/" + ingotRes.getPath());
 
             for (CompatMetal.ItemType itemType : CompatMetal.ItemType.values()) {
+                if (itemType.equals(CompatMetal.ItemType.NUGGET)) continue;
 
                 boolean requiresOverlay = switch (itemType) {
-                    case CHISEL, PROPICK, HAMMER, SCYTHE, MACE, KNIFE, SAW, TUYERE -> true;
+                    case CHISEL, PROPICK, HAMMER, SCYTHE, MACE, KNIFE, SAW -> true;
                     default -> false;
                 };
 

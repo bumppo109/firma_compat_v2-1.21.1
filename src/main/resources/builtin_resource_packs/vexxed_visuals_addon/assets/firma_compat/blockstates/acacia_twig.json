@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "firma_compat:block/twig/acacia_twig"
+      },
+      {
+        "model": "firma_compat:block/twig/acacia_twig",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig/acacia_twig",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig/acacia_twig",
+        "y": 270
+      },
+      {
+        "model": "firma_compat:block/twig_45/acacia"
+      },
+      {
+        "model": "firma_compat:block/twig_45/acacia",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig_45/acacia",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig_45/acacia",
+        "y": 270
+      }
+    ]
+  }
+}

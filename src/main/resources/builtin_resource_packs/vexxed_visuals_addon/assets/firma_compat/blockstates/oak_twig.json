@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "firma_compat:block/twig/oak_twig"
+      },
+      {
+        "model": "firma_compat:block/twig/oak_twig",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig/oak_twig",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig/oak_twig",
+        "y": 270
+      },
+      {
+        "model": "firma_compat:block/twig_45/oak"
+      },
+      {
+        "model": "firma_compat:block/twig_45/oak",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig_45/oak",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig_45/oak",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -47,6 +47,27 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         ModelFile emptyModel = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("tfc", "block/empty"));
 
+    //Vexxed
+        for (CompatRock rock : CompatRock.values()) {
+            ResourceLocation anvilTopTexture = generatedTexture(ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"block/" + rock.getSerializedName() + "_anvil_top"));
+
+            models().withExistingParent("vexxed/block/" + rock.getSerializedName() + "_anvil", ResourceLocation.fromNamespaceAndPath("tfc", "block/rock/anvil"))
+                    .texture("texture", BlockAssets.get(rock.rockMaterial().raw().base().get()).textures().get(BlockTextureSlot.SIDE))
+                    .texture("texture_up", anvilTopTexture);
+        }
+
+        for (CompatWood wood : CompatWood.values()) {
+            if (wood.woodMaterial().log() == null) continue;
+            BlockAsset logAsset = BlockAssets.getColumn(wood.woodMaterial().log().get());
+            ResourceLocation twig45Model = generatedModel(ResourceLocation.fromNamespaceAndPath("tfc","block/groundcover/twig_45"));
+
+            models().withExistingParent("vexxed/block/twig_45/" + wood.getSerializedName(), twig45Model)
+                    .texture("side", logAsset.textures().get(BlockTextureSlot.SIDE))
+                    .texture("top", logAsset.textures().get(BlockTextureSlot.END));
+        }
+
+    //Firma Compat
+
         ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {
             WoodMaterial material = compatWood.woodMaterial();
 
@@ -859,6 +880,16 @@ public class BuiltinBlockStateProvider extends BlockStateProvider {
                     .modelForState().modelFile(model).rotationY(270).addModel();
         }
         simpleBlockItem(block, bigBarrelItem);
+    }
+
+    private ResourceLocation generatedModel(ResourceLocation model) {
+        existingFileHelper.trackGenerated(
+                model,
+                PackType.CLIENT_RESOURCES,
+                ".json",
+                "models"
+        );
+        return model;
     }
 
     private ResourceLocation generatedTexture(ResourceLocation texture) {

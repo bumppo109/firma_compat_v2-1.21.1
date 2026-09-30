@@ -30,6 +30,20 @@ public class BuiltinLang extends LanguageProvider {
         add("firma_compat.creative_tab.firma_compat", "Firma Compat");
         add("firma_compat.creative_tab.firma_compat_tfc_additions", "Firma Compat: TFC");
 
+        add("firma_compat.configuration.entities", "Entity");
+        add("firma_compat.configuration.skeletonVariantChance", "Skeleton Variant Chance");
+        add("firma_compat.configuration.sheepWoolRegrowthDelayTicks", "Sheep Wool Regrowth Delay");
+        add("firma_compat.configuration.cowMilkingDelayTicks", "Cow Milking Delay");
+
+        add("firma_compat.configuration.world", "World Generation");
+        add("firma_compat.configuration.presumedWorldHeight", "World Height");
+        add("firma_compat.configuration.tempLerpValue", "Biome Temperature Lerp");
+        add("firma_compat.configuration.doTempLerp", "Apply Biome Temperature Lerp");
+        add("firma_compat.configuration.tempScale", "Biome Temperature Scaling");
+        add("firma_compat.configuration.tempShift", "Biome Temperature Shift");
+        add("firma_compat.configuration.rainScale", "Biome Rain Scale");
+        add("firma_compat.configuration.oceanDepthScale", "TFC Ocean Depth Scale");
+
         add("fluid.firma_compat.metal.netherite", "Molten Netherite");
         add("fluid.firma_compat.metal.scrap_netherite", "Molten Scrap Netherite");
 

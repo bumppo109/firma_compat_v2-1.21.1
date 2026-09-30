@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "firma_compat:block/twig/cherry_twig"
+      },
+      {
+        "model": "firma_compat:block/twig/cherry_twig",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig/cherry_twig",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig/cherry_twig",
+        "y": 270
+      },
+      {
+        "model": "firma_compat:block/twig_45/cherry"
+      },
+      {
+        "model": "firma_compat:block/twig_45/cherry",
+        "y": 90
+      },
+      {
+        "model": "firma_compat:block/twig_45/cherry",
+        "y": 180
+      },
+      {
+        "model": "firma_compat:block/twig_45/cherry",
+        "y": 270
+      }
+    ]
+  }
+}

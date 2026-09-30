@@ -34,9 +34,9 @@ public class BuiltinItemModelProvider extends ItemModelProvider {
         for (CompatRock rock : CompatRock.VALUES) {
             ResourceLocation mossyMask = switch(rock.category()) {
                 case METAMORPHIC -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/moss_metamorphic");
-                case SEDIMENTARY -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/moss_sedimentary");
-                case FELSIC_IGNEOUS_EXTRUSIVE, INTERMEDIATE_IGNEOUS_EXTRUSIVE, MAFIC_IGNEOUS_EXTRUSIVE -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/loose_rock/moss_igneous_extrusive");
-                case FELSIC_IGNEOUS_INTRUSIVE, INTERMEDIATE_IGNEOUS_INTRUSIVE, MAFIC_IGNEOUS_INTRUSIVE -> ResourceLocation.fromNamespaceAndPath(FirmaCompat.MODID,"item/loose_rock/moss_igneous_intrusive");
+                case SEDIMENTARY -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/moss_sedementary");
+                case FELSIC_IGNEOUS_EXTRUSIVE, INTERMEDIATE_IGNEOUS_EXTRUSIVE, MAFIC_IGNEOUS_EXTRUSIVE -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/moss_igneous_extrusive");
+                case FELSIC_IGNEOUS_INTRUSIVE, INTERMEDIATE_IGNEOUS_INTRUSIVE, MAFIC_IGNEOUS_INTRUSIVE -> ResourceLocation.fromNamespaceAndPath("tfc","item/loose_rock/moss_igneous_intrusive");
             };
             existingFileHelper.trackGenerated(mossyMask, PackType.CLIENT_RESOURCES,".png","textures");
             getBuilder("vexxed/item/mossy_loose_" + rock.getSerializedName())

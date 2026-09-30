@@ -164,6 +164,9 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             for (CompatRock rock : CompatRock.VALUES) {
                 var rockMap = ModBlocks.ROCK_BLOCKS.get(rock);
 
+                //raw drops loose
+                addHardenedRockLoot(rock.rockMaterial().raw().base().get(), rock);
+
                 for (CompatRock.BlockType type : CompatRock.BlockType.values()) {
                     if (rockMap.containsKey(type)) {
                         Block block = rockMap.get(type).get();
@@ -488,6 +491,10 @@ public class BuiltinLootTableProvider extends LootTableProvider {
             knownBlocks.add(Blocks.CHEST);
             knownBlocks.add(Blocks.TRAPPED_CHEST);
             knownBlocks.add(Blocks.NETHER_GOLD_ORE);
+
+            for (CompatRock rock : CompatRock.values()) {
+                knownBlocks.add(rock.rockMaterial().raw().base().get());
+            }
 
             //Wood
             ModBlocks.WOODS.forEach((compatWood, blockTypeIdMap) -> {

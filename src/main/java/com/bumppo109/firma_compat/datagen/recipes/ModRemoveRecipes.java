@@ -305,7 +305,8 @@ public interface ModRemoveRecipes extends ModRecipes
                 "red_sandstone_slab",
                 "candle",
                 "brewing_stand",
-                "leather"
+                "leather",
+                "paper"
         );
 
         //Remove crafted Dye
